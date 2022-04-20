@@ -8,7 +8,8 @@ public class Product {
 	
 	public Product(int currentStock, double price)
 	{
-		
+		this.currentStock = currentStock;
+		this.price = price;
 	}
 
 	/**
