@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/raita/eclipse-workspace/jdbc/lib/mssql-jdbc-10.2.0.jre17.jar"/>
+	<classpathentry kind="lib" path="ref/mssql-jdbc-10.2.0.jre17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
