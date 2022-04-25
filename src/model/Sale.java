@@ -16,7 +16,7 @@ public class Sale {
 	 */
 	public Sale(Vehicle vehicle) {
 		orderlines = new ArrayList<>();
-		this.vehicle = vehicle;
+		this.setVehicle(vehicle);
 	}
 	/**
 	 * Add service to the sale
@@ -33,5 +33,23 @@ public class Sale {
 	 */
 	public boolean addOrderLine(OrderLine orderline) {
 		return orderlines.add(orderline);
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public LocalDateTime getDate() {
+		return date;
+	}
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
 	}
 }
