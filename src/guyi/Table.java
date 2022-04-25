@@ -46,7 +46,7 @@ public class Table extends JPanel {
 		remove.setAlignmentX(0.5f);
 		remove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				askForInput();
+				removeSelected();
 			}
 		});
 		
@@ -88,6 +88,17 @@ public class Table extends JPanel {
 		}
 		
 		table.setModel(myTableModel);
+	}
+	
+	public void removeSelected() {
+		int[] selected = table.getSelectedRows();
+		
+		int length = selected.length;
+		
+		for (int i = 0; i < length; i++) {
+			((DefaultTableModel)table.getModel()).removeRow(selected[0]);
+		}
+		
 	}
 	
 	public void askForInput() {

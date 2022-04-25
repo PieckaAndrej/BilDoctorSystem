@@ -63,6 +63,7 @@ public class FinishSale extends JPanel {
 					text.append(thisTable.getValueAt(i, k));
 					text.append(", ");
 				}
+				text.append("\n");
 			}
 
 			text.append("\n");
