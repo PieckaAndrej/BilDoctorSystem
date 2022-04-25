@@ -10,6 +10,8 @@ public class Sale {
 	private ArrayList<OrderLine> orderlines;
 	private Vehicle vehicle;
 	private int id;
+	private ArrayList<Service> services;
+	private ArrayList<Product> products;
 	
 	/**
 	 * Constructor for the Sale class
@@ -18,14 +20,30 @@ public class Sale {
 	public Sale(Vehicle vehicle) {
 		orderlines = new ArrayList<>();
 		this.setVehicle(vehicle);
+		services = new ArrayList<>();
 	}
+	
 	/**
 	 * Add service to the sale
 	 * @param Service
 	 * @return
 	 */
 	public boolean addService(Service service) {
-		return true;
+		boolean retVal = false;
+		if (services != null) {
+			services.add(service);
+			retVal = true;
+		}
+		return retVal;
+	}
+	
+	public boolean addProduct(Product product) {
+		boolean retVal = false;
+		if(products != null	 ) {
+			products.add(product);
+			retVal = true;
+		}
+		return retVal;
 	}
 	/**
 	 * Add orderline to the sale
