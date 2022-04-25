@@ -6,10 +6,13 @@ public class Product {
 	
 	private double price;
 	
-	public Product(int currentStock, double price)
+	public int productId;
+	
+	public Product(int currentStock, double price, int productId)
 	{
 		this.currentStock = currentStock;
 		this.price = price;
+		this.productId = productId;
 	}
 
 	/**
@@ -40,6 +43,17 @@ public class Product {
 		this.price = price;
 	}
 	
-	
-	
+	/**
+	 * @return the productId
+	 */
+	public int getProductId() {
+		return productId;
+	}
+
+	/**
+	 * @param productId the productId to set
+	 */
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
 }
