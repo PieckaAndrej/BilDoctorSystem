@@ -1,7 +1,8 @@
 package dal;
 
 import exceptions.DatabaseAccessException;
+import model.Service;
 
 public interface ServiceDBIF {
-	public boolean insertService() throws DatabaseAccessException;
+	public boolean insertService(Service service) throws DatabaseAccessException;
 }
