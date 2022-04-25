@@ -36,7 +36,7 @@ public class SaleDB implements SaleDBIF {
 			throw new DatabaseAccessException(e.getMessage());
 		}
 		
-		return retVal;;
+		return retVal;
 	}
 		
 }

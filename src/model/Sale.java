@@ -9,6 +9,7 @@ public class Sale {
 	private LocalDateTime date;
 	private ArrayList<OrderLine> orderlines;
 	private Vehicle vehicle;
+	private int id;
 	
 	/**
 	 * Constructor for the Sale class
@@ -51,5 +52,11 @@ public class Sale {
 	}
 	public void setVehicle(Vehicle vehicle) {
 		this.vehicle = vehicle;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }
