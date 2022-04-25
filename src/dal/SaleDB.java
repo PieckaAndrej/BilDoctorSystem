@@ -23,7 +23,7 @@ public class SaleDB implements SaleDBIF {
 	}
 	
 	@Override
-	public boolean insertSale(Sale sale) {
+	public boolean insertSale(Sale sale) throws DatabaseAccessException {
 		boolean retVal = false;
 		try {
 			createStatement.setTimestamp(1, Timestamp.valueOf(sale.getDate()));
