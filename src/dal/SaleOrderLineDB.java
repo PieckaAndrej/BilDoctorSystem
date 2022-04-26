@@ -23,6 +23,7 @@ public class SaleOrderLineDB implements SaleOrderLineDBIF{
 		}
 	}
 	
+	@Override
 	public boolean insertOrderLine(OrderLine orderLine, Sale sale) throws DatabaseAccessException {
 		boolean retVal = false;
 		try {
@@ -30,7 +31,7 @@ public class SaleOrderLineDB implements SaleOrderLineDBIF{
 			createStatement.setInt(2, orderLine.getQuantity());
 			createStatement.setString(3, orderLine.getPlateNumber());
 			createStatement.setTimestamp(4, Timestamp.valueOf(sale.getDate()));
-			createStatement.setInt(5, orderLine.getProduct().getID());
+			createStatement.setInt(5, orderLine.getProduct().getId());
 			retVal = true;
 		}catch(SQLException e) {
 			//e.printStackTrace();

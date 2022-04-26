@@ -43,7 +43,7 @@ public class ProductTest {
 			if (rs.next()) {
 				assertEquals(product.getCurrentStock(), rs.getInt("currentStock"));
 				assertEquals(product.getPrice(), rs.getDouble("price"), 0);
-				assertEquals(product.getProductId(), rs.getInt("id"));
+				assertEquals(product.getId(), rs.getInt("id"));
 				
 			}
 		} catch (SQLException e) {

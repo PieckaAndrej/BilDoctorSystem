@@ -65,7 +65,7 @@ public class SaleController {
 		try {
 			saleDb.insertSale(sale);
 			for(OrderLine element:sale.getOrderLines()) {
-				saleOrderLineDb.insertOrderLine(element, sale.getId());
+				saleOrderLineDb.insertOrderLine(element, sale);
 			}
 			sale = null;
 			retVal = true;
