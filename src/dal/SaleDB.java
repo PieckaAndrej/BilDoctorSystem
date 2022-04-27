@@ -15,26 +15,27 @@ public class SaleDB implements SaleDBIF {
 	private static final String CREATE_STATEMENT = "INSERT INTO Sale(plateNo, date, description) VALUES(?, ?, ?)";
 	private PreparedStatement createStatement;
 	
-	public SaleDB() throws DatabaseAccessException {
-		try {
-			createStatement = DbConnection.getInstance().getConnection().prepareStatement(CREATE_STATEMENT, Statement.RETURN_GENERATED_KEYS);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
-		}
+	public SaleDB() {
+		
 	}
 	
 	@Override
-	public boolean insertSale(Sale sale) throws DatabaseAccessException {
-		boolean retVal = false;
+	public Sale insertSale(Sale sale) throws DatabaseAccessException {
 		try {
+			try {
+				createStatement = DbConnection.getInstance().getConnection()
+						.prepareStatement(CREATE_STATEMENT, Statement.RETURN_GENERATED_KEYS);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
+			}
+			
 			DbConnection.getInstance().startTransaction();
 			
 			createStatement.setString(1, sale.getVehicle().getPlateNumber());
 			createStatement.setTimestamp(2, Timestamp.valueOf(sale.getDate()));
 			createStatement.setString(3, sale.getDescription());
 			sale.setId(DbConnection.getInstance().executeSqlInsertWithIdentity(createStatement));
-			retVal = true;
 			
 			OrderLineDBIF orderLineDb = new OrderLineDB();
 			
@@ -44,19 +45,21 @@ public class SaleDB implements SaleDBIF {
 			
 			ServiceDBIF serviceDb = new ServiceDB();
 			
-			for (Service service :sale.getServices()) {
-				serviceDb.insertService(service);
+			for (Service service : sale.getServices()) {
+				serviceDb.insertService(service, sale);
 			}
-			
+			System.out.println("Commited");
 			DbConnection.getInstance().commitTransaction();
 			
 		} catch (SQLException e) {
 			//e.printStackTrace();
+			System.out.println("Rolled back");
 			DbConnection.getInstance().rollbackTransaction();
+			
 			throw new DatabaseAccessException(e.getMessage());
 		}
 		
-		return retVal;
+		return sale;
 	}
 		
 }

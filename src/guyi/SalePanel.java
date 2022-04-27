@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import controller.SaleController;
 import exceptions.DatabaseAccessException;
@@ -33,18 +34,21 @@ public class SalePanel extends JPanel {
 
 	
 	public SalePanel() {
-		try {
-			saleCtrl = new SaleController();
-		} catch (DatabaseAccessException e) {
-			e.printStackTrace();
-		}
+		Thread controllerInit = new Thread(() -> {
+			try {
+				saleCtrl = new SaleController();
+			} catch (DatabaseAccessException e) {
+				e.printStackTrace();
+			}
+		});
 		
+		controllerInit.start();
 		initGui();
 	}
 	
 	private void initGui() {
 		setLayout(new BorderLayout(0, 0));
-		
+		setBorder(new EmptyBorder(new Insets(0, 3, 0, 0)));
 		
 		saleButtonsPanel = new JPanel();
 		saleButtonsPanel.setBackground(ColorScheme.BACKGROUND);
@@ -56,7 +60,11 @@ public class SalePanel extends JPanel {
 		btnCreateSale = new JButton("Create Sale");
 		btnCreateSale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createSale();
+				Thread createSale = new Thread(() -> {
+					createSale();
+				});
+				
+				createSale.start();
 			}
 		});
 		
@@ -93,17 +101,25 @@ public class SalePanel extends JPanel {
 		if (saleCtrl.createSale(fieldVehicle.getText())) {
 			JTabbedPane tabbedPane = new JTabbedPane();
 			serviceTable = new Table(new String[] {"Description", "Cost", "Time"});
-			productTable = new Table(new String[] {"Id", "Quantity"});
+			productTable = new Table(new String[] {"Id", "Name", "Quantity"});
 			
 			serviceTable.setActionAdd(new ControllerActionIF() {
 				public void action(InputPanel p) {
-					addService(p);
+					Thread addService = new Thread(() -> {
+						addService(p);
+					});
+					
+					addService.start();
 				}
 			});
 			
 			productTable.setActionAdd(new ControllerActionIF() {
 				public void action(InputPanel p) {
-					addProduct(p);
+					Thread addProduct = new Thread(() -> {
+						addProduct(p);
+					});
+					
+					addProduct.start();
 				}
 			});
 			
@@ -137,13 +153,17 @@ public class SalePanel extends JPanel {
 	}
 	
 	private void finishSale() {
-		if (saleCtrl.finishSale()) {
-			removeAll();
-			initGui();
-		} else {
-			// TODO maybe something could go wrong
-			System.out.println("Error");
-		}
+		Thread finishSaleThread = new Thread(() -> {
+			if (saleCtrl.finishSale()) {
+				removeAll();
+				initGui();
+			} else {
+				// TODO maybe something could go wrong
+				System.out.println("Error");
+			}
+		});
+		
+		finishSaleThread.start();
 	}
 	
 	private void addProduct(InputPanel input) {
@@ -153,17 +173,26 @@ public class SalePanel extends JPanel {
 		try { // Wrong id
 			int id = Integer.parseInt(fields.get(0).getText());
 			
-			try { // Wrong quantity
-				int quantity = Integer.parseInt(fields.get(1).getText());
-				saleCtrl.addProduct(id, quantity);
+			try { // Wrong name
+				String name = fields.get(1).getText();
 				
-				productTable.addRow(input);
-				
-				input.dispose();
+				try { // Wrong quantity
+					int quantity = Integer.parseInt(fields.get(2).getText());
+					saleCtrl.addProduct(id, name, quantity);
+					
+					productTable.addRow(input);
+					
+					input.dispose();
+				} catch (Exception e) {
+					input.getFields().get(2).putClientProperty( "JComponent.outline", "error" );
+					input.getErrorLabel().setText(e.getMessage());
+				}
 			} catch (Exception e) {
 				input.getFields().get(1).putClientProperty( "JComponent.outline", "error" );
 				input.getErrorLabel().setText(e.getMessage());
 			}
+			
+			
 		} catch (Exception e) {
 			input.getFields().get(0).putClientProperty( "JComponent.outline", "error" );
 			input.getErrorLabel().setText(e.getMessage());
@@ -184,6 +213,7 @@ public class SalePanel extends JPanel {
 				
 				try { // Wrong description
 					String desc = fields.get(0).getText();
+					
 					saleCtrl.addService(cost, time, desc);
 					
 					serviceTable.addRow(input);

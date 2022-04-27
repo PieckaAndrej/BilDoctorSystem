@@ -8,13 +8,17 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
 public class DbConnection {
 	
-	private static DbConnection instance = new DbConnection();
+	private static DbConnection instance;
 	private Connection conn;
 	
 	/**
 	 * Constructor for the DbConnection
 	 */
 	private DbConnection() {
+		initConnection();
+	}
+	
+	private void initConnection() {
 		try {
 			SQLServerDataSource ds = new SQLServerDataSource();
 			ds.setEncrypt(false);
@@ -32,10 +36,25 @@ public class DbConnection {
 		}	
 	}
 	
+	public boolean checkConnection() throws SQLException {
+		boolean retVal = false;
+		
+		if (getConnection() != null) {
+			retVal = conn.isValid(3);
+			conn.close();
+		}
+
+		
+		return retVal;
+	}
+	
 	/**
 	 * @return the instance of DbConnection
 	 */
 	public static DbConnection getInstance() {
+		if (instance == null) {
+			instance = new DbConnection();
+		}
 		return instance;		
 	}
 	
@@ -43,6 +62,13 @@ public class DbConnection {
 	 * @return the connection
 	 */
 	public Connection getConnection() {
+		try {
+			if (conn == null || conn.isClosed()) {
+				initConnection();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return conn;
 	}
 	
@@ -83,6 +109,7 @@ public class DbConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return res;
 	}
 
@@ -91,7 +118,7 @@ public class DbConnection {
 	 */
 	public void startTransaction() {
 		try {
-			conn.setAutoCommit(false);
+			getConnection().setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -103,11 +130,12 @@ public class DbConnection {
 	public void commitTransaction() {
 		try {
 			try {
-				conn.commit();
+				getConnection().commit();
+				conn.close();
 			} catch (SQLException e) {
 				throw e;
 			} finally {
-				conn.setAutoCommit(true);
+				getConnection().setAutoCommit(true);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,11 +148,11 @@ public class DbConnection {
 	public void rollbackTransaction() {
 		try {
 			try {
-				conn.rollback();
+				getConnection().rollback();
 			} catch (SQLException e) {
 				throw e;
 			} finally {
-				conn.setAutoCommit(true);
+				getConnection().setAutoCommit(true);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,7 +166,7 @@ public class DbConnection {
 	 */
 	public void setTransactionIsolation(int level) {
 		try {
-			conn.setTransactionIsolation(level);
+			getConnection().setTransactionIsolation(level);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

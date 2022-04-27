@@ -1,23 +1,34 @@
 package model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 public class Service {
 	
-	private double cost;
+	private BigDecimal price;
 	private double time;
 	private String description;
 	
-	public Service(double cost, double time, String dsc) {
-		this.cost = cost;
+	public Service(BigDecimal price, double time, String dsc) {
+		this.price = price;
 		this.time = time;
-		this.description = description;
+		this.description = dsc;
+	}
+	
+	public Service(double price, double time, String dsc) {
+		this(new BigDecimal(price), time, dsc);
 	}
 
-	public double getCost() {
-		return cost;
+	public BigDecimal getPrice() {
+		return price;
 	}
 
-	public void setCost(double cost) {
-		this.cost = cost;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	
+	public void setPrice(double price) {
+		this.price = new BigDecimal(price);
 	}
 
 	public double getTime() {

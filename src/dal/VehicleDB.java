@@ -12,11 +12,6 @@ public class VehicleDB implements VehicleDBIF {
 	private PreparedStatement selectVehicleStatement;
 	
 	public VehicleDB() {
-		try {
-			selectVehicleStatement = DbConnection.getInstance().getConnection().prepareStatement(SELECT_VEHICLE_STATEMENT);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public Vehicle searchVehicle(String plateNumber) {
@@ -24,6 +19,13 @@ public class VehicleDB implements VehicleDBIF {
 		Vehicle vehicle = null;
 
 		try {
+			try {
+				selectVehicleStatement = DbConnection.getInstance().getConnection()
+						.prepareStatement(SELECT_VEHICLE_STATEMENT);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 			selectVehicleStatement.setString(1, plateNumber);
 			ResultSet rs = selectVehicleStatement.executeQuery();
 			if (rs.next()) {

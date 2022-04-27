@@ -53,7 +53,7 @@ public class SaleController {
 		return retVal;
 	}
 	
-	public boolean addProduct(int productId, int quantity) {
+	public boolean addProduct(int productId, String name, int quantity) {
 		boolean retVal = false;
 		Product product = productController.searchProduct(productId);
 		if(product != null) {

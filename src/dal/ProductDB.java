@@ -14,11 +14,7 @@ public class ProductDB implements ProductDBIF {
 	private static final String CHANGE_QUANTITY_STATEMENT = "UPDATE";
 	
 	public ProductDB() {
-		try {
-			selectProductStatement = DbConnection.getInstance().getConnection().prepareStatement(SELECT_PRODUCT_STATEMENT);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public Product searchProduct(int productId) {
@@ -26,11 +22,17 @@ public class ProductDB implements ProductDBIF {
 		Product product = null;
 
 		try {
+			try {
+				selectProductStatement = DbConnection.getInstance().getConnection()
+						.prepareStatement(SELECT_PRODUCT_STATEMENT);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			selectProductStatement.setInt(1, productId);
 			ResultSet rs = selectProductStatement.executeQuery();
 			if (rs.next()) {
 					product = buildObject(rs);
-				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,6 +45,6 @@ public class ProductDB implements ProductDBIF {
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
-		return new Product(rs.getInt("currentStock"), rs.getDouble("price"), rs.getInt("id"));
+		return new Product(rs.getInt("currentStock"), rs.getDouble("price"), rs.getInt("id"), rs.getString("name"));
 	}
 }

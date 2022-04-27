@@ -120,6 +120,7 @@ GO
 
 CREATE TABLE dbo.Product (
 	id int PRIMARY KEY IDENTITY(1,1),  
+	[name] varchar(15) NOT NULL,
 	currentStock int NOT NULL,
 	price MONEY NOT NULL,
 	)

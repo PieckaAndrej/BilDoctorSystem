@@ -4,5 +4,5 @@ import exceptions.DatabaseAccessException;
 import model.Sale;
 
 public interface SaleDBIF {
-	public boolean insertSale(Sale sale) throws DatabaseAccessException;
+	public Sale insertSale(Sale sale) throws DatabaseAccessException;
 }

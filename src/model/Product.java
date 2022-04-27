@@ -6,13 +6,16 @@ public class Product {
 	
 	private double price;
 	
-	public int id;
+	private int id;
 	
-	public Product(int currentStock, double price, int id)
-	{
+	private String name;
+	
+	
+	public Product(int currentStock, double price, int id, String name) {
 		this.currentStock = currentStock;
 		this.price = price;
 		this.id = id;
+		this.name = name;
 	}
 
 	/**
@@ -55,5 +58,19 @@ public class Product {
 	 */
 	public void setId(int productId) {
 		this.id = productId;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param Set the name
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }

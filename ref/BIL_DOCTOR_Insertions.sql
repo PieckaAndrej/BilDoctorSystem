@@ -8,4 +8,4 @@ insert into Customer values ('0', '1');
 
 insert into Vehicle values ('AAA', 1, 'Tesla', '1');
 
-insert into Product values (10, 100.0);
+insert into Product values ('oil', 10, 100.0);
