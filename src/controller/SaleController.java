@@ -25,6 +25,7 @@ public class SaleController {
 		saleDb = new SaleDB();
 		productController = new ProductController();
 		serviceController = new ServiceController();
+		vehicleController = new VehicleController();
 		
 	}
 	
