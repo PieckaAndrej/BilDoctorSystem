@@ -37,6 +37,6 @@ public class VehicleDB implements VehicleDBIF {
 	}
 	
 	private Vehicle buildObject(ResultSet rs) throws SQLException {
-		return new Vehicle(rs.getString("plateNumber"), rs.getInt("[year]"), rs.getString("brand"));
+		return new Vehicle(rs.getString("plateNumber"), rs.getInt("year"), rs.getString("brand"));
 	}
 }

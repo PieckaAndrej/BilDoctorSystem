@@ -11,6 +11,8 @@ public class ProductDB implements ProductDBIF {
 	private static final String SELECT_PRODUCT_STATEMENT = "SELECT * FROM Product WHERE id = ?";
 	private PreparedStatement selectProductStatement;
 	
+	private static final String CHANGE_QUANTITY_STATEMENT = "UPDATE";
+	
 	public ProductDB() {
 		try {
 			selectProductStatement = DbConnection.getInstance().getConnection().prepareStatement(SELECT_PRODUCT_STATEMENT);
@@ -34,6 +36,10 @@ public class ProductDB implements ProductDBIF {
 		}
 		
 		return product;
+	}
+	
+	public boolean updateProduct(int productId, Product product) {
+		return false;
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
