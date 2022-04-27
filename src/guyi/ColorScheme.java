@@ -28,7 +28,9 @@ public class ColorScheme {
 	 */
 	public static final Color DESELECT = Color.decode("#f7d794");
 	
+	public static final Color ERROR = Color.decode("#fbeaea");
 	
+	public static final Color WHITE = Color.decode("#ffffff");
 	
 	
 	

@@ -1,14 +1,16 @@
 package guyi;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import controller.SaleController;
 
 public class FinishSale extends JPanel {
 
@@ -19,12 +21,14 @@ public class FinishSale extends JPanel {
 	
 	private Table[] tables;
 	private JTextPane textPane;
+	private SaleController saleCtrl;
 
 	/**
 	 * Create the panel.
 	 */
-	public FinishSale(Table[] tables) {
+	public FinishSale(Table[] tables, SaleController saleCtrl) {
 		this.tables = tables;
+		this.saleCtrl = saleCtrl;
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_1 = new JPanel();
@@ -33,7 +37,7 @@ public class FinishSale extends JPanel {
 		JButton btnFinishSale = new JButton("Finish Sale");
 		btnFinishSale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showTableInfo();
+				finishSale();
 			}
 		});
 		panel_1.add(btnFinishSale);
@@ -48,7 +52,11 @@ public class FinishSale extends JPanel {
 		showTableInfo();
 	}
 	
-	private void showTableInfo() {
+	private void finishSale() {
+		saleCtrl.finishSale();
+	}
+	
+	public void showTableInfo() {
 		StringBuilder text = new StringBuilder();
 		
 		for (int index = 0; index < tables.length; index ++) {

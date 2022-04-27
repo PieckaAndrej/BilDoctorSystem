@@ -5,21 +5,21 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import controller.SaleController;
 
 public class Table extends JPanel {
 	private JTable table;
 	private JPanel panel;
-	private SaleController saleCtrl;
+	private ControllerActionIF addAction;
 	private String[] columns;
 	private Box verticalBox;
 	private Component verticalStrut;
@@ -27,8 +27,7 @@ public class Table extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Table(SaleController saleCtrl, String[] columns) {
-		this.saleCtrl = saleCtrl;
+	public Table(String[] columns) {
 		this.columns = columns;
 		
 		panel = new JPanel();
@@ -54,7 +53,7 @@ public class Table extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		table = new JTable();
-		table.setCellEditor(null);
+		table.setDefaultEditor(Object.class, null);
 
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		
@@ -99,16 +98,19 @@ public class Table extends JPanel {
 			((DefaultTableModel)table.getModel()).removeRow(selected[0]);
 		}
 		
+		setActionRemove();
 	}
 	
 	public void askForInput() {
-		
+		@SuppressWarnings("serial")
 		InputPanel inputPanel = new InputPanel(columns) {
 
 			@Override
 			public void confirm() {
-				addRow(this);
-				dispose();
+				
+				if (addAction != null) {
+					addAction.action(this);
+				}
 			}
 			
 		};
@@ -119,8 +121,10 @@ public class Table extends JPanel {
 	public void addRow(InputPanel inputPanel) {
 		String[] row = new String[columns.length];
 		
+		List<JTextField> fields = inputPanel.getFields();
+		
 		for (int i = 0; i < row.length; i++) {
-			row[i] = inputPanel.getFields().get(i).getText();
+			row[i] = fields.get(i).getText();
 		}
 		
 		((DefaultTableModel)table.getModel()).addRow(row);
@@ -128,6 +132,13 @@ public class Table extends JPanel {
 	
 	public JTable getTable() {
 		return table;
+	}
+	
+	public void setActionAdd(ControllerActionIF controllerAction) {
+		this.addAction = controllerAction;
+	}
+	
+	public void setActionRemove() {
 	}
 
 }

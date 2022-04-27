@@ -30,9 +30,7 @@ public class InputPanel extends JFrame {
 	private Component horizontalStrut;
 	
 	private List<JTextField> fields;
-	
-	private boolean confirmed;
-	private JPanel panel_2;
+	private JLabel lblError;
 
 	/**
 	 * Create the panel.
@@ -42,7 +40,7 @@ public class InputPanel extends JFrame {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		Box horizontalBox = Box.createHorizontalBox();
-		getContentPane().add(horizontalBox, BorderLayout.CENTER);
+		getContentPane().add(horizontalBox, BorderLayout.NORTH);
 		
 		verticalBoxText = Box.createVerticalBox();
 		horizontalBox.add(verticalBoxText);
@@ -75,11 +73,11 @@ public class InputPanel extends JFrame {
 		panel_1.add(btnConfirm, BorderLayout.EAST);
 		panel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		
+		lblError = new JLabel("");
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		getContentPane().add(lblError, BorderLayout.CENTER);
 		
 		fields = new ArrayList<>();
-		
-		confirmed = false;
 		
 		this.names = names;
 		if (values != null) {
@@ -153,8 +151,18 @@ public class InputPanel extends JFrame {
 		return fields;
 	}
 	
+	public JLabel getErrorLabel() {
+		return lblError;
+	}
+	
 	public void confirm() {
 		
+	}
+	
+	public void resetFieldColor() {
+		for (JTextField field : fields) {
+			field.setBackground(ColorScheme.WHITE);
+		}
 	}
 
 }
