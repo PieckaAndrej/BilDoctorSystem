@@ -95,7 +95,7 @@ GO
 CREATE TABLE dbo.Sale (
 	plateNo VARCHAR(15) NOT NULL,
 	[date] datetime NOT NULL, 
-	[description] VARCHAR(500) NOT NULL,
+	[description] VARCHAR(500),
 	PRIMARY KEY (plateNo, [date]),
 	CONSTRAINT SaleVehicleFK
 		FOREIGN KEY (plateNo) REFERENCES Vehicle(plateNumber)
