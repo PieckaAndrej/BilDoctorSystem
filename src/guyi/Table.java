@@ -54,6 +54,7 @@ public class Table extends JPanel {
 		
 		table = new JTable();
 		table.setDefaultEditor(Object.class, null);
+		table.setFocusable(false);
 
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		

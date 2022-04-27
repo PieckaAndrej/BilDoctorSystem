@@ -10,50 +10,40 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 
-import controller.SaleController;
-
 public class FinishSale extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7893429309021174225L;
 	
 	private Table[] tables;
 	private JTextPane textPane;
-	private SaleController saleCtrl;
+	private JButton btnFinishSale;
 
 	/**
 	 * Create the panel.
 	 */
-	public FinishSale(Table[] tables, SaleController saleCtrl) {
+	public FinishSale(Table[] tables) {
 		this.tables = tables;
-		this.saleCtrl = saleCtrl;
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		
-		JButton btnFinishSale = new JButton("Finish Sale");
-		btnFinishSale.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				finishSale();
-			}
-		});
+		btnFinishSale = new JButton("Finish Sale");
 		panel_1.add(btnFinishSale);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
 		
 		textPane = new JTextPane();
+		textPane.setFocusable(false);
 		textPane.setEditable(false);
 		scrollPane.setViewportView(textPane);
 
 		showTableInfo();
 	}
 	
-	private void finishSale() {
-		saleCtrl.finishSale();
+	public void addFinishSaleActionListener(ActionListener listener) {
+		btnFinishSale.addActionListener(listener);
 	}
 	
 	public void showTableInfo() {

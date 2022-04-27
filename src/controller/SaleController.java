@@ -7,6 +7,9 @@ import model.Product;
 import model.Sale;
 import model.Service;
 import model.Vehicle;
+
+import java.time.LocalDateTime;
+
 import dal.SaleDB;
 import dal.SaleDBIF;
 import dal.SaleOrderLineDB;
@@ -62,6 +65,7 @@ public class SaleController {
 	
 	public boolean finishSale() {
 		boolean retVal = false;
+		sale.setDate(LocalDateTime.now());
 		
 		try {
 			saleDb.insertSale(sale);
