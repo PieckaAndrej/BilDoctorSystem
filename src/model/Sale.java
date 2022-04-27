@@ -45,6 +45,22 @@ public class Sale {
 		}
 		return retVal;
 	}
+	
+	public boolean isVehiclePresent(Vehicle vehicle) {
+		boolean found = false;
+		int index = 0;
+		
+		while(index < orderLines.size() && !found) {
+			if(((OrderLine)orderLines.get(index)).getPlateNumber() == vehicle.getPlateNumber()) {
+				found = true;
+			}
+			else {
+				index++;
+			}
+		}
+		return found;
+	}
+		
 	/**
 	 * Add orderline to the sale
 	 * @param OrderLine
