@@ -1,12 +1,10 @@
 package guyi;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -23,12 +21,14 @@ public class InputPanel extends JFrame {
 	private String[] values;
 	private Box verticalBoxText;
 	private Box verticalBoxField;
+	private Box horizontalBox;
 	private JPanel panel_1;
 	private JButton btnCancel;
 	private JButton btnConfirm;
 	private Component horizontalStrut;
+	private ControllerActionIF action;
 	
-	private List<JTextField> fields;
+	private JTextField[] fields;
 	private JLabel lblError;
 
 	/**
@@ -36,16 +36,12 @@ public class InputPanel extends JFrame {
 	 * @wbp.parser.constructor
 	 */
 	public InputPanel(String[] names, String[] values) {
+		setBounds(100, 100, 300, 200);
+		setTitle("Bil Doctor - Input");
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		Box horizontalBox = Box.createHorizontalBox();
+		horizontalBox = Box.createHorizontalBox();
 		getContentPane().add(horizontalBox, BorderLayout.NORTH);
-		
-		verticalBoxText = Box.createVerticalBox();
-		horizontalBox.add(verticalBoxText);
-		
-		verticalBoxField = Box.createVerticalBox();
-		horizontalBox.add(verticalBoxField);
 		
 		horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut);
@@ -76,7 +72,7 @@ public class InputPanel extends JFrame {
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblError, BorderLayout.CENTER);
 		
-		fields = new ArrayList<>();
+		fields = new JTextField[names.length];
 		
 		this.names = names;
 		if (values != null) {
@@ -97,9 +93,13 @@ public class InputPanel extends JFrame {
 		this.values = values;
 	}
 	
-	public void generatePanel() {
-		setBounds(100, 100, 300, 200);
-		setTitle("Bil Doctor - Input");
+	public void createLabels() {
+		horizontalBox.removeAll();
+		verticalBoxText = Box.createVerticalBox();
+		horizontalBox.add(verticalBoxText);
+		
+		verticalBoxField = Box.createVerticalBox();
+		horizontalBox.add(verticalBoxField);
 		
 		for (int name = 0; name < names.length; name++) {
 			JPanel panel = new JPanel();
@@ -114,15 +114,19 @@ public class InputPanel extends JFrame {
 
 			verticalBoxText.add(panel);
 		}
+	}
+	
+	public void generatePanel() {
+		createLabels();
 		
-		fields.clear();
+		fields = new JTextField[names.length];
 		
-		for (int value = 0; value < values.length; value++) {
+		for (int value = 0; value < names.length; value++) {
 			JPanel panel = new JPanel();
 			panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			panel.setLayout(new BorderLayout());
 			JTextField field = new JTextField(values[value]);
-			fields.add(field);
+			fields[value] = field;
 			
 			panel.add(field);
 
@@ -146,8 +150,19 @@ public class InputPanel extends JFrame {
 		return values;
 	}
 	
-	public List<JTextField> getFields() {
+	public JTextField[] getFields() {
 		return fields;
+	}
+	
+	public void addField(int index, JTextField field) {
+		fields[index] = field;
+	}
+	
+	public String[] getTexts() {
+		
+		return Arrays.stream(fields)
+				.map(JTextField::getText)
+				.toList().toArray(new String[fields.length]);
 	}
 	
 	public JLabel getErrorLabel() {
@@ -155,13 +170,27 @@ public class InputPanel extends JFrame {
 	}
 	
 	public void confirm() {
-		
+		if (action != null) {
+			action.action(this);
+		}
 	}
 	
 	public void resetFieldColor() {
-		for (JTextField field : fields) {
-			field.putClientProperty( "JComponent.outline", "default" );
-		}
+		Arrays.stream(fields)
+			.filter(l -> l != null)
+			.forEach(field -> {
+				field.putClientProperty( "JComponent.outline", "default" );
+				field.setBackground(ColorScheme.BACKGROUND);
+			});
+			
+	}
+	
+	public void setAction(ControllerActionIF action) {
+		this.action = action;
+	}
+
+	protected Box getVerticalBoxField() {
+		return verticalBoxField;
 	}
 
 }
