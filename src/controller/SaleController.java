@@ -21,8 +21,6 @@ public class SaleController {
 	private VehicleController vehicleController;
 	private SaleDBIF saleDb;
 	private Sale sale;
-	private SaleOrderLineDB saleOrderLineDb;
-	private SaleOrderLineDBIF saleOrderLineDbif;
 	
 	public SaleController() throws DatabaseAccessException {
 		saleDb = new SaleDB();
@@ -57,7 +55,8 @@ public class SaleController {
 		boolean retVal = false;
 		Product product = productController.searchProduct(productId);
 		if(product != null) {
-			sale.addProduct(product);
+			OrderLine orderLine = new OrderLine(quantity, product);
+			sale.addOrderLine(orderLine);
 			retVal = true;
 		}
 		return retVal;
@@ -69,9 +68,7 @@ public class SaleController {
 		
 		try {
 			saleDb.insertSale(sale);
-			for(OrderLine element:sale.getOrderLines()) {
-				saleOrderLineDb.insertOrderLine(element, sale);
-			}
+
 			sale = null;
 			retVal = true;
 			

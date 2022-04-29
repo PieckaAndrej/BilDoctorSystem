@@ -11,7 +11,6 @@ public class Sale {
 	private Vehicle vehicle;
 	private int id;
 	private ArrayList<Service> services;
-	private ArrayList<Product> products;
 	
 	/**
 	 * Constructor for the Sale class
@@ -30,17 +29,9 @@ public class Sale {
 	 */
 	public boolean addService(Service service) {
 		boolean retVal = false;
+		
 		if (services != null) {
 			services.add(service);
-			retVal = true;
-		}
-		return retVal;
-	}
-	
-	public boolean addProduct(Product product) {
-		boolean retVal = false;
-		if(products != null	 ) {
-			products.add(product);
 			retVal = true;
 		}
 		return retVal;
@@ -102,7 +93,7 @@ public class Sale {
 	 * @return the orderLines
 	 */
 	public ArrayList<OrderLine> getOrderLines() {
-		return orderLines;
+		return new ArrayList<>(orderLines);
 	}
 
 	/**
@@ -144,7 +135,7 @@ public class Sale {
 	 * @return the services
 	 */
 	public ArrayList<Service> getServices() {
-		return services;
+		return new ArrayList<>(services);
 	}
 
 	/**
@@ -153,20 +144,5 @@ public class Sale {
 	public void setServices(ArrayList<Service> services) {
 		this.services = services;
 	}
-
-	/**
-	 * @return the products
-	 */
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
-
-	/**
-	 * @param products the products to set
-	 */
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
-
 
 }

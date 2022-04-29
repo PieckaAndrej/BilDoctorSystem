@@ -42,7 +42,7 @@ public class ProductTest {
 			
 			if (rs.next()) {
 				assertEquals(product.getCurrentStock(), rs.getInt("currentStock"));
-				assertEquals(product.getPrice(), rs.getDouble("price"), 0);
+				assertEquals(product.getPrice().doubleValue(), rs.getBigDecimal("price").doubleValue(), 0);
 				assertEquals(product.getId(), rs.getInt("id"));
 				
 			}

@@ -11,7 +11,7 @@ public class ProductDB implements ProductDBIF {
 	private static final String SELECT_PRODUCT_STATEMENT = "SELECT * FROM Product WHERE id = ?";
 	private PreparedStatement selectProductStatement;
 	
-	private static final String CHANGE_QUANTITY_STATEMENT = "UPDATE";
+	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?, currentStock = ?, price = ? WHERE id = ?";
 	
 	public ProductDB() {
 		
@@ -31,7 +31,7 @@ public class ProductDB implements ProductDBIF {
 			selectProductStatement.setInt(1, productId);
 			ResultSet rs = selectProductStatement.executeQuery();
 			if (rs.next()) {
-					product = buildObject(rs);
+				product = buildObject(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -40,8 +40,36 @@ public class ProductDB implements ProductDBIF {
 		return product;
 	}
 	
-	public boolean updateProduct(int productId, Product product) {
-		return false;
+	public boolean updateProduct(Product product) {
+		boolean retVal = false;
+		PreparedStatement updateProductStatement = null;
+		
+		try {
+			try {
+				updateProductStatement = DbConnection.getInstance().getConnection()
+						.prepareStatement(UPDATE_STATEMENT);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			// Product
+			updateProductStatement.setString(1, product.getName());
+			updateProductStatement.setInt(2, product.getCurrentStock());
+			updateProductStatement.setBigDecimal(3, product.getPrice());
+			
+			// Where id
+			updateProductStatement.setInt(4, product.getId());
+			
+			System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
+
+			updateProductStatement.executeUpdate();
+			
+			retVal = true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return retVal;
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
