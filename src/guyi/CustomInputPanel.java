@@ -87,7 +87,16 @@ public class CustomInputPanel extends InputPanel {
 			case COMBO_BOX:
 				System.out.println("box");
 				
-				retVal[i] = boxes[i].getSelectedItem().toString();
+				Object item = boxes[i].getSelectedItem();
+				String s = "";
+				
+				if (item != null) {
+					s = item.toString();
+				}
+				
+				retVal[i] = s;
+				
+				
 				break;
 			}
 		}

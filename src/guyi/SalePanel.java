@@ -162,7 +162,7 @@ public class SalePanel extends JPanel {
 			add(tabbedPane, BorderLayout.CENTER);
 		} else {
 			fieldVehicle.putClientProperty( "JComponent.outline", "error" );
-			//fieldVehicle.setFocusable(true);
+			fieldVehicle.setBackground(ColorScheme.ERROR);
 		}
 	}
 	
@@ -199,16 +199,19 @@ public class SalePanel extends JPanel {
 					input.dispose();
 				} catch (Exception e) {
 					input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
+					input.getFields()[2].setBackground(ColorScheme.ERROR);
 					input.getErrorLabel().setText(e.getMessage());
 				}
 			} catch (Exception e) {
 				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
+				input.getFields()[1].setBackground(ColorScheme.ERROR);
 				input.getErrorLabel().setText(e.getMessage());
 			}
 			
 			
 		} catch (Exception e) {
 			input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
+			input.getFields()[0].setBackground(ColorScheme.ERROR);
 			input.getErrorLabel().setText(e.getMessage());
 		}
 		
@@ -235,16 +238,19 @@ public class SalePanel extends JPanel {
 					input.dispose();
 				} catch (Exception e) {
 					input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
+					input.getFields()[0].setBackground(ColorScheme.ERROR);
 					input.getErrorLabel().setText(e.getMessage());
 				}
 				
 			} catch (Exception e) {
 				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
+				input.getFields()[1].setBackground(ColorScheme.ERROR);
 				input.getErrorLabel().setText(e.getMessage());
 			}
 
 		} catch (Exception e) {
 			input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
+			input.getFields()[2].setBackground(ColorScheme.ERROR);
 			input.getErrorLabel().setText(e.getMessage());
 		}
 	}

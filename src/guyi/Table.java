@@ -30,6 +30,12 @@ public class Table extends JPanel {
 	 * Create the panel.
 	 */
 	public Table(String[] columns) {
+		this(columns, new InputPanel(columns));
+	}
+	
+	public Table(String[] columns, InputPanel inputPanel) {
+		this.inputPanel = inputPanel;
+		
 		this.columns = columns;
 		
 		panel = new JPanel();
@@ -72,12 +78,6 @@ public class Table extends JPanel {
 		panel.add(verticalBox, BorderLayout.EAST);
 
 		updateTable();
-	}
-	
-	public Table(String[] columns, InputPanel inputPanel) {
-		this(columns);
-		
-		this.inputPanel = inputPanel;
 	}
 	
 	public void setName(String name) {
