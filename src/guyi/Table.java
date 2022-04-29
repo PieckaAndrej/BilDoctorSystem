@@ -23,6 +23,8 @@ public class Table extends JPanel {
 	private String[] columns;
 	private Box verticalBox;
 	private Component verticalStrut;
+	
+	private InputPanel inputPanel;
 
 	/**
 	 * Create the panel.
@@ -72,6 +74,12 @@ public class Table extends JPanel {
 		updateTable();
 	}
 	
+	public Table(String[] columns, InputPanel inputPanel) {
+		this(columns);
+		
+		this.inputPanel = inputPanel;
+	}
+	
 	public void setName(String name) {
 		table.setName(name);
 	}
@@ -103,18 +111,12 @@ public class Table extends JPanel {
 	}
 	
 	public void askForInput() {
-		@SuppressWarnings("serial")
-		InputPanel inputPanel = new InputPanel(columns) {
-
-			@Override
-			public void confirm() {
-				
-				if (addAction != null) {
-					addAction.action(this);
-				}
+		inputPanel.setAction(l -> {
+			if (addAction != null) {
+				addAction.action(l);
 			}
-			
-		};
+		});
+		
 		inputPanel.generatePanel();
 		inputPanel.setVisible(true);
 	}
@@ -122,10 +124,10 @@ public class Table extends JPanel {
 	public void addRow(InputPanel inputPanel) {
 		String[] row = new String[columns.length];
 		
-		List<JTextField> fields = inputPanel.getFields();
+		String[] texts = inputPanel.getTexts();
 		
 		for (int i = 0; i < row.length; i++) {
-			row[i] = fields.get(i).getText();
+			row[i] = texts[i];
 		}
 		
 		((DefaultTableModel)table.getModel()).addRow(row);

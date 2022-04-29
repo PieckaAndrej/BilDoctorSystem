@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -100,8 +101,21 @@ public class SalePanel extends JPanel {
 	private void createSale() {
 		if (saleCtrl.createSale(fieldVehicle.getText())) {
 			JTabbedPane tabbedPane = new JTabbedPane();
+			// Service Table
 			serviceTable = new Table(new String[] {"Description", "Cost", "Time"});
-			productTable = new Table(new String[] {"Id", "Name", "Quantity"});
+			
+			// Product Table
+			String[] productInputs = new String[] {"Id", "Name", "Quantity"};
+			
+			CustomInputPanel inputPanel = new CustomInputPanel(productInputs);
+			
+			JComboBox<String> box = new JComboBox<>();
+			box.setEditable(true);
+			
+			inputPanel.setComponent(1, box);
+			
+			productTable = new Table(productInputs, inputPanel);
+			
 			
 			serviceTable.setActionAdd(new ControllerActionIF() {
 				public void action(InputPanel p) {
@@ -168,33 +182,33 @@ public class SalePanel extends JPanel {
 	
 	private void addProduct(InputPanel input) {
 		input.resetFieldColor();
-		List<JTextField> fields = input.getFields();
+		String[] fields = input.getTexts();
 		
 		try { // Wrong id
-			int id = Integer.parseInt(fields.get(0).getText());
+			int id = Integer.parseInt(fields[0]);
 			
 			try { // Wrong name
-				String name = fields.get(1).getText();
+				String name = fields[1];
 				
 				try { // Wrong quantity
-					int quantity = Integer.parseInt(fields.get(2).getText());
+					int quantity = Integer.parseInt(fields[2]);
 					saleCtrl.addProduct(id, name, quantity);
 					
 					productTable.addRow(input);
 					
 					input.dispose();
 				} catch (Exception e) {
-					input.getFields().get(2).putClientProperty( "JComponent.outline", "error" );
+					input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
 					input.getErrorLabel().setText(e.getMessage());
 				}
 			} catch (Exception e) {
-				input.getFields().get(1).putClientProperty( "JComponent.outline", "error" );
+				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
 				input.getErrorLabel().setText(e.getMessage());
 			}
 			
 			
 		} catch (Exception e) {
-			input.getFields().get(0).putClientProperty( "JComponent.outline", "error" );
+			input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
 			input.getErrorLabel().setText(e.getMessage());
 		}
 		
@@ -204,15 +218,15 @@ public class SalePanel extends JPanel {
 	private void addService(InputPanel input) {
 		input.resetFieldColor();
 		
-		List<JTextField> fields = input.getFields();
+		String[] fields = input.getTexts();
 		try { // Wrong time
-			double time = Double.parseDouble(fields.get(2).getText());
+			double time = Double.parseDouble(fields[2]);
 			
 			try { // Wrong cost
-				double cost = Double.parseDouble(fields.get(1).getText());
+				double cost = Double.parseDouble(fields[1]);
 				
 				try { // Wrong description
-					String desc = fields.get(0).getText();
+					String desc = fields[0];
 					
 					saleCtrl.addService(cost, time, desc);
 					
@@ -220,17 +234,17 @@ public class SalePanel extends JPanel {
 					
 					input.dispose();
 				} catch (Exception e) {
-					fields.get(0).putClientProperty( "JComponent.outline", "error" );
+					input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
 					input.getErrorLabel().setText(e.getMessage());
 				}
 				
 			} catch (Exception e) {
-				fields.get(1).putClientProperty( "JComponent.outline", "error" );
+				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
 				input.getErrorLabel().setText(e.getMessage());
 			}
 
 		} catch (Exception e) {
-			fields.get(2).putClientProperty( "JComponent.outline", "error" );
+			input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
 			input.getErrorLabel().setText(e.getMessage());
 		}
 	}
