@@ -23,7 +23,6 @@ public class App extends JFrame {
 	private JPanel contentPane;
 	private JPanel salePanel;
 	private JLabel lblConnection;
-	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -32,19 +31,22 @@ public class App extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Set up the look and feel
 					BilDoctorTheme.setup();
+					
+					// Make the Components have round corners
 					UIManager.put("Button.arc", 10);
 					UIManager.put("Component.arc", 10);
 					UIManager.put("ProgressBar.arc", 10);
 					UIManager.put("TextComponent.arc", 10);
 					UIManager.put("TabbedPane.showTabSeparators", true);
 
+					// Scroll bar with round corners
 					UIManager.put("ScrollBar.thumbArc", 999);
 					UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
 					UIManager.put("TabbedPane.selectedBackground", Color.white);
-					// UIManager.setLookAndFeel ( new WebLookAndFeel () );
-					// UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaStandardLookAndFeel");
-					// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					
+					// Initialise the application
 					App frame = new App();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -58,14 +60,20 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App() {
+		// Start the connection checking on a new thread
 		Thread connectionCheck = new Thread(() -> {
 			resetConnection();
 		});
 
 		connectionCheck.start();
+		
+		// Initialise the GUI
 		initGui();
 	}
 
+	/**
+	 * Initialise the GUI
+	 */
 	private void initGui() {
 		setTitle("Bil Doctor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,6 +91,11 @@ public class App extends JFrame {
 		tabbedPane.addTab("Sale", null, salePanel, null);
 	}
 
+	/**
+	 * Ran after the connection is lost
+	 * 
+	 * Checks the connection again with incrementing delays
+	 */
 	private void resetConnection() {
 		System.out.println("Connection lost");
 		lblConnection = new JLabel("Lost connection - establishing connection...");
@@ -121,10 +134,17 @@ public class App extends JFrame {
 		checkConnection();
 	}
 
+	/**
+	 * Checks the connection every 5 seconds
+	 * 
+	 * If the connection is lost it will try to reset connection
+	 */
 	private void checkConnection() {
 		boolean uninterupted = true;
 
 		boolean con = true;
+		
+		// Check connection every 5 seconds
 		while (uninterupted) {
 
 			try {
@@ -139,6 +159,7 @@ public class App extends JFrame {
 			}
 			System.out.println("Waiting 5");
 			try {
+				// Sleep for 5 seconds
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				uninterupted = false;
