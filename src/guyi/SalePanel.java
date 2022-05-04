@@ -332,7 +332,6 @@ public class SalePanel extends JPanel {
 	}
 	
 	public void cancelSale() {
-		System.out.println("I love aziz");
 		this.removeAll();
 		initGui();
 	}
