@@ -5,14 +5,14 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -100,11 +100,19 @@ public class Table extends JPanel {
 	
 	public void removeSelected() {
 		int[] selected = table.getSelectedRows();
-		
+
 		int length = selected.length;
 		
+		int[] reversed = new int[length];
+		
 		for (int i = 0; i < length; i++) {
-			((DefaultTableModel)table.getModel()).removeRow(selected[0]);
+			reversed[i] = selected[length - (i + 1)];
+		}
+		
+		Arrays.stream(reversed).forEach(System.out::println);
+		
+		for (int i = 0; i < length; i++) {
+			((DefaultTableModel)table.getModel()).removeRow(reversed[i]);
 		}
 		
 		setActionRemove();
