@@ -110,7 +110,7 @@ public class CustomInputPanel extends InputPanel {
 		spinners[index] = spinner;
 	}
 	
-	public void setComponent(int index, JComboBox<String> box) {
+	public void setComponent(int index, JComboBox<?> box) {
 		types[index] = Type.COMBO_BOX;
 		
 		boxes[index] = box;

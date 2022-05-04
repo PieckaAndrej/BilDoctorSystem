@@ -2,6 +2,7 @@ package controller;
 //Barnabas doing this do not touch
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import dal.SaleDB;
 import dal.SaleDBIF;
@@ -83,5 +84,9 @@ public class SaleController {
 			e.printStackTrace();
 		}
 		return retVal;
+	}
+	
+	public List<Product> getProducts(String searchFor) {
+		return productController.getProducts(searchFor);
 	}
 }

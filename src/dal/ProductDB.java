@@ -3,6 +3,8 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Product;
 
@@ -12,6 +14,10 @@ public class ProductDB implements ProductDBIF {
 	private PreparedStatement selectProductStatement;
 	
 	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?, currentStock = ?, price = ? WHERE id = ?";
+	private PreparedStatement updateProductStatement;
+
+	private static final String SELECT_PRODUCT_BY_NAME_STATEMENT = "SELECT * FROM Product WHERE name like ?";
+	private PreparedStatement searchProductByNameStatement;
 	
 	public ProductDB() {
 		
@@ -24,7 +30,7 @@ public class ProductDB implements ProductDBIF {
 		try {
 			try {
 				selectProductStatement = DbConnection.getInstance().getConnection()
-						.prepareStatement(SELECT_PRODUCT_STATEMENT);
+						.prepareStatement(SELECT_PRODUCT_STATEMENT);				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -40,12 +46,13 @@ public class ProductDB implements ProductDBIF {
 		return product;
 	}
 	
-	public boolean updateProduct(Product product) throws SQLException {
+	public boolean updateProduct(Product product) {
 		boolean retVal = false;
-		PreparedStatement updateProductStatement = null;
-
-		updateProductStatement = DbConnection.getInstance().getConnection()
-				.prepareStatement(UPDATE_STATEMENT);
+		
+		try {
+			updateProductStatement = DbConnection.getInstance().getConnection()
+					.prepareStatement(UPDATE_STATEMENT);
+		
 
 		// Product
 		updateProductStatement.setString(1, product.getName());
@@ -60,12 +67,40 @@ public class ProductDB implements ProductDBIF {
 		updateProductStatement.executeUpdate();
 		
 		retVal = true;
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return retVal;
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
 		return new Product(rs.getInt("currentStock"), rs.getDouble("price"), rs.getInt("id"), rs.getString("name"));
+	}
+	
+	private List<Product> buildObjects(ResultSet rs) throws SQLException {
+		List<Product> productList = new ArrayList<>();
+		while(rs.next()) {
+			productList.add(buildObject(rs));
+		}
+		return productList;
+	}
+
+	@Override
+	public List<Product> getProducts(String searchFor) {
+		List<Product> productList = new ArrayList<>();
+		try {
+			searchFor = "%" + searchFor + "%";
+			searchProductByNameStatement = DbConnection.getInstance().getConnection()
+					.prepareStatement(SELECT_PRODUCT_BY_NAME_STATEMENT);
+			searchProductByNameStatement.setString(1, searchFor);
+			ResultSet rs = searchProductByNameStatement.executeQuery();
+			productList = buildObjects(rs);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return productList;
 	}
 }

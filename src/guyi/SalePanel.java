@@ -6,8 +6,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -15,10 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicTabbedPaneUI.TabbedPaneLayout;
 
 import controller.SaleController;
 import exceptions.DatabaseAccessException;
+import model.Product;
 
 public class SalePanel extends JPanel {
 
@@ -124,9 +129,37 @@ public class SalePanel extends JPanel {
 			
 			CustomInputPanel inputPanel = new CustomInputPanel(productInputs);
 			
-			JComboBox<String> box = new JComboBox<>();
+			JComboBox<Product> box = new JComboBox<>();
+			fillPersonList(box, "");
+			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
+
+				   @Override
+				   public void focusGained(FocusEvent e) {
+				      box.showPopup();
+				   }
+				});
+			box.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+				
+				@Override
+				public void keyReleased(KeyEvent e) {
+					if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
+							e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
+						box.setSelectedItem(box.getEditor().getItem());
+						Object o = box.getSelectedItem();
+						((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
+						box.setSelectedItem(o);
+						if(o != null) {
+						((DefaultComboBoxModel<Product>) box.getModel()).addAll(
+								saleCtrl.getProducts( o.toString() ));
+						}
+					}
+					
+					
+				    box.showPopup();
+				}
+			});
+
 			box.setEditable(true);
-			
 			inputPanel.setComponent(1, box);
 			
 			productTable = new Table(productInputs, inputPanel);
@@ -334,5 +367,13 @@ public class SalePanel extends JPanel {
 	public void cancelSale() {
 		this.removeAll();
 		initGui();
+	}
+	
+	private void fillPersonList(JComboBox<Product> comboBox, String searchFor) {
+		comboBox.setRenderer(new ProductListCellRenderer());
+		List<Product> ps = saleCtrl.getProducts(searchFor);
+		DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
+		dfm.addAll(ps);
+		comboBox.setModel(dfm);
 	}
 }
