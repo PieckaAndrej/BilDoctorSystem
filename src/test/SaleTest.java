@@ -41,4 +41,30 @@ public class SaleTest {
 		assertEquals(saleController.addProduct(productId, product.getName(), 10), true);
 		assertEquals(saleController.finishSale(), true);
 	}
+	
+	@Test
+	public void registerSaleFalsePlateNumberTest() {
+		String plateNumber = "AAB";
+		int productId = 1;
+		
+		Product product = productDB.searchProduct(productId);
+		
+		assertEquals(saleController.createSale(plateNumber), false);
+		assertEquals(saleController.addService(200, 10, "tire change"), true);
+		assertEquals(saleController.addProduct(productId, product.getName(), 10), true);
+		assertEquals(saleController.finishSale(), false);
+	}
+	@Test
+	public void registerSaleFalseProductIdTest() {
+		String plateNumber = "AAA";
+		int productId = 20;
+		
+		Product product = productDB.searchProduct(productId);
+		
+		assertEquals(saleController.createSale(plateNumber), true);
+		assertEquals(saleController.addService(200, 10, "tire change"), true);
+		assertEquals(saleController.addProduct(productId, product .getName(), 10), false);
+		assertEquals(saleController.finishSale(), false);
+	}
+
 }
