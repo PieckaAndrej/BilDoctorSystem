@@ -77,5 +77,4 @@ public class SaleDB implements SaleDBIF {
 		// Return sale with id
 		return sale;
 	}
-		
 }

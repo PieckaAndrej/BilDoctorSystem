@@ -1,20 +1,16 @@
 package controller;
 //Barnabas doing this do not touch
 
+import java.time.LocalDateTime;
+
+import dal.SaleDB;
+import dal.SaleDBIF;
 import exceptions.DatabaseAccessException;
 import model.OrderLine;
 import model.Product;
 import model.Sale;
 import model.Service;
 import model.Vehicle;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-
-import dal.SaleDB;
-import dal.SaleDBIF;
-import dal.SaleOrderLineDB;
-import dal.SaleOrderLineDBIF;
 
 public class SaleController {
 	private ProductController productController;
