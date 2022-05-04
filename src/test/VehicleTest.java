@@ -23,7 +23,7 @@ public class VehicleTest {
 	
 	@Test
 	public void searchVehicleTest() {
-		String plateNumber = "";
+		String plateNumber = "AAA";
 		
 		String query = "SELECT * FROM Vehicle WHERE plateNumber = ?";
 		
