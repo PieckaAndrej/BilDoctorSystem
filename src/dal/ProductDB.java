@@ -40,34 +40,27 @@ public class ProductDB implements ProductDBIF {
 		return product;
 	}
 	
-	public boolean updateProduct(Product product) {
+	public boolean updateProduct(Product product) throws SQLException {
 		boolean retVal = false;
 		PreparedStatement updateProductStatement = null;
+
+		updateProductStatement = DbConnection.getInstance().getConnection()
+				.prepareStatement(UPDATE_STATEMENT);
+
+		// Product
+		updateProductStatement.setString(1, product.getName());
+		updateProductStatement.setInt(2, product.getCurrentStock());
+		updateProductStatement.setBigDecimal(3, product.getPrice());
 		
-		try {
-			try {
-				updateProductStatement = DbConnection.getInstance().getConnection()
-						.prepareStatement(UPDATE_STATEMENT);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			// Product
-			updateProductStatement.setString(1, product.getName());
-			updateProductStatement.setInt(2, product.getCurrentStock());
-			updateProductStatement.setBigDecimal(3, product.getPrice());
-			
-			// Where id
-			updateProductStatement.setInt(4, product.getId());
-			
-			System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
+		// Where id
+		updateProductStatement.setInt(4, product.getId());
+		
+		System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
 
-			updateProductStatement.executeUpdate();
-			
-			retVal = true;
+		updateProductStatement.executeUpdate();
+		
+		retVal = true;
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		
 		return retVal;
 	}
