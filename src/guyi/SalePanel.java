@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicTabbedPaneUI.TabbedPaneLayout;
 
 import controller.SaleController;
 import exceptions.DatabaseAccessException;
@@ -101,6 +102,19 @@ public class SalePanel extends JPanel {
 	private void createSale() {
 		if (saleCtrl.createSale(fieldVehicle.getText())) {
 			JTabbedPane tabbedPane = new JTabbedPane();
+			// Cancel button
+			JButton cancelButton = new JButton("Cancel");
+			cancelButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Thread cancelSale = new Thread(() -> {
+						cancelSale();
+					});
+					
+					cancelSale.start();
+				}
+			});
+			
+			
 			// Service Table
 			serviceTable = new Table(new String[] {"Description", "Cost", "Time"});
 			
@@ -158,6 +172,7 @@ public class SalePanel extends JPanel {
 			});
 			
 			
+			
 			serviceTable.setName("Services");
 			productTable.setName("Products");
 			
@@ -170,11 +185,15 @@ public class SalePanel extends JPanel {
 			tabbedPane.addTab("Service", null, serviceTable, null);
 			tabbedPane.addTab("Product", null, productTable, null);
 			tabbedPane.addTab("Finish", null, finishSale, null);
+			tabbedPane.addTab("Cancel", null, cancelButton, null);
 			
 			// Update finish sale panel text when clicked on it
 			tabbedPane.addChangeListener(l -> {
 				if (tabbedPane.getSelectedIndex() == 2) {
 					finishSale.showTableInfo();
+				}
+				else if(tabbedPane.getSelectedIndex() == 3) {
+					cancelSale();
 				}
 			});
 			
@@ -184,6 +203,7 @@ public class SalePanel extends JPanel {
 			fieldVehicle.putClientProperty( "JComponent.outline", "error" );
 			fieldVehicle.setBackground(ColorScheme.ERROR);
 		}
+		
 	}
 	
 	private void finishSale() {
@@ -281,5 +301,11 @@ public class SalePanel extends JPanel {
 			input.getFields()[2].setBackground(ColorScheme.ERROR);
 			input.getErrorLabel().setText(e.getMessage());
 		}
+	}
+	
+	public void cancelSale() {
+		System.out.println("I love aziz");
+		this.removeAll();
+		initGui();
 	}
 }
