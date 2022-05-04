@@ -63,7 +63,7 @@ public class SaleTest {
 		
 		assertEquals(saleController.createSale(plateNumber), true);
 		assertEquals(saleController.addService(200, 10, "tire change"), true);
-		assertEquals(saleController.addProduct(productId, product .getName(), 10), false);
+		assertEquals(saleController.addProduct(productId, product.getName(), 10), false);
 		assertEquals(saleController.finishSale(), false);
 	}
 
