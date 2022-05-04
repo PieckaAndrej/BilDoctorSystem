@@ -101,6 +101,7 @@ public class SalePanel extends JPanel {
 	
 	private void createSale() {
 		if (saleCtrl.createSale(fieldVehicle.getText())) {
+			
 			JTabbedPane tabbedPane = new JTabbedPane();
 			// Cancel button
 			JButton cancelButton = new JButton("Cancel");
@@ -198,7 +199,34 @@ public class SalePanel extends JPanel {
 			});
 			
 			removeAll();
-			add(tabbedPane, BorderLayout.CENTER);
+			
+			JPanel gridPanel = new JPanel();
+			
+			GridBagLayout gbl_tabbedPanel = new GridBagLayout();
+			gridPanel.setLayout(gbl_tabbedPanel);
+			GridBagConstraints gbc_tabbedPanel = new GridBagConstraints();
+			gbc_tabbedPanel.gridwidth = 0;
+			gbc_tabbedPanel.gridheight = 7;
+			gbc_tabbedPanel.weightx = 1;
+			gbc_tabbedPanel.weighty = 1;
+			gbc_tabbedPanel.fill = GridBagConstraints.BOTH;
+			gbc_tabbedPanel.gridx = 0;
+			gbc_tabbedPanel.gridy = 0;
+			
+			
+			
+			
+			GridBagConstraints gbc_cancelButton = new GridBagConstraints();
+			gbc_cancelButton.gridwidth = 0;
+			gbc_cancelButton.gridheight = 0;
+			gbc_cancelButton.gridx = 7;
+			gbc_cancelButton.gridy = 0;
+			gbc_cancelButton.anchor = GridBagConstraints.NORTHEAST;
+			gbc_cancelButton.insets = new Insets(5, 5, 5, 5);
+			gridPanel.add(cancelButton, gbc_cancelButton);
+			
+			gridPanel.add(tabbedPane, gbc_tabbedPanel);
+			add(gridPanel, BorderLayout.CENTER);
 		} else {
 			fieldVehicle.putClientProperty( "JComponent.outline", "error" );
 			fieldVehicle.setBackground(ColorScheme.ERROR);
