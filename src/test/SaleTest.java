@@ -50,9 +50,6 @@ public class SaleTest {
 		Product product = productDB.searchProduct(productId);
 		
 		assertEquals(saleController.createSale(plateNumber), false);
-		assertEquals(saleController.addService(200, 10, "tire change"), true);
-		assertEquals(saleController.addProduct(productId, product.getName(), 10), true);
-		assertEquals(saleController.finishSale(), false);
 	}
 	@Test
 	public void registerSaleFalseProductIdTest() {
@@ -60,11 +57,8 @@ public class SaleTest {
 		int productId = 20;
 		
 		Product product = productDB.searchProduct(productId);
-		
-		assertEquals(saleController.createSale(plateNumber), true);
-		assertEquals(saleController.addService(200, 10, "tire change"), true);
-		assertEquals(saleController.addProduct(productId, product.getName(), 10), false);
-		assertEquals(saleController.finishSale(), false);
+	
+		assertEquals(saleController.addProduct(productId, "name", 10), false);
 	}
 
 }
