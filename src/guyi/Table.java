@@ -20,6 +20,7 @@ public class Table extends JPanel {
 	private JTable table;
 	private JPanel panel;
 	private ControllerActionIF addAction;
+	private RemoveActionIF removeAction;
 	private String[] columns;
 	private Box verticalBox;
 	private Component verticalStrut;
@@ -115,7 +116,9 @@ public class Table extends JPanel {
 			((DefaultTableModel)table.getModel()).removeRow(reversed[i]);
 		}
 		
-		setActionRemove();
+		if(removeAction != null) {
+			removeAction.action(reversed);
+		}
 	}
 	
 	public void askForInput() {
@@ -149,7 +152,9 @@ public class Table extends JPanel {
 		this.addAction = controllerAction;
 	}
 	
-	public void setActionRemove() {
+	public void setActionRemove(RemoveActionIF actionRemove) {
+		this.removeAction = actionRemove;
 	}
+	
 
 }

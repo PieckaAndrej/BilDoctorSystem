@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //Barnabas doing this do not touch
 public class Sale {
@@ -50,6 +51,18 @@ public class Sale {
 			}
 		}
 		return found;
+	}
+	
+	public void removeService(int[] array) {
+		for(int i = 0; i < array.length ; i++) {
+			services.remove(array[i]);
+		}
+	}
+	
+	public void removeProduct(int[] array) {
+		for(int i = 0; i < array.length ; i++) {
+			orderLines.remove(array[i]);
+		}
 	}
 		
 	/**

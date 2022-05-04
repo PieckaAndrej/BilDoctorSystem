@@ -9,6 +9,7 @@ import model.Service;
 import model.Vehicle;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import dal.SaleDB;
 import dal.SaleDBIF;
@@ -60,6 +61,16 @@ public class SaleController {
 			retVal = true;
 		}
 		return retVal;
+	}
+	
+	public void removeService(int[] array) {
+		sale.removeService(array);
+
+	}
+	
+	public void removeProduct(int[] array) {
+		sale.removeProduct(array);
+		
 	}
 	
 	public boolean finishSale() {

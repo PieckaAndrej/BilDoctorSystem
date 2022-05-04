@@ -137,6 +137,26 @@ public class SalePanel extends JPanel {
 				}
 			});
 			
+			productTable.setActionRemove(new RemoveActionIF(){
+				public void action(int[] array) {
+					Thread remove = new Thread(() -> {
+						removeProduct(array);
+					});
+					
+					remove.start();
+				}
+			});
+			
+			serviceTable.setActionRemove(new RemoveActionIF(){
+				public void action(int[] array) {
+					Thread remove = new Thread(() -> {
+						removeService(array);
+					});
+					
+					remove.start();
+				}
+			});
+			
 			
 			serviceTable.setName("Services");
 			productTable.setName("Products");
@@ -178,6 +198,14 @@ public class SalePanel extends JPanel {
 		});
 		
 		finishSaleThread.start();
+	}
+	
+	private void removeProduct(int[] array) {
+		saleCtrl.removeProduct(array);
+	}
+	
+	private void removeService(int[] array) {
+		saleCtrl.removeService(array);
 	}
 	
 	private void addProduct(InputPanel input) {
