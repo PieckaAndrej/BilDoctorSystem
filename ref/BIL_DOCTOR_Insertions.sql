@@ -1,8 +1,8 @@
 USE [CSC-CSD-S211_10407543]
 
-insert into City values ('0045', '9000', 'Aalborg');
+insert into City values ('9000', 'Aalborg');
 
-insert into Person values ('Joe', 'Banana', '9000', 'Bananavej 42', 'C', '0045', '1');
+insert into Person values ('Joe', 'Banana', '9000', 'Bananavej 42', 'C', '1');
 
 insert into Customer values ('0', '1');
 
