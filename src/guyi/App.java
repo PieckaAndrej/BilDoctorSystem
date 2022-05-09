@@ -4,17 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.TextAction;
 
 import dal.DbConnection;
 
@@ -166,5 +164,10 @@ public class App extends JFrame {
 			}
 
 		}
+	}
+	
+	public static void showComponentError(JComponent c) {
+		c.putClientProperty( "JComponent.outline", "error" );
+		c.setBackground(ColorScheme.ERROR);
 	}
 }

@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="ref/mssql-jdbc-10.2.0.jre17.jar"/>
 	<classpathentry kind="lib" path="ref/flatlaf-2.2.jar"/>
+	<classpathentry kind="lib" path="ref/jdatepicker-2.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

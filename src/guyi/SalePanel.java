@@ -261,8 +261,7 @@ public class SalePanel extends JPanel {
 			gridPanel.add(tabbedPane, gbc_tabbedPanel);
 			add(gridPanel, BorderLayout.CENTER);
 		} else {
-			fieldVehicle.putClientProperty( "JComponent.outline", "error" );
-			fieldVehicle.setBackground(ColorScheme.ERROR);
+			App.showComponentError(fieldVehicle);
 		}
 		
 	}
@@ -307,20 +306,17 @@ public class SalePanel extends JPanel {
 					
 					input.dispose();
 				} catch (Exception e) {
-					input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
-					input.getFields()[2].setBackground(ColorScheme.ERROR);
+					App.showComponentError(input.getFields()[2]);
 					input.getErrorLabel().setText(e.getMessage());
 				}
 			} catch (Exception e) {
-				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
-				input.getFields()[1].setBackground(ColorScheme.ERROR);
+				App.showComponentError(input.getFields()[1]);
 				input.getErrorLabel().setText(e.getMessage());
 			}
 			
 			
 		} catch (Exception e) {
-			input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
-			input.getFields()[0].setBackground(ColorScheme.ERROR);
+			App.showComponentError(input.getFields()[0]);
 			input.getErrorLabel().setText(e.getMessage());
 		}
 		
@@ -346,20 +342,17 @@ public class SalePanel extends JPanel {
 					
 					input.dispose();
 				} catch (Exception e) {
-					input.getFields()[0].putClientProperty( "JComponent.outline", "error" );
-					input.getFields()[0].setBackground(ColorScheme.ERROR);
+					App.showComponentError(input.getFields()[0]);
 					input.getErrorLabel().setText(e.getMessage());
 				}
 				
 			} catch (Exception e) {
-				input.getFields()[1].putClientProperty( "JComponent.outline", "error" );
-				input.getFields()[1].setBackground(ColorScheme.ERROR);
+				App.showComponentError(input.getFields()[1]);
 				input.getErrorLabel().setText(e.getMessage());
 			}
 
 		} catch (Exception e) {
-			input.getFields()[2].putClientProperty( "JComponent.outline", "error" );
-			input.getFields()[2].setBackground(ColorScheme.ERROR);
+			App.showComponentError(input.getFields()[2]);
 			input.getErrorLabel().setText(e.getMessage());
 		}
 	}
