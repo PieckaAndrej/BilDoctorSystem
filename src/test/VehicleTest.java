@@ -40,7 +40,7 @@ public class VehicleTest {
 			
 			if (rs.next()) {
 				assertEquals(vehicle.getPlateNumber(), rs.getString("plateNumber"));
-				assertEquals(vehicle.getYear(), rs.getInt("[year]"));
+				assertEquals(vehicle.getYear(), rs.getInt("year"));
 				assertEquals(vehicle.getBrand(), rs.getString("brand"));
 				
 			}

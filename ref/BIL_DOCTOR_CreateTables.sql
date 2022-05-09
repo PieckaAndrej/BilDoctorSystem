@@ -34,10 +34,8 @@ drop table if exists dbo.Appointment;
 
 
 CREATE TABLE dbo.City (
-	countryCode VARCHAR(5) NOT NULL,
-	zipcode VARCHAR(5) NOT NULL,
+	zipcode VARCHAR(5) PRIMARY KEY NOT NULL,
 	city VARCHAR(25) NOT NULL,
-	PRIMARY KEY (countryCode, zipcode),
 	)  
 
 GO
@@ -49,10 +47,9 @@ CREATE TABLE dbo.Person (
 	zipcode VARCHAR(5),
 	[address] VARCHAR(50) NOT NULL,
 	association VARCHAR(1) NOT NULL,
-	countryCode VARCHAR(5),
 	phoneNumber VARCHAR(20) PRIMARY KEY,
 	CONSTRAINT PersonCityFK
-		FOREIGN KEY (countryCode, zipcode) REFERENCES City(countryCode, zipcode)
+		FOREIGN KEY (zipcode) REFERENCES City(zipcode)
 		ON DELETE SET NULL,
 	)  
 
