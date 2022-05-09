@@ -12,7 +12,6 @@ import dal.DbConnection;
 import dal.ProductDB;
 import exceptions.DatabaseAccessException;
 import model.Product;
-import model.Vehicle;
 
 public class ProductTest {
 

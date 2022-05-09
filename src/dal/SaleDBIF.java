@@ -1,7 +1,5 @@
 package dal;
 
-import java.time.LocalDateTime;
-
 import exceptions.DatabaseAccessException;
 import model.Sale;
 

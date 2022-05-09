@@ -1,18 +1,14 @@
 package test;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import org.junit.Test;
 
 import controller.SaleController;
-import dal.DbConnection;
 import dal.ProductDB;
 import dal.SaleDB;
 import exceptions.DatabaseAccessException;
 import model.Product;
-import model.Sale;
 
 public class SaleTest {
 	
