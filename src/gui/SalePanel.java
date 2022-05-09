@@ -132,6 +132,7 @@ public class SalePanel extends JPanel {
 			String[] productInputs = new String[] {"Id", "Name", "Quantity"};
 			
 			CustomInputPanel inputPanel = new CustomInputPanel(productInputs);
+			inputPanel.setValues(new String[] {"", "", "1"});
 			
 			JComboBox<Product> box = new JComboBox<>();
 			products = saleCtrl.getProducts();

@@ -97,6 +97,7 @@ public class InputPanel extends JFrame {
 		horizontalBox.removeAll();
 		verticalBoxText = Box.createVerticalBox();
 		horizontalBox.add(verticalBoxText);
+		lblError.setText("");
 		
 		verticalBoxField = Box.createVerticalBox();
 		horizontalBox.add(verticalBoxField);
