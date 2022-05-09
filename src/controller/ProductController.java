@@ -18,8 +18,8 @@ public class ProductController {
 		return productDB.searchProduct(productId);
 	}
 
-	public List<Product> getProducts(String searchFor) {
-		return productDB.getProducts(searchFor);
+	public List<Product> getProducts() {
+		return productDB.getProducts();
 	}
 	
 }

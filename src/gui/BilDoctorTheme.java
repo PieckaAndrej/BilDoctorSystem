@@ -1,4 +1,4 @@
-package guyi;
+package gui;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 

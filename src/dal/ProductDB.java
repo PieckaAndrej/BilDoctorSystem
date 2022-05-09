@@ -16,7 +16,7 @@ public class ProductDB implements ProductDBIF {
 	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?, currentStock = ?, price = ? WHERE id = ?";
 	private PreparedStatement updateProductStatement;
 
-	private static final String SELECT_PRODUCT_BY_NAME_STATEMENT = "SELECT * FROM Product WHERE name like ?";
+	private static final String SELECT_PRODUCT_BY_NAME_STATEMENT = "SELECT * FROM Product";
 	private PreparedStatement searchProductByNameStatement;
 	
 	public ProductDB() {
@@ -88,13 +88,11 @@ public class ProductDB implements ProductDBIF {
 	}
 
 	@Override
-	public List<Product> getProducts(String searchFor) {
+	public List<Product> getProducts() {
 		List<Product> productList = new ArrayList<>();
 		try {
-			searchFor = "%" + searchFor + "%";
 			searchProductByNameStatement = DbConnection.getInstance().getConnection()
 					.prepareStatement(SELECT_PRODUCT_BY_NAME_STATEMENT);
-			searchProductByNameStatement.setString(1, searchFor);
 			ResultSet rs = searchProductByNameStatement.executeQuery();
 			productList = buildObjects(rs);
 		} catch (SQLException e) {

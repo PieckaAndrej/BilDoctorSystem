@@ -1,15 +1,19 @@
-package guyi;
+package gui;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.Robot;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -20,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicComboPopup;
 
 import controller.SaleController;
 import exceptions.DatabaseAccessException;
@@ -38,6 +43,8 @@ public class SalePanel extends JPanel {
 	
 	private Table serviceTable;
 	private Table productTable;
+	
+	private List<Product> products;
 
 	
 	public SalePanel() {
@@ -130,7 +137,8 @@ public class SalePanel extends JPanel {
 			CustomInputPanel inputPanel = new CustomInputPanel(productInputs);
 			
 			JComboBox<Product> box = new JComboBox<>();
-			fillPersonList(box, "");
+			products = saleCtrl.getProducts();
+			fillPersonList(box);
 			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
 				   @Override
@@ -138,6 +146,8 @@ public class SalePanel extends JPanel {
 				      box.showPopup();
 				   }
 				});
+			
+			
 			box.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 				
 				@Override
@@ -149,13 +159,38 @@ public class SalePanel extends JPanel {
 						((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
 						box.setSelectedItem(o);
 						if(o != null) {
-						((DefaultComboBoxModel<Product>) box.getModel()).addAll(
-								saleCtrl.getProducts( o.toString() ));
+						((DefaultComboBoxModel<Product>) box.getModel()).addAll(products
+								.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
+										.toLowerCase())).toList());
+						}
+						if(e.getKeyCode() == KeyEvent.VK_ENTER && box.getSelectedIndex() != -1) {
+							inputPanel.getFields()[0].setText(Integer.
+									toString(((Product)box.getSelectedItem()).getId()));
+						} else {
+							inputPanel.getFields()[0].setText("");
+							box.hidePopup();
+						    box.showPopup();
+						    
+						    
 						}
 					}
 					
-					
-				    box.showPopup();
+				}
+			});
+			
+			box.addItemListener(e -> {
+				if (MouseEvent.BUTTON1 == e.getStateChange() && box.getSelectedIndex() != -1) {
+					inputPanel.getFields()[0].setText(Integer.
+							toString(((Product)box.getSelectedItem()).getId()));
+				}
+			});
+
+			box.getEditor().getEditorComponent().addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(e.getButton() == MouseEvent.BUTTON1)
+					box.showPopup();
 				}
 			});
 
@@ -362,9 +397,9 @@ public class SalePanel extends JPanel {
 		initGui();
 	}
 	
-	private void fillPersonList(JComboBox<Product> comboBox, String searchFor) {
+	private void fillPersonList(JComboBox<Product> comboBox) {
 		comboBox.setRenderer(new ProductListCellRenderer());
-		List<Product> ps = saleCtrl.getProducts(searchFor);
+		List<Product> ps = products;
 		DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
 		dfm.addAll(ps);
 		comboBox.setModel(dfm);

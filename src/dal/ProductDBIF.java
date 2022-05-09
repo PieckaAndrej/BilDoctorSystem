@@ -10,5 +10,5 @@ public interface ProductDBIF {
 	
 	public boolean updateProduct(Product product) throws SQLException;
 
-	public List<Product> getProducts(String searchFor);
+	public List<Product> getProducts();
 }

@@ -86,7 +86,7 @@ public class SaleController {
 		return retVal;
 	}
 	
-	public List<Product> getProducts(String searchFor) {
-		return productController.getProducts(searchFor);
+	public List<Product> getProducts() {
+		return productController.getProducts();
 	}
 }
