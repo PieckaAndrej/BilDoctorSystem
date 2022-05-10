@@ -67,8 +67,8 @@ public class Product {
 	/**
 	 * @param productId the productId to set
 	 */
-	public void setId(int productId) {
-		this.id = productId;
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**
