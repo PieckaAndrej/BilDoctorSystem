@@ -7,6 +7,8 @@ import java.util.List;
 import dal.SaleDB;
 import dal.SaleDBIF;
 import exceptions.DatabaseAccessException;
+import exceptions.OutOfStockException;
+import exceptions.QuantityUnderrunException;
 import model.OrderLine;
 import model.Product;
 import model.Sale;
@@ -42,17 +44,23 @@ public class SaleController {
 	public boolean addService(double cost, double time, String description) {
 		boolean retVal = false;
 		Service service = serviceController.createService(cost, time, description);
-		if(service != null) {
+		if (service != null) {
 			sale.addService(service);
 			retVal = true;
 		}
 		return retVal;
 	}
 	
-	public boolean addProduct(int productId, String name, int quantity) {
+	public boolean addProduct(int productId, String name, int quantity)
+			throws QuantityUnderrunException, OutOfStockException {
 		boolean retVal = false;
 		Product product = productController.searchProduct(productId);
-		if(product != null) {
+		
+		if (product != null) {
+			if (product.getCurrentStock() - quantity < 0) {
+				throw new OutOfStockException(product.getCurrentStock(), quantity);
+			}
+			
 			OrderLine orderLine = new OrderLine(quantity, product);
 			sale.addOrderLine(orderLine);
 			retVal = true;

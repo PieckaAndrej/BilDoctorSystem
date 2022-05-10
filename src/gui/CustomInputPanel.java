@@ -60,6 +60,7 @@ public class CustomInputPanel extends InputPanel {
 			case COMBO_BOX:
 				System.out.println("box");
 				
+				boxes[i].setSelectedIndex(-1);
 				panel.add(boxes[i]);
 				break;
 			}

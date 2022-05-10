@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.QuantityUnderrunException;
+
 //Barnabas doing this do not touch
 public class OrderLine {
 	private int quantity;
@@ -12,9 +14,10 @@ public class OrderLine {
 	/**
 	 * Constructor for OrderLine
 	 * @param quantity
+	 * @throws QuantityUnderrunException 
 	 */
-	public OrderLine(int quantity, Product product) {
-		this.quantity = quantity;
+	public OrderLine(int quantity, Product product) throws QuantityUnderrunException {
+		setQuantity(quantity);
 		this.product = product;
 	}
 
@@ -26,7 +29,10 @@ public class OrderLine {
 
 
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(int quantity) throws QuantityUnderrunException {
+		if (quantity <= 0) {
+			throw new QuantityUnderrunException(quantity);
+		}
 		this.quantity = quantity;
 	}
 

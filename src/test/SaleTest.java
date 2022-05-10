@@ -8,6 +8,8 @@ import controller.SaleController;
 import dal.ProductDB;
 import dal.SaleDB;
 import exceptions.DatabaseAccessException;
+import exceptions.OutOfStockException;
+import exceptions.QuantityUnderrunException;
 import model.Product;
 
 public class SaleTest {
@@ -34,7 +36,12 @@ public class SaleTest {
 		
 		assertEquals(saleController.createSale(plateNumber), true);
 		assertEquals(saleController.addService(200, 10, "tire change"), true);
-		assertEquals(saleController.addProduct(productId, product.getName(), 10), true);
+		try {
+			assertEquals(saleController.addProduct(productId, product.getName(), 10), true);
+		} catch (QuantityUnderrunException | OutOfStockException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(saleController.finishSale(), true);
 	}
 	
@@ -54,7 +61,12 @@ public class SaleTest {
 		
 		Product product = productDB.searchProduct(productId);
 	
-		assertEquals(saleController.addProduct(productId, "name", 10), false);
+		try {
+			assertEquals(saleController.addProduct(productId, "name", 10), false);
+		} catch (QuantityUnderrunException | OutOfStockException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

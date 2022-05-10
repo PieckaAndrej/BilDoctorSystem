@@ -166,6 +166,10 @@ public class App extends JFrame {
 		}
 	}
 	
+	/**
+	 * Make a component have an error selection
+	 * @param c The component that has the error
+	 */
 	public static void showComponentError(JComponent c) {
 		c.putClientProperty( "JComponent.outline", "error" );
 		c.setBackground(ColorScheme.ERROR);
