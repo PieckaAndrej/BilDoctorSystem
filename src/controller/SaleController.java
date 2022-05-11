@@ -57,7 +57,7 @@ public class SaleController {
 		Product product = productController.searchProduct(productId);
 		
 		if (product != null) {
-			if (product.getCurrentStock() - quantity < 0) {
+			if (product.getCurrentStock() - quantity <= 0) {
 				throw new OutOfStockException(product.getCurrentStock(), quantity);
 			}
 			
@@ -94,7 +94,21 @@ public class SaleController {
 		return retVal;
 	}
 	
-	public List<Product> getProducts() {
+	public List<Product> getAllProducts() {
 		return productController.getProducts();
+	}
+	
+	public List<Product> getProducts() {
+		return sale.getOrderLines()
+				.parallelStream().map(o -> o.getProduct())
+				.toList();
+	}
+	
+	public void cancelSale() {
+		sale = null;
+	}
+	
+	public Sale getSale() {
+		return sale;
 	}
 }

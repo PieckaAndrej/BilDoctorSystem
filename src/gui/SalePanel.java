@@ -135,7 +135,7 @@ public class SalePanel extends JPanel {
 			inputPanel.setValues(new String[] {"", "", "1"});
 			
 			JComboBox<Product> box = new JComboBox<>();
-			products = saleCtrl.getProducts();
+			products = saleCtrl.getAllProducts();
 			fillPersonList(box);
 			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
@@ -391,6 +391,8 @@ public class SalePanel extends JPanel {
 	}
 	
 	public void cancelSale() {
+		saleCtrl.cancelSale();
+		
 		this.removeAll();
 		initGui();
 	}
