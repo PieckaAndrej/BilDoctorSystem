@@ -16,7 +16,7 @@ DROP CONSTRAINT if exists ServiceSaleFK;
 ALTER TABLE dbo.OrderLine
 DROP CONSTRAINT if exists OrderLineSaleFK, OrderLineProductFK;
 ALTER TABLE dbo.Appointment
-DROP CONSTRAINT if exists AppointmentSaleFK, AppointmentEmployeeFK;
+DROP CONSTRAINT if exists AppointmentEmployeeFK;
 
 GO
 
@@ -37,7 +37,6 @@ CREATE TABLE dbo.City (
 	zipcode VARCHAR(5) PRIMARY KEY NOT NULL,
 	city VARCHAR(25) NOT NULL,
 	)  
-
 GO
 
 
@@ -145,14 +144,10 @@ GO
 CREATE TABLE dbo.Appointment (
 	id int PRIMARY KEY IDENTITY(1,1), 
 	creationDate datetime NOT NULL,
-	[date] datetime NOT NULL,
 	[length] decimal(5,2) NOT NULL,
-	plateNr VARCHAR(15),
-	saleDate datetime,
+	[date] datetime NOT NULL,
+	[description] VARCHAR(128) NOT NULL,
 	employeePhoneNo VARCHAR(20),
-	CONSTRAINT AppointmentSaleFK
-		FOREIGN KEY (plateNr, [date]) REFERENCES Sale(plateNo, [date])
-		ON DELETE CASCADE,
 	CONSTRAINT AppointmentEmployeeFK
 		FOREIGN KEY (employeePhoneNo) REFERENCES Employee(phoneNo)
 		ON DELETE CASCADE,
