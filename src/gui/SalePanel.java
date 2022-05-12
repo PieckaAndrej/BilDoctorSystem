@@ -155,18 +155,28 @@ public class SalePanel extends JPanel {
 				public void keyReleased(KeyEvent e) {
 					if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
 							e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
-						box.setSelectedItem(box.getEditor().getItem());
-						Object o = box.getSelectedItem();
-						((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
-						box.setSelectedItem(o);
+						Object o = box.getEditor().getItem();
+							((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
+							box.setSelectedItem(o);
 						if(o != null) {
 						((DefaultComboBoxModel<Product>) box.getModel()).addAll(saleCtrl.getAllProducts()
 								.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
 										.toLowerCase())).toList());
 						}
-						if(e.getKeyCode() == KeyEvent.VK_ENTER && box.getSelectedIndex() != -1) {
-							inputPanel.getFields()[0].setText(Integer.
-									toString(((Product)box.getSelectedItem()).getId()));
+						if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+							if(saleCtrl.getAllProducts()
+									.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
+									.toLowerCase())).toList().size()>0 ) {
+								if(!(box.getEditor().getItem() instanceof Product)) {
+									box.getEditor().setItem(saleCtrl.getAllProducts()
+											.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
+											.toLowerCase())).toList().get(0));
+								}	
+								
+								inputPanel.getFields()[0].setText(Integer.
+										toString(((Product)box.getEditor().getItem()).getId()));
+							}
+							
 						} else {
 							inputPanel.getFields()[0].setText("");
 							box.hidePopup();
