@@ -137,8 +137,8 @@ public class SaleController {
 	}
 	
 	/**
-	 * Get all products from the database
-	 * @return List of all products from the database
+	 * Get current products which was earlier accessed from the database
+	 * @return List of all products from current products
 	 */
 	public List<Product> getCurrentProducts() {
 		return productController.getCurrentProducts();
