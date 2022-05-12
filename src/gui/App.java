@@ -155,7 +155,7 @@ public class App extends JFrame {
 				uninterupted = false;
 				resetConnection();
 			}
-//			System.out.println("Waiting 5");
+			
 			try {
 				// Sleep for 5 seconds
 				Thread.sleep(5000);

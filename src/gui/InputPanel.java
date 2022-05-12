@@ -32,8 +32,10 @@ public class InputPanel extends JFrame {
 	private JLabel lblError;
 
 	/**
-	 * Create the panel.
+	 * Create the panel with values
 	 * @wbp.parser.constructor
+	 * @param names The names of the fields
+	 * @param values Initial values of the fields
 	 */
 	public InputPanel(String[] names, String[] values) {
 		setBounds(100, 100, 300, 200);
@@ -81,6 +83,10 @@ public class InputPanel extends JFrame {
 
 	}
 	
+	/**
+	 * Create the panel
+	 * @param names The names of the fields
+	 */
 	public InputPanel(String[] names) {
 		this(names, null);
 		
@@ -93,6 +99,9 @@ public class InputPanel extends JFrame {
 		this.values = values;
 	}
 	
+	/**
+	 * Create labels containing the names
+	 */
 	public void createLabels() {
 		horizontalBox.removeAll();
 		verticalBoxText = Box.createVerticalBox();
@@ -117,6 +126,9 @@ public class InputPanel extends JFrame {
 		}
 	}
 	
+	/**
+	 * Generate panel containing inputs
+	 */
 	public void generatePanel() {
 		createLabels();
 		
@@ -135,30 +147,59 @@ public class InputPanel extends JFrame {
 		}
 	}
 	
+	/**
+	 * Set names
+	 * @param names String array of names
+	 */
 	public void setNames(String[] names) {
 		this.names = names;
 	}
 	
+	/**
+	 * Set values
+	 * @param values String array of values
+	 */
 	public void setValues(String[] values) {
 		this.values = values;
 	}
 	
+	/**
+	 * Get names as String array
+	 * @return names as String array
+	 */
 	public String[] getNames() {
 		return names;
 	}
 	
+	/**
+	 * Get values as String array
+	 * @return values as String array
+	 */
 	public String[] getValues() {
 		return values;
 	}
 	
+	/**
+	 * Get JTextFields as array
+	 * @return text fields as JTxetField array
+	 */
 	public JTextField[] getFields() {
 		return fields;
 	}
 	
+	/**
+	 * Add field with index
+	 * @param index Index of the field
+	 * @param field JTextField that is added
+	 */
 	public void addField(int index, JTextField field) {
 		fields[index] = field;
 	}
 	
+	/**
+	 * Get texts from the fields as String
+	 * @return String array of inputed texts
+	 */
 	public String[] getTexts() {
 		
 		return Arrays.stream(fields)
@@ -166,16 +207,26 @@ public class InputPanel extends JFrame {
 				.toList().toArray(new String[fields.length]);
 	}
 	
+	/**
+	 * Get label containing error messages
+	 * @return error label as JLabel
+	 */
 	public JLabel getErrorLabel() {
 		return lblError;
 	}
 	
+	/**
+	 * Action confirm
+	 */
 	public void confirm() {
 		if (action != null) {
 			action.action(this);
 		}
 	}
 	
+	/**
+	 * Reset field color to default
+	 */
 	public void resetFieldColor() {
 		Arrays.stream(fields)
 			.filter(l -> l != null)
@@ -186,10 +237,18 @@ public class InputPanel extends JFrame {
 			
 	}
 	
+	/**
+	 * Set confirm action as ControllerActionIF
+	 * @param action as ControllerActionIF
+	 */
 	public void setAction(ControllerActionIF action) {
 		this.action = action;
 	}
 
+	/**
+	 * Get vertical box containing text fields
+	 * @return field vertical box as Box
+	 */
 	protected Box getVerticalBoxField() {
 		return verticalBoxField;
 	}

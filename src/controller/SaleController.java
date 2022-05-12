@@ -1,5 +1,4 @@
 package controller;
-//Barnabas doing this do not touch
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +29,11 @@ public class SaleController {
 		
 	}
 	
+	/**
+	 * Create new sale with the plate number
+	 * @param plateNumber A plate number of vehicle that is used in the sale
+	 * @return True if the creation was successful
+	 */
 	public boolean createSale(String plateNumber) {
 		boolean retVal = false;
 		Vehicle vehicle = vehicleController.searchVehicle(plateNumber);
@@ -41,6 +45,13 @@ public class SaleController {
 		return retVal;
 	}
 	
+	/**
+	 * Add service to the sale
+	 * @param cost Cost of the service
+	 * @param time Time that the service takes
+	 * @param description Description of the service
+	 * @return True if the service was added successfully 
+	 */
 	public boolean addService(double cost, double time, String description) {
 		boolean retVal = false;
 		Service service = serviceController.createService(cost, time, description);
@@ -51,6 +62,15 @@ public class SaleController {
 		return retVal;
 	}
 	
+	/**
+	 * Add product to the sale
+	 * @param productId The id of the product
+	 * @param name The name of the product
+	 * @param quantity The quantity of the product
+	 * @return True if the product was added successfully 
+	 * @throws QuantityUnderrunException
+	 * @throws OutOfStockException
+	 */
 	public boolean addProduct(int productId, String name, int quantity)
 			throws QuantityUnderrunException, OutOfStockException {
 		boolean retVal = false;
@@ -68,16 +88,30 @@ public class SaleController {
 		return retVal;
 	}
 	
+	/**
+	 * Remove services from the sale
+	 * @param array Array containing the indexes that are being removed
+	 * where they are sorted from biggest to smallest
+	 */
 	public void removeService(int[] array) {
 		sale.removeService(array);
 
 	}
 	
+	/**
+	 * Remove products from the sale
+	 * @param array Array containing the indexes that are being removed
+	 * where they are sorted from biggest to smallest
+	 */
 	public void removeProduct(int[] array) {
 		sale.removeProduct(array);
 		
 	}
 	
+	/**
+	 * Finish sale and current one to null
+	 * @return True if the operation was performed successfully
+	 */
 	public boolean finishSale() {
 		boolean retVal = false;
 		sale.setDate(LocalDateTime.now());
@@ -94,20 +128,35 @@ public class SaleController {
 		return retVal;
 	}
 	
+	/**
+	 * Get all products from the database
+	 * @return List of all products from the database
+	 */
 	public List<Product> getAllProducts() {
 		return productController.getProducts();
 	}
 	
+	/**
+	 * Get all products in the current sale
+	 * @return List of all products in the current sale
+	 */
 	public List<Product> getProducts() {
 		return sale.getOrderLines()
 				.parallelStream().map(o -> o.getProduct())
 				.toList();
 	}
 	
+	/**
+	 * Cancel sale
+	 */
 	public void cancelSale() {
 		sale = null;
 	}
 	
+	/**
+	 * Get current sale
+	 * @return current sale
+	 */
 	public Sale getSale() {
 		return sale;
 	}

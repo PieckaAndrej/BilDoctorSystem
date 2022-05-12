@@ -20,7 +20,10 @@ public class CustomInputPanel extends InputPanel {
 	private JSpinner[] spinners;
 	private JComboBox<?>[] boxes;
 	
-	
+	/**
+	 * Constructor of the custom input panel
+	 * @param names Names of the input fields
+	 */
 	public CustomInputPanel(String[] names) {
 		super(names);
 		
@@ -34,6 +37,9 @@ public class CustomInputPanel extends InputPanel {
 		boxes = new JComboBox[names.length];
 	}
 	
+	/**
+	 * Generate panel with the inputs
+	 */
 	@Override
 	public void generatePanel() {
 		super.createLabels();
@@ -69,6 +75,9 @@ public class CustomInputPanel extends InputPanel {
 		}
 	}
 	
+	/**
+	 * Get texts from the inputs
+	 */
 	@Override
 	public String[] getTexts() {
 		String[] retVal = new String[types.length];
@@ -105,12 +114,22 @@ public class CustomInputPanel extends InputPanel {
 		return retVal;
 	}
 	
+	/**
+	 * Set component with index as a JSpinner
+	 * @param index The index of the component
+	 * @param spinner The JSpinner object that is in the index
+	 */
 	public void setComponent(int index, JSpinner spinner) {
 		types[index] = Type.SPINNER;
 		
 		spinners[index] = spinner;
 	}
 	
+	/**
+	 * Set component with index as a JComboBox
+	 * @param index The index of the component
+	 * @param box The JComboBox object that is in the index
+	 */
 	public void setComponent(int index, JComboBox<?> box) {
 		types[index] = Type.COMBO_BOX;
 		

@@ -20,7 +20,10 @@ public class PersonDB implements PersonDBIF {
 	public PersonDB() {
 	}
 
-
+	/**
+	 * Get all employees from the database
+	 * @return List of all employees
+	 */
 	@Override
 	public ArrayList<Employee> getAllEmployees() throws DatabaseAccessException {
 		ArrayList<Employee> employees = new ArrayList<>();
@@ -42,7 +45,13 @@ public class PersonDB implements PersonDBIF {
 		return employees;
 	}
 
-	private ResultSet findPerson(String phone) throws SQLException{
+	/**
+	 * Find person by phone
+	 * @param phone Phone of the person
+	 * @return ResultSet that the database returns
+	 * @throws SQLException
+	 */
+	private ResultSet findPerson(String phone) throws SQLException {
 		ResultSet result = null;
 		String SELECT_PERSON = "SELECT * FROM Person WHERE phoneNumber = ?";
 		try {
@@ -56,6 +65,12 @@ public class PersonDB implements PersonDBIF {
 		return result;
 	}
 	
+	/**
+	 * Build object of employee
+	 * @param rs Result set from the database
+	 * @return Object employee built from the result set
+	 * @throws SQLException
+	 */
 	private Employee buildObject(ResultSet rs) throws SQLException {
 		ResultSet resultSet = findPerson(rs.getString("phoneNumber"));
 		return new Employee(resultSet.getString("name"), resultSet.getString("address"), resultSet.getString("city"),

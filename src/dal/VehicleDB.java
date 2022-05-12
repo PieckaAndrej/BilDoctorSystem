@@ -14,6 +14,11 @@ public class VehicleDB implements VehicleDBIF {
 	public VehicleDB() {
 	}
 	
+	/**
+	 * Search vehicle in the database
+	 * @param plateNumber The plate number of the vehicle
+	 * @return Vehicle with the plateNumber in the database
+	 */
 	public Vehicle searchVehicle(String plateNumber) {
 		
 		Vehicle vehicle = null;
@@ -38,6 +43,12 @@ public class VehicleDB implements VehicleDBIF {
 		return vehicle;
 	}
 	
+	/**
+	 * Build object from the result set
+	 * @param rs Result set containing the vehicle
+	 * @return Vehicle built from the result set
+	 * @throws SQLException
+	 */
 	private Vehicle buildObject(ResultSet rs) throws SQLException {
 		return new Vehicle(rs.getString("plateNumber"), rs.getInt("year"), rs.getString("brand"));
 	}

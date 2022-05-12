@@ -23,6 +23,11 @@ public class ProductDB implements ProductDBIF {
 		
 	}
 	
+	/**
+	 * Search product by id
+	 * @param productId The id of the product
+	 * @return Product with the id
+	 */
 	public Product searchProduct(int productId) {
 		
 		Product product = null;
@@ -46,6 +51,11 @@ public class ProductDB implements ProductDBIF {
 		return product;
 	}
 	
+	/**
+	 * Update existing product with the current one based on id
+	 * @param product The product that is updated to
+	 * @return True if the product was updated successfully
+	 */
 	public boolean updateProduct(Product product) {
 		boolean retVal = false;
 		
@@ -75,10 +85,22 @@ public class ProductDB implements ProductDBIF {
 		return retVal;
 	}
 	
+	/**
+	 * Build object from the result set
+	 * @param rs Result set that contains the object information
+	 * @return Product built from the result set
+	 * @throws SQLException
+	 */
 	private Product buildObject(ResultSet rs) throws SQLException {
 		return new Product(rs.getInt("currentStock"), rs.getDouble("price"), rs.getInt("id"), rs.getString("name"));
 	}
 	
+	/**
+	 * Build list of object from the result set
+	 * @param rs Result set that contains the object information
+	 * @return List of the product that the result set contained
+	 * @throws SQLException
+	 */
 	private List<Product> buildObjects(ResultSet rs) throws SQLException {
 		List<Product> productList = new ArrayList<>();
 		while(rs.next()) {
@@ -87,6 +109,10 @@ public class ProductDB implements ProductDBIF {
 		return productList;
 	}
 
+	/**
+	 * Get all products from the database
+	 * @Return List of all products
+	 */
 	@Override
 	public List<Product> getProducts() {
 		List<Product> productList = new ArrayList<>();

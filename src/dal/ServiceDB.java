@@ -19,6 +19,12 @@ public class ServiceDB implements ServiceDBIF {
 		
 	}
 
+	/**
+	 * Insert service to the database
+	 * @param service Service that is being inserted
+	 * @param sale The sale that contains the service
+	 * @return True if the service was added successfully
+	 */
 	public boolean insertService(Service service, Sale sale) throws DatabaseAccessException {
 		boolean retVal = false;
 		try {

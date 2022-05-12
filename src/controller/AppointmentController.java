@@ -7,16 +7,20 @@ import exceptions.DatabaseAccessException;
 import model.Employee;
 
 public class AppointmentController {
-	private PersonController personctrl;
+	private PersonController personCtrl;
 	private AppointmentDB appointmentdb;
 	
 	public AppointmentController() {
-		super();
-		personctrl = new PersonController();
+		personCtrl = new PersonController();
 		appointmentdb = new AppointmentDB();
 	}
 	
+	/**
+	 * Get all employees from the person controller
+	 * @return ArrayList of all employees
+	 * @throws DatabaseAccessException
+	 */
 	public ArrayList<Employee> getAllEmployees() throws DatabaseAccessException{
-		return personctrl.getAllEmployees();
+		return personCtrl.getAllEmployees();
 	}
 }

@@ -21,8 +21,16 @@ public class AppointmentDB implements AppointmentDBIF {
 	}
 
 
+	/**
+	 * Insert appointment to the appointment database
+	 * @param a Appointment to be inserted
+	 * @return True if the appointment was inserted successfully
+	 */
 	@Override
-	public boolean insertAppointment(Appointment a) throws DatabaseAccessException{
+	public boolean insertAppointment(Appointment a) 
+			throws DatabaseAccessException {
+		boolean retVal = false;
+		
 		try {
 			
 			// Create statement
@@ -51,6 +59,8 @@ public class AppointmentDB implements AppointmentDBIF {
 			System.out.println("Commited");
 			DbConnection.getInstance().commitTransaction();
 			
+			retVal = true;
+			
 		} catch (SQLException e) {
 			// Roll back
 			System.out.println("Rolled back");
@@ -58,10 +68,8 @@ public class AppointmentDB implements AppointmentDBIF {
 			
 			throw new DatabaseAccessException(e.getMessage());
 		}
-		
-		
-		
-		return false;
+
+		return retVal;
 	}
 
 }

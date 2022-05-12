@@ -17,9 +17,16 @@ public class OrderLineDB implements OrderLineDBIF {
 	public OrderLineDB() {
 	}
 
+	/**
+	 * Insert order line to the database
+	 * @param orderline An orderline to be inserted
+	 * @param sale The sale that the orderline is in
+	 * @return True if the orderline was inserted successfully
+	 */
 	@Override
 	public boolean insertOrderLine(OrderLine orderline, Sale sale) throws DatabaseAccessException {
 		boolean retVal = false;
+		
 		PreparedStatement createStatement = null;
 		try {
 			try {
@@ -38,7 +45,7 @@ public class OrderLineDB implements OrderLineDBIF {
 			DbConnection.getInstance().executeSqlInsertWithIdentity(createStatement);
 			retVal = true;
 			
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DatabaseAccessException(e.getMessage());
 		}
 		return retVal;

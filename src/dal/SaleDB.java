@@ -20,6 +20,11 @@ public class SaleDB implements SaleDBIF {
 		
 	}
 	
+	/**
+	 * Insert sale to the database
+	 * @param sale The sale that is inserted
+	 * @Return Sale that is inserted with id from the database
+	 */
 	@Override
 	public Sale insertSale(Sale sale) throws DatabaseAccessException {
 		try {

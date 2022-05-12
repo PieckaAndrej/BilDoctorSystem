@@ -41,10 +41,17 @@ public class FinishSale extends JPanel {
 		showTableInfo();
 	}
 	
+	/**
+	 * Add a action listener to the finish sale button
+	 * @param listener Action listener that is added
+	 */
 	public void addFinishSaleActionListener(ActionListener listener) {
 		btnFinishSale.addActionListener(listener);
 	}
 	
+	/**
+	 * Show info from the tables
+	 */
 	public void showTableInfo() {
 		StringBuilder text = new StringBuilder();
 		

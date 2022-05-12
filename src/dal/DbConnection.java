@@ -18,6 +18,9 @@ public class DbConnection {
 		initConnection();
 	}
 	
+	/**
+	 * Initialise connection with the database
+	 */
 	private void initConnection() {
 		try {
 			SQLServerDataSource ds = new SQLServerDataSource();
@@ -36,6 +39,11 @@ public class DbConnection {
 		}	
 	}
 	
+	/**
+	 * Check if connection is valid with the connection
+	 * @return True if the connection is valid
+	 * @throws SQLException
+	 */
 	public boolean checkConnection() throws SQLException {
 		boolean retVal = false;
 		

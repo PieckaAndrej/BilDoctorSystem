@@ -12,6 +12,11 @@ public class VehicleController {
 		vehicleDB = new VehicleDB();
 	}
 	
+	/**
+	 * Search vehicle in the database
+	 * @param plateNumber Plate number of the vehicle
+	 * @return Found vehicle
+	 */
 	public Vehicle searchVehicle(String plateNumber) {
 		return vehicleDB.searchVehicle(plateNumber);
 	}
