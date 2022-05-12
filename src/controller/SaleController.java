@@ -133,7 +133,7 @@ public class SaleController {
 	 * @return List of all products from the database
 	 */
 	public List<Product> getAllProducts() {
-		return productController.getProducts();
+		return productController.getAllProducts();
 	}
 	
 	/**

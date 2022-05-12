@@ -9,7 +9,9 @@ import model.Product;
 public class ProductController {
 	
 	private ProductDBIF productDB;
+	private List<Product> currentProducts;
 	
+
 	public ProductController() {
 		productDB = new ProductDB();
 	}
@@ -27,8 +29,8 @@ public class ProductController {
 	 * Get all products from the database
 	 * @return List of products
 	 */
-	public List<Product> getProducts() {
-		return productDB.getProducts();
+	public List<Product> getAllProducts() {
+		return productDB.getAllProducts();
 	}
 	
 }

@@ -114,7 +114,7 @@ public class ProductDB implements ProductDBIF {
 	 * @Return List of all products
 	 */
 	@Override
-	public List<Product> getProducts() {
+	public List<Product> getAllProducts() {
 		List<Product> productList = new ArrayList<>();
 		try {
 			searchProductByNameStatement = DbConnection.getInstance().getConnection()

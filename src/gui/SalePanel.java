@@ -40,8 +40,6 @@ public class SalePanel extends JPanel {
 	
 	private Table serviceTable;
 	private Table productTable;
-	
-	private List<Product> products;
 
 	
 	public SalePanel() {
@@ -135,7 +133,6 @@ public class SalePanel extends JPanel {
 			inputPanel.setValues(new String[] {"", "", "1"});
 			
 			JComboBox<Product> box = new JComboBox<>();
-			products = saleCtrl.getAllProducts();
 			fillPersonList(box);
 			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
@@ -157,7 +154,7 @@ public class SalePanel extends JPanel {
 						((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
 						box.setSelectedItem(o);
 						if(o != null) {
-						((DefaultComboBoxModel<Product>) box.getModel()).addAll(products
+						((DefaultComboBoxModel<Product>) box.getModel()).addAll(saleCtrl.getAllProducts()
 								.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
 										.toLowerCase())).toList());
 						}
@@ -399,7 +396,7 @@ public class SalePanel extends JPanel {
 	
 	private void fillPersonList(JComboBox<Product> comboBox) {
 		comboBox.setRenderer(new ProductListCellRenderer());
-		List<Product> ps = products;
+		List<Product> ps = saleCtrl.getAllProducts();
 		DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
 		dfm.addAll(ps);
 		comboBox.setModel(dfm);
