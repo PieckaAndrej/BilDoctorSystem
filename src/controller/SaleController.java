@@ -137,6 +137,14 @@ public class SaleController {
 	}
 	
 	/**
+	 * Get all products from the database
+	 * @return List of all products from the database
+	 */
+	public List<Product> getCurrentProducts() {
+		return productController.getCurrentProducts();
+	}
+	
+	/**
 	 * Get all products in the current sale
 	 * @return List of all products in the current sale
 	 */

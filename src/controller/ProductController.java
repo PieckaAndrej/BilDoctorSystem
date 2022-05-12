@@ -30,7 +30,14 @@ public class ProductController {
 	 * @return List of products
 	 */
 	public List<Product> getAllProducts() {
-		return productDB.getAllProducts();
+		return currentProducts = productDB.getAllProducts();
+	}
+	
+	/**
+	 * @return the products
+	 */
+	public List<Product> getCurrentProducts() {
+		return currentProducts;
 	}
 	
 }
