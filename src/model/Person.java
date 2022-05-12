@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Person {
+public class Person {
 	private String name;
 	private String address;
 	private String city;
@@ -16,45 +16,93 @@ public abstract class Person {
 		this.phoneNumber = phoneNumber;
 	}
 
+	/**
+	 * Get name.
+	 *
+	 * @return name as String.
+	 */
 	public String getName() {
-		return name;
+	    return name;
 	}
 
+	/**
+	 * Set name.
+	 *
+	 * @param name the value to set.
+	 */
 	public void setName(String name) {
-		this.name = name;
+	    this.name = name;
 	}
 
+	/**
+	 * Get address.
+	 *
+	 * @return address as String.
+	 */
 	public String getAddress() {
-		return address;
+	    return address;
 	}
 
+	/**
+	 * Set address.
+	 *
+	 * @param address the value to set.
+	 */
 	public void setAddress(String address) {
-		this.address = address;
+	    this.address = address;
 	}
 
+	/**
+	 * Get city.
+	 *
+	 * @return city as String.
+	 */
 	public String getCity() {
-		return city;
+	    return city;
 	}
 
+	/**
+	 * Set city.
+	 *
+	 * @param city the value to set.
+	 */
 	public void setCity(String city) {
-		this.city = city;
+	    this.city = city;
 	}
 
+	/**
+	 * Get zipcode.
+	 *
+	 * @return zipcode as String.
+	 */
 	public String getZipcode() {
-		return zipcode;
+	    return zipcode;
 	}
 
+	/**
+	 * Set zipcode.
+	 *
+	 * @param zipcode the value to set.
+	 */
 	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+	    this.zipcode = zipcode;
 	}
 
+	/**
+	 * Get phoneNumber.
+	 *
+	 * @return phoneNumber as String.
+	 */
 	public String getPhoneNumber() {
-		return phoneNumber;
+	    return phoneNumber;
 	}
 
+	/**
+	 * Set phoneNumber.
+	 *
+	 * @param phoneNumber the value to set.
+	 */
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	    this.phoneNumber = phoneNumber;
 	}
-	
-	
 }

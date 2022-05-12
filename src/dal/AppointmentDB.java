@@ -7,9 +7,6 @@ import java.sql.Timestamp;
 
 import exceptions.DatabaseAccessException;
 import model.Appointment;
-import model.OrderLine;
-import model.Product;
-import model.Service;
 
 public class AppointmentDB implements AppointmentDBIF {
 	

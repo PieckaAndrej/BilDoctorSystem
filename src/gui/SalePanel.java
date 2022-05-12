@@ -55,6 +55,9 @@ public class SalePanel extends JPanel {
 		initGui();
 	}
 	
+	/**
+	 * Initialise gui
+	 */
 	private void initGui() {
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new EmptyBorder(new Insets(0, 3, 0, 0)));
@@ -106,6 +109,9 @@ public class SalePanel extends JPanel {
 		saleButtonsPanel.add(btnCreateSale, gbc_btnCreateSale);
 	}
 	
+	/**
+	 * Create sale button
+	 */
 	private void createSale() {
 		if (saleCtrl.createSale(fieldVehicle.getText())) {
 			
@@ -133,7 +139,7 @@ public class SalePanel extends JPanel {
 			inputPanel.setValues(new String[] {"", "", "1"});
 			
 			JComboBox<Product> box = new JComboBox<>();
-			fillPersonList(box);
+			fillProductList(box);
 			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
 				   @Override
@@ -296,6 +302,9 @@ public class SalePanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Finish sale button
+	 */
 	private void finishSale() {
 		Thread finishSaleThread = new Thread(() -> {
 			if (saleCtrl.finishSale()) {
@@ -310,14 +319,28 @@ public class SalePanel extends JPanel {
 		finishSaleThread.start();
 	}
 	
+	/**
+	 * Remove product from the controller
+	 * @param array An array containing the indexes of the 
+	 * removed products sorted from high to low
+	 */
 	private void removeProduct(int[] array) {
 		saleCtrl.removeProduct(array);
 	}
 	
+	/**
+	 * Remove service from the controller
+	 * @param array An array containing the indexes of the 
+	 * removed services sorted from high to low
+	 */
 	private void removeService(int[] array) {
 		saleCtrl.removeService(array);
 	}
 	
+	/**
+	 * Add product to the sale
+	 * @param input InputPanel containing the user input
+	 */
 	private void addProduct(InputPanel input) {
 		input.resetFieldColor();
 		String[] fields = input.getTexts();
@@ -353,6 +376,10 @@ public class SalePanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Add service to the sale
+	 * @param input InputPanel containing the user input
+	 */
 	private void addService(InputPanel input) {
 		input.resetFieldColor();
 		
@@ -387,6 +414,9 @@ public class SalePanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Cancel the sale
+	 */
 	public void cancelSale() {
 		saleCtrl.cancelSale();
 		
@@ -394,11 +424,17 @@ public class SalePanel extends JPanel {
 		initGui();
 	}
 	
-	private void fillPersonList(JComboBox<Product> comboBox) {
+	/**
+	 * Fill product ComboBox with products
+	 * @param comboBox ComboBox that is being filled with products
+	 */
+	private void fillProductList(JComboBox<Product> comboBox) {
 		comboBox.setRenderer(new ProductListCellRenderer());
+		
 		List<Product> ps = saleCtrl.getAllProducts();
 		DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
 		dfm.addAll(ps);
+		
 		comboBox.setModel(dfm);
 	}
 }

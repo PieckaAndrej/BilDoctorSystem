@@ -14,10 +14,20 @@ public class Employee extends Person{
 		this.salary = salary;
 	}
 
+	/**
+	 * Get salary
+	 * 
+	 * @return salary as double
+	 */
 	public double getSalary() {
 		return salary;
 	}
 
+	/**
+	 * Set salary
+	 * 
+	 * @param salary as double
+	 */
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}

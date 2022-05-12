@@ -18,31 +18,66 @@ public class Service {
 		this(new BigDecimal(price), time, dsc);
 	}
 
+	/**
+	 * Get price
+	 *
+	 * @return price as BigDecimal
+	 */
 	public BigDecimal getPrice() {
 		return price;
 	}
 
+	/**
+	 * Set price
+	 *
+	 * @param price as BigDecimal
+	 */
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	
+	/**
+	 * Set price
+	 *
+	 * @param price as double 
+	 */
 	public void setPrice(double price) {
 		this.price = new BigDecimal(price);
 	}
 
+	/**
+	 * Get time.
+	 *
+	 * @return time as double.
+	 */
 	public double getTime() {
-		return time;
+	    return time;
 	}
 
+	/**
+	 * Set time.
+	 *
+	 * @param time the value to set.
+	 */
 	public void setTime(double time) {
-		this.time = time;
+	    this.time = time;
 	}
 
+	/**
+	 * Get description.
+	 *
+	 * @return description as String.
+	 */
 	public String getDescription() {
-		return description;
+	    return description;
 	}
 
+	/**
+	 * Set description.
+	 *
+	 * @param description the value to set.
+	 */
 	public void setDescription(String description) {
-		this.description = description;
+	    this.description = description;
 	}
 }

@@ -27,12 +27,18 @@ public class Table extends JPanel {
 	private InputPanel inputPanel;
 
 	/**
-	 * Create the panel.
+	 * Create the panel
+	 * @param columns Array of column names
 	 */
 	public Table(String[] columns) {
 		this(columns, new InputPanel(columns));
 	}
 	
+	/**
+	 * Create the panel with custom input panel
+	 * @param columns Array of column names
+	 * @param inputPanel custom input panel
+	 */
 	public Table(String[] columns, InputPanel inputPanel) {
 		this.inputPanel = inputPanel;
 		
@@ -80,14 +86,25 @@ public class Table extends JPanel {
 		updateTable();
 	}
 	
+	/**
+	 * Set name of the panel
+	 * @param name The name as a String
+	 */
 	public void setName(String name) {
 		table.setName(name);
 	}
 	
+	/**
+	 * Get name as String
+	 * @return table name as String
+	 */
 	public String getName() {
 		return table.getName();
 	}
 	
+	/**
+	 * Update the table with the columns
+	 */
 	public void updateTable() {
 		DefaultTableModel myTableModel = new DefaultTableModel();
 		
@@ -98,6 +115,9 @@ public class Table extends JPanel {
 		table.setModel(myTableModel);
 	}
 	
+	/**
+	 * Remove selected element from the table
+	 */
 	public void removeSelected() {
 		int[] selected = table.getSelectedRows();
 
@@ -120,6 +140,9 @@ public class Table extends JPanel {
 		}
 	}
 	
+	/**
+	 * Show input panel
+	 */
 	public void askForInput() {
 		inputPanel.setAction(l -> {
 			if (addAction != null) {
@@ -131,6 +154,10 @@ public class Table extends JPanel {
 		inputPanel.setVisible(true);
 	}
 
+	/**
+	 * Add a new row
+	 * @param inputPanel Input panel with user inputs
+	 */
 	public void addRow(InputPanel inputPanel) {
 		String[] row = new String[columns.length];
 		
@@ -143,14 +170,26 @@ public class Table extends JPanel {
 		((DefaultTableModel)table.getModel()).addRow(row);
 	}
 	
+	/**
+	 * Get table as JTable
+	 * @return table as JTable
+	 */
 	public JTable getTable() {
 		return table;
 	}
 	
+	/**
+	 * Set action add as ControllerActionIF
+	 * @param controllerAction ControllerActionIf as action add
+	 */
 	public void setActionAdd(ControllerActionIF controllerAction) {
 		this.addAction = controllerAction;
 	}
 	
+	/**
+	 * Set action remove as RemoveActionIF
+	 * @param controllerAction RemoveActionIF as action remove
+	 */
 	public void setActionRemove(RemoveActionIF actionRemove) {
 		this.removeAction = actionRemove;
 	}

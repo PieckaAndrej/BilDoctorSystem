@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import exceptions.DatabaseAccessException;
 import model.Employee;
-import model.Person;
-import model.Product;
 
 public class PersonDB implements PersonDBIF {
 

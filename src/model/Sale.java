@@ -37,6 +37,11 @@ public class Sale {
 		return retVal;
 	}
 	
+	/**
+	 * Check if the vehicle is present
+	 * @param vehicle the vehicle that is checked
+	 * @return True if the vehicle is present
+	 */
 	public boolean isVehiclePresent(Vehicle vehicle) {
 		boolean found = false;
 		int index = 0;
@@ -52,12 +57,20 @@ public class Sale {
 		return found;
 	}
 	
+	/**
+	 * Remove service
+	 * @param array Array of indexes of that are sorted from high to low
+	 */
 	public void removeService(int[] array) {
 		for(int i = 0; i < array.length ; i++) {
 			services.remove(array[i]);
 		}
 	}
 	
+	/**
+	 * Remove product
+	 * @param array Array of indexes of that are sorted from high to low
+	 */
 	public void removeProduct(int[] array) {
 		for(int i = 0; i < array.length ; i++) {
 			orderLines.remove(array[i]);
@@ -66,8 +79,8 @@ public class Sale {
 		
 	/**
 	 * Add orderline to the sale
-	 * @param OrderLine
-	 * @return
+	 * @param OrderLine orderline that is added
+	 * @return True if the order line was added successfully
 	 */
 	public boolean addOrderLine(OrderLine orderline) {
 		return orderLines.add(orderline);
