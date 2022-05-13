@@ -20,6 +20,7 @@ public class App extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel salePanel;
+	private JPanel appointmentPanel;
 	private JLabel lblConnection;
 
 	/**
@@ -87,6 +88,9 @@ public class App extends JFrame {
 
 		salePanel = new SalePanel();
 		tabbedPane.addTab("Sale", null, salePanel, null);
+		
+		appointmentPanel = new AppointmentPanel();
+		tabbedPane.addTab("Appointment", null, appointmentPanel, null);
 	}
 
 	/**
