@@ -2,6 +2,14 @@ package model;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author agore
+ *
+ */
+/**
+ * @author agore
+ *
+ */
 public class Appointment {
 	private int id;
 	private LocalDateTime creationDate;
@@ -11,11 +19,42 @@ public class Appointment {
 	private String customerPhoneNo;
 	private String customerName;
 	private Employee employee;
-	
-	public Appointment(double length, LocalDateTime appointmentDate) {
+	 
+	public Appointment(LocalDateTime appointmentDatedouble, int length, String description) {
 		this.creationDate = LocalDateTime.now();
 		this.length = length;
 		this.appointmentDate = appointmentDate;
+		this.description = description;
+	}
+	
+	
+	/**
+	 * Check if the appointment has been filled
+	 */
+	public boolean isFilled(){
+		boolean retVal = false;
+		if(customerName != null && customerPhoneNo!= null && employee!= null) {
+			retVal = true;
+		}
+		return retVal;
+	}
+	
+	/**
+	 * @param name
+	 * @param phoneNo
+	 * Sets customer info to the appointment
+	 */
+	public void addCustomerInfo(String name, String phoneNo) {
+		setCustomerName(name);
+		setCustomerPhoneNo(phoneNo);
+	}
+	
+	/**
+	 * @param employee
+	 * Set employee to the appointment
+	 */
+	public void addEmployee(Employee employee) {
+		setEmployee(employee);
 	}
 
 	/**
