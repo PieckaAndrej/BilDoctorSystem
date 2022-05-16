@@ -33,9 +33,28 @@ public class AppointmentController {
 	 * @param date
 	 * @param length
 	 * @param description
+	 * @throws DatabaseAccessException 
 	 */
-	public void createAppointment(LocalDateTime date, int length, String description) {
-		currentAppointment = new Appointment(date, length, description);
+	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException {
+		boolean retVal = false;
+		boolean correctAppointment;
+		ArrayList<Appointment> appointments = new ArrayList<>();
+		appointments = appointmentdb.getAllAppointments();
+		
+		if(length > 0)
+		{
+			for(int i = 0; i < appointments.size(); i++)
+			{
+				// to do
+			}
+			
+			if(correctAppointment = true)
+			{
+				currentAppointment = new Appointment(date, length, description);
+				retVal = true;
+			}
+		}
+		return retVal;
 	}
 	
 	/**

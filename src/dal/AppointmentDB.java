@@ -1,9 +1,12 @@
 package dal;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 
 import exceptions.DatabaseAccessException;
 import model.Appointment;
@@ -12,6 +15,8 @@ public class AppointmentDB implements AppointmentDBIF {
 	
 	private static final String CREATE_STATEMENT = "INSERT INTO Appointment(creationDate, length, date, description, employeePhoneNo) VALUES(?, ?, ?, ? ,?)";
 	private PreparedStatement createStatement;
+	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM Appointment WHERE date LIKE ?";
+	private PreparedStatement getAppointmentsStatement;
 		
 	public AppointmentDB() {
 	}
@@ -66,6 +71,38 @@ public class AppointmentDB implements AppointmentDBIF {
 		}
 
 		return retVal;
+	}
+
+
+	@Override
+	public ArrayList<Appointment> getAllAppointments() throws DatabaseAccessException {
+		ArrayList<Appointment> appointments = new ArrayList<>();
+		
+		Appointment currentAppointment = null;
+		
+		try {
+			getAppointmentsStatement = DbConnection.getInstance().getConnection().prepareStatement(GET_APPOINTMENTS_STATEMENT);
+			
+			// To do
+			getAppointmentsStatement.setString(1, null);
+			
+			ResultSet rs = getAppointmentsStatement.executeQuery();
+			
+			while(rs.next()) {
+				currentAppointment = buildObject(rs);
+				appointments.add(currentAppointment);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return appointments;
+	}
+	
+	private Appointment buildObject(ResultSet rs) throws SQLException {
+		return new Appointment(rs.getTimestamp("date").toLocalDateTime(), rs.getInt("length"), rs.getString("description"));
 	}
 
 }
