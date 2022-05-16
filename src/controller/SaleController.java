@@ -79,11 +79,11 @@ public class SaleController {
 		if (product != null) {
 			if (product.getCurrentStock() - quantity <= 0) {
 				throw new OutOfStockException(product.getCurrentStock(), quantity);
+			} else {
+				OrderLine orderLine = new OrderLine(quantity, product);
+				sale.addOrderLine(orderLine);
+				retVal = true;
 			}
-			
-			OrderLine orderLine = new OrderLine(quantity, product);
-			sale.addOrderLine(orderLine);
-			retVal = true;
 		}
 		return retVal;
 	}
