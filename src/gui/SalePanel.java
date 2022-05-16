@@ -292,9 +292,6 @@ public class SalePanel extends JPanel {
 			gbc_tabbedPanel.gridx = 0;
 			gbc_tabbedPanel.gridy = 0;
 			
-			
-			
-			
 			GridBagConstraints gbc_cancelButton = new GridBagConstraints();
 			gbc_cancelButton.gridwidth = 0;
 			gbc_cancelButton.gridheight = 0;

@@ -29,6 +29,7 @@ public class Table extends JPanel {
 	/**
 	 * Create the panel
 	 * @param columns Array of column names
+	 * @wbp.parser.constructor
 	 */
 	public Table(String[] columns) {
 		this(columns, new InputPanel(columns));
