@@ -82,4 +82,11 @@ public class SaleDB implements SaleDBIF {
 		// Return sale with id
 		return sale;
 	}
+
+	/**
+	 * @return the createStatement
+	 */
+	public static String getCreateStatement() {
+		return CREATE_STATEMENT;
+	}
 }

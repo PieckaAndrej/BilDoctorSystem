@@ -3,6 +3,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,15 @@ public class ProductDB implements ProductDBIF {
 	private PreparedStatement selectProductStatement;
 	
 	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?, currentStock = ?, price = ? WHERE id = ?";
-	private PreparedStatement updateProductStatement;
 
 	private static final String SELECT_PRODUCT_BY_NAME_STATEMENT = "SELECT * FROM Product";
 	private PreparedStatement searchProductByNameStatement;
 	
+	private static final String INSERT_STATEMENT = "INSERT INTO Product(name, currentStock, price) VALUES(?, ?, ?)";
+	
+	
+
 	public ProductDB() {
-		
 	}
 	
 	/**
@@ -60,29 +63,54 @@ public class ProductDB implements ProductDBIF {
 		boolean retVal = false;
 		
 		try {
-			updateProductStatement = DbConnection.getInstance().getConnection()
+			PreparedStatement updateProductStatement = DbConnection.getInstance().getConnection()
 					.prepareStatement(UPDATE_STATEMENT);
 		
 
-		// Product
-		updateProductStatement.setString(1, product.getName());
-		updateProductStatement.setInt(2, product.getCurrentStock());
-		updateProductStatement.setBigDecimal(3, product.getPrice());
-		
-		// Where id
-		updateProductStatement.setInt(4, product.getId());
-		
-		System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
-
-		updateProductStatement.executeUpdate();
-		
-		retVal = true;
+			// Product
+			updateProductStatement.setString(1, product.getName());
+			updateProductStatement.setInt(2, product.getCurrentStock());
+			updateProductStatement.setBigDecimal(3, product.getPrice());
+			
+			// Where id
+			updateProductStatement.setInt(4, product.getId());
+			
+			System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
+	
+			updateProductStatement.executeUpdate();
+			
+			retVal = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return retVal;
+	}
+	
+	/**
+	 * Insert product
+	 * @param product The product that is inserted
+	 * @return Product with id
+	 */
+	public Product insertProduct(Product product) {
+		
+		try {
+			PreparedStatement insertProductStatement = DbConnection.getInstance().getConnection()
+					.prepareStatement(INSERT_STATEMENT, Statement.RETURN_GENERATED_KEYS);
+		
+
+			// Product
+			insertProductStatement.setString(1, product.getName());
+			insertProductStatement.setInt(2, product.getCurrentStock());
+			insertProductStatement.setBigDecimal(3, product.getPrice());
+	
+			product.setId(DbConnection.getInstance().executeSqlInsertWithIdentity(insertProductStatement));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return product;
 	}
 	
 	/**
@@ -126,5 +154,12 @@ public class ProductDB implements ProductDBIF {
 			e.printStackTrace();
 		}
 		return productList;
+	}
+	
+	/**
+	 * @return the insertStatement
+	 */
+	public static String getInsertStatement() {
+		return INSERT_STATEMENT;
 	}
 }

@@ -139,7 +139,6 @@ public class DbConnection {
 		try {
 			try {
 				getConnection().commit();
-				conn.close();
 			} catch (SQLException e) {
 				throw e;
 			} finally {

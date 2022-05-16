@@ -51,4 +51,11 @@ public class OrderLineDB implements OrderLineDBIF {
 		return retVal;
 	}
 
+	/**
+	 * @return the createStatement
+	 */
+	public static String getCreateStatement() {
+		return CREATE_STATEMENT;
+	}
+
 }

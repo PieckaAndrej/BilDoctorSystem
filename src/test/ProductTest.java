@@ -6,47 +6,57 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import dal.DbConnection;
 import dal.ProductDB;
-import exceptions.DatabaseAccessException;
 import model.Product;
 
-public class ProductTest {
+class ProductTest {
 
 	private ProductDB productDB;
+	private CleanDatabase productCleaner;
+	private Product testProduct;
 	
-	public ProductTest() throws DatabaseAccessException
-	{
+	@BeforeEach
+	void setUp() {
 		productDB = new ProductDB();
+		productCleaner = Cleaners.getProductCleaner();
+		
+		try {
+			productCleaner.setUp();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		testProduct = new Product(10, 10, 0, "test product");
+		
+		productDB = new ProductDB();
+		testProduct = productDB.insertProduct(testProduct);
+	}
+	
+	@AfterEach
+	void cleanUp() {
+		try {
+			productCleaner.retrieveDatabase();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	public void searchProductTest() {
+	void searchProductTest() {
 		int productId = 1;
 		
 		String query = "SELECT * FROM Product WHERE id = ?";
 		
 		Product product = productDB.searchProduct(productId);
-		
-		PreparedStatement prst;
-		
-		try {
-			prst = DbConnection.getInstance().getConnection().prepareStatement(query);
-			
-			prst.setInt(1, productId);
-			
-			ResultSet rs = prst.executeQuery();
-			
-			if (rs.next()) {
-				assertEquals(product.getCurrentStock(), rs.getInt("currentStock"));
-				assertEquals(product.getPrice().doubleValue(), rs.getBigDecimal("price").doubleValue(), 0);
-				assertEquals(product.getId(), rs.getInt("id"));
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		assertEquals(testProduct.getCurrentStock(), product.getCurrentStock());
+		assertEquals(testProduct.getPrice().doubleValue(), product.getPrice().doubleValue(), 0);
+		assertEquals(testProduct.getId(), product.getId());
+
 	}	
 }
