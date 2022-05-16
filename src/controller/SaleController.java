@@ -150,7 +150,7 @@ public class SaleController {
 	 */
 	public List<Product> getProducts() {
 		return sale.getOrderLines()
-				.parallelStream().map(o -> o.getProduct())
+				.parallelStream().map(OrderLine::getProduct)
 				.toList();
 	}
 	

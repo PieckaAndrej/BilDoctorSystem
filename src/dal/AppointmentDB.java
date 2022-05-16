@@ -14,7 +14,6 @@ public class AppointmentDB implements AppointmentDBIF {
 	private PreparedStatement createStatement;
 		
 	public AppointmentDB() {
-		super();
 	}
 
 

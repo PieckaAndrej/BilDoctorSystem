@@ -20,7 +20,7 @@ public class Appointment {
 	private String customerName;
 	private Employee employee;
 	 
-	public Appointment(LocalDateTime appointmentDatedouble, int length, String description) {
+	public Appointment(LocalDateTime appointmentDate, int length, String description) {
 		this.creationDate = LocalDateTime.now();
 		this.length = length;
 		this.appointmentDate = appointmentDate;
