@@ -1,35 +1,24 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
 
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
 
 import controller.AppointmentController;
-import controller.SaleController;
-import exceptions.DatabaseAccessException;
-import java.awt.GridLayout;
 
 public class AppointmentPanel extends JPanel {
 
@@ -39,16 +28,11 @@ public class AppointmentPanel extends JPanel {
 	
 	private JPanel saleButtonsPanel;
 	private JButton btnCreateSale;
-	private JTextField fieldVehicle;
-	private JLabel lblNewLabel;
 	private JDatePanel calendar;
-	private JList list;
+	private JList<Double> list;
     private DefaultListModel<Double> listModel;
-    private Box verticalBox;
-    private Component verticalStrut;
 
 	private AppointmentController appointmentController;
-	private Table hourTable;
 
 	
 	/**
@@ -172,27 +156,12 @@ public class AppointmentPanel extends JPanel {
 			}
 		});
 	
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout(0, 0));
+		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BorderLayout(0, 0));
 		
-	    tabbedPane.addTab("AvailableHours", null, buttonPanel, null);
-	    
-	    verticalBox = Box.createVerticalBox();
-		verticalBox.add(confirmButton);
-		verticalBox.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
-		verticalStrut = Box.createVerticalStrut(10);
-		verticalBox.add(verticalStrut);
-		
-		
-		
-	    GridBagConstraints gbc_confirmButton = new GridBagConstraints();
-		gbc_confirmButton.anchor = GridBagConstraints.EAST;
-		gbc_confirmButton.gridwidth = 0;
-		gbc_confirmButton.gridheight = 0;
-		gbc_confirmButton.gridx = 1;
-		gbc_confirmButton.gridy = 0;
-		gridPanel.add(btnConfirm, gbc_confirmButton);
-		
+	    tabbedPane.addTab("AvailableHours", null, panel, null);
 	    
 	    GridBagConstraints gbc_cancelButton = new GridBagConstraints();
 		gbc_cancelButton.gridwidth = 0;
@@ -203,11 +172,11 @@ public class AppointmentPanel extends JPanel {
 		gbc_cancelButton.insets = new Insets(5, 5, 5, 5);
 		gridPanel.add(cancelButton, gbc_cancelButton);
 		
-//		gridPanel.setLayout(new BorderLayout(0, 0));
 		saleButtonsPanel.add(gridPanel);
-		buttonPanel.add(confirmButton, BorderLayout.EAST);
-		buttonPanel.add(scrollPane, BorderLayout.CENTER);
-		gridPanel.add(buttonPanel, gbc_confirmButton);
+		buttonPanel.add(confirmButton);
+		panel.add(buttonPanel, BorderLayout.EAST);
+		panel.add(scrollPane, BorderLayout.CENTER);
+		gridPanel.add(tabbedPane, gbc_tabbedPanel);
 		add(gridPanel, BorderLayout.CENTER);
 
 		revalidate();
