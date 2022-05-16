@@ -164,7 +164,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductNegativeQuantityShouldReturnException() {
+	void testAddProductNegative1ShouldReturnException() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = -1;
@@ -176,7 +176,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductZeroQuantityShouldReturnException() {
+	void testAddProduct0from10QuantityShouldReturnException() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = 0;
@@ -188,7 +188,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductQuantity1ShouldReturnTrue() {
+	void testAddProductQuantity1from10ShouldReturnTrue() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = 1;
@@ -206,7 +206,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductQuantity9ShouldReturnTrue() {
+	void testAddProductQuantity9from10ShouldReturnTrue() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = 9;
@@ -224,7 +224,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductQuantity10ShouldReturnTrue() {
+	void testAddProductQuantity10from10ShouldReturnTrue() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = 10;
@@ -242,7 +242,7 @@ class SaleTest {
 	}
 	
 	@Test
-	void testAddProductQuantity11ShouldThrowException() {
+	void testAddProductQuantity11from10ShouldThrowException() {
 		String plateNumber = "AAA";
 		int productId = 1; 
 		int quantity = 11;
@@ -250,6 +250,57 @@ class SaleTest {
 		saleController.createSale(plateNumber);
 		
 		assertThrows(OutOfStockException.class,
+				() -> saleController.addProduct(productId, "name", quantity));
+	}
+	
+	@Test
+	void testAddProductQuantity0from0ShouldThrowException() {
+		Product testProduct = new Product(0, 10, 0, "test product");
+		
+		ProductDB productDb = new ProductDB();
+		productDb.insertProduct(testProduct);
+		
+		String plateNumber = "AAA";
+		int productId = 2; 
+		int quantity = 0;
+		
+		saleController.createSale(plateNumber);
+		
+		assertThrows(QuantityUnderrunException.class,
+				() -> saleController.addProduct(productId, "name", quantity));
+	}
+	
+	@Test
+	void testAddProductQuantity1from0ShouldThrowException() {
+		Product testProduct = new Product(0, 10, 0, "test product");
+		
+		ProductDB productDb = new ProductDB();
+		productDb.insertProduct(testProduct);
+		
+		String plateNumber = "AAA";
+		int productId = 2; 
+		int quantity = 1;
+		
+		saleController.createSale(plateNumber);
+		
+		assertThrows(OutOfStockException.class,
+				() -> saleController.addProduct(productId, "name", quantity));
+	}
+	
+	@Test
+	void testAddProductQuantityNegative1from0ShouldThrowException() {
+		Product testProduct = new Product(0, 10, 0, "test product");
+		
+		ProductDB productDb = new ProductDB();
+		productDb.insertProduct(testProduct);
+		
+		String plateNumber = "AAA";
+		int productId = 2; 
+		int quantity = -1;
+		
+		saleController.createSale(plateNumber);
+		
+		assertThrows(QuantityUnderrunException.class,
 				() -> saleController.addProduct(productId, "name", quantity));
 	}
 	

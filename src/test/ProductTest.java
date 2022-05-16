@@ -50,8 +50,6 @@ class ProductTest {
 	void searchProductTest() {
 		int productId = 1;
 		
-		String query = "SELECT * FROM Product WHERE id = ?";
-		
 		Product product = productDB.searchProduct(productId);
 
 		assertEquals(testProduct.getCurrentStock(), product.getCurrentStock());
