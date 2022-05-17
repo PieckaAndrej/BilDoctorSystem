@@ -47,11 +47,28 @@ public class AppointmentController {
 		{
 			for(int i = 0; i < appointments.size(); i++)
 			{
-				/*if()
+				if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
+				{
+					if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
+					{
+						correctAppointment = false;
+						break;
+					}
+				}
+				else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
+				{
+					if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
+					{
+						correctAppointment = false;
+						break;
+					}
+				}
+				else
 				{
 					correctAppointment = false;
 					break;
-				}*/
+				}
+				
 			}
 			
 			if(correctAppointment = true)
