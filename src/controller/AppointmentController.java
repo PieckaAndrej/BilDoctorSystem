@@ -49,54 +49,52 @@ public class AppointmentController {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		appointments = appointmentdb.getAllAppointments(date);
 		
-		// Check if the date is starting in the already existing appointment
-		boolean startsInExisting = appointments.parallelStream()
-			// Boolean expression is ((existing < date) || (date == existing)) && (date < existingEnd)
+		boolean overlaps = appointments.parallelStream()
 			
-			// If date is after the existing appointment...
-			.filter(a -> (date.isAfter(a.getAppointmentDate()) ||
-					// Or is starting at the same time as existing appointment
-					date.isEqual(a.getAppointmentDate())) &&
-					
-					// And the date starts before the existing appointment ends
-					// ...then the appointment will stay
-					date.isBefore(a.getAppointmentDate().plusMinutes((long) a.getLength())))
 			
-			// If no appointments stayed, then the date doesn't start in existing one
-			.count() != 0;
-		
-		// Check if the date is ending in the already existing appointment
-		boolean endsInExisting = appointments.parallelStream()
-			// Boolean expression is (existing < dateEnd) && (dateEnd < existingEnd)
-				
-			// If date ending is after existing appointment start...
-			.filter(a -> date.plusMinutes(length).isAfter(a.getAppointmentDate()) &&
+			.filter(a -> (
+					(
+						// Check if the date is starting in the already existing appointment
+						// Boolean expression is ((existing < date) || (date == existing)) && (date < existingEnd)
+						
+						// If date is after the existing appointment...
+						date.isAfter(a.getAppointmentDate()) ||
+						// Or is starting at the same time as existing appointment
+						date.isEqual(a.getAppointmentDate())) &&
 					
-					// And date ending is before existing end
-					// ...then the appointment will stay
-					date.plusMinutes(length).isBefore(
-							a.getAppointmentDate().plusMinutes((long) a.getLength())))
-			
-			// If no appointments stayed, then the date doesn't end in existing one
-			.count() != 0;
-		
-		// Check if the date contains inside already existing appointment
-		boolean overlapsExisting = appointments.parallelStream()
-			// Boolean expression is (date < existing) && (existing < dateEnd)
-				
-			// If date starts before the appointment starts...
-			.filter(a -> date.isBefore(a.getAppointmentDate()) &&
+						// And the date starts before the existing appointment ends
+						// ...then the appointment will stay
+						date.isBefore(a.getAppointmentDate().plusMinutes((long) a.getLength()))
 					
-					// And date ending is after the appointment starts
-					// ...then the appointment will stay
-					date.plusMinutes(length).isAfter(
+						
+					) || (
+						// Check if the date is ending in the already existing appointment
+						// Boolean expression is (existing < dateEnd) && (dateEnd < existingEnd)
+						
+						// If date ending is after existing appointment start...
+						date.plusMinutes(length).isAfter(a.getAppointmentDate()) &&
+							
+						// And date ending is before existing end
+						// ...then the appointment will stay
+						date.plusMinutes(length).isBefore(
+						a.getAppointmentDate().plusMinutes((long) a.getLength()))
+					) || (
+						// Check if the date contains inside already existing appointment
+						// Boolean expression is (date < existing) && (existing < dateEnd)
+							
+						// If date starts before the appointment starts...
+						date.isBefore(a.getAppointmentDate()) &&
+							
+						// And date ending is after the appointment starts
+						// ...then the appointment will stay
+						date.plusMinutes(length).isAfter(
 							a.getAppointmentDate()))
-			
-			// If no appointments stayed, then the date doesn't contain the start of existing one
+			)
+			// If no appointments stayed, then it overlaps with the date
 			.count() != 0;
 		
-		// If they don't overlap, make new appointment
-		if (!startsInExisting && !endsInExisting && !overlapsExisting) {
+		// If doesn't overlap, make new appointment
+		if (!overlaps) {
 			currentAppointment = new Appointment(date, length, description);
 			retVal = true;
 		}
