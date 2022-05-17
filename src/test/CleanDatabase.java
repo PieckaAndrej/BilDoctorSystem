@@ -10,7 +10,9 @@ public abstract class CleanDatabase {
 	private String tableName;
 	private ResultSet databaseBuffer;
 	
-	private static final String SELECT_QUERY = "SELECT * FROM ";
+	private static final String SELECT_QUERY = "SELECT * FROM %s";
+	private static final String DELETE_QUERY = "DELETE FROM %s";
+	private static final String IDENTITY_QUERY = "DBCC CHECKIDENT (%s, RESEED, 0)";
 	private String retrieveQuery;
 	private boolean hasIdentity;
 	
@@ -31,14 +33,14 @@ public abstract class CleanDatabase {
 	
 	public void getDatabaseRows() throws SQLException {
 		PreparedStatement stmt = DbConnection.getInstance()
-				.getConnection().prepareStatement(SELECT_QUERY + tableName);
+				.getConnection().prepareStatement(String.format(SELECT_QUERY, tableName));
 		
 		databaseBuffer = stmt.executeQuery();
 	}
 	
 	public void cleanDatabase() throws SQLException {
 		PreparedStatement stmt = DbConnection.getInstance()
-				.getConnection().prepareStatement("DELETE FROM " + tableName);
+				.getConnection().prepareStatement(String.format(DELETE_QUERY, tableName));
 		
 		stmt.executeUpdate();
 		
@@ -62,7 +64,7 @@ public abstract class CleanDatabase {
 	
 	public void resetIdentity() throws SQLException {
 		PreparedStatement identity = DbConnection.getInstance()
-				.getConnection().prepareStatement("DBCC CHECKIDENT (" + tableName + ", RESEED, 0)");
+				.getConnection().prepareStatement(String.format(IDENTITY_QUERY, tableName));
 		
 		identity.executeUpdate();
 	}
