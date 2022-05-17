@@ -1,13 +1,13 @@
 package controller;
 
-import java.sql.SQLException;
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import dal.AppointmentDB;
 import exceptions.DatabaseAccessException;
 import exceptions.LengthUnderrunException;
-import exceptions.QuantityUnderrunException;
 import model.Appointment;
 import model.Employee;
 
@@ -39,46 +39,66 @@ public class AppointmentController {
 	 */
 	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException, LengthUnderrunException{
 		boolean retVal = false;
-		boolean correctAppointment = true;
+		
+		// Length cannot be negative or zero
+		if (length <= 0) {
+			throw new LengthUnderrunException(length);
+		}
+		
+		// Get all appointments on the date from the database
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		appointments = appointmentdb.getAllAppointments(date);
-	
-		if(length > 0)
-		{
-			for(int i = 0; i < appointments.size(); i++)
-			{
-				if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
-				{
-					if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
-					{
-						correctAppointment = false;
-						break;
-					}
-				}
-				else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
-				{
-					if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
-					{
-						correctAppointment = false;
-						break;
-					}
-				}
-				else
-				{
-					correctAppointment = false;
-					break;
-				}
-			}
+		
+		// Check if the date is starting in the already existing appointment
+		boolean startsInExisting = appointments.parallelStream()
+			// Boolean expression is ((existing < date) || (date == existing)) && (date < existingEnd)
+			
+			// If date is after the existing appointment...
+			.filter(a -> (date.isAfter(a.getAppointmentDate()) ||
+					// Or is starting at the same time as existing appointment
+					date.isEqual(a.getAppointmentDate())) &&
+					
+					// And the date starts before the existing appointment ends
+					// ...then the appointment will stay
+					date.isBefore(a.getAppointmentDate().plusMinutes((long) a.getLength())))
+			
+			// If no appointments stayed, then the date doesn't start in existing one
+			.count() != 0;
+		
+		// Check if the date is ending in the already existing appointment
+		boolean endsInExisting = appointments.parallelStream()
+			// Boolean expression is (existing < dateEnd) && (dateEnd < existingEnd)
 				
-			if(correctAppointment == true)
-			{
-				currentAppointment = new Appointment(date, length, description);
-				retVal = true;
-			}
-		}
-		else
-		{
-			throw new LengthUnderrunException(length);
+			// If date ending is after existing appointment start...
+			.filter(a -> date.plusMinutes(length).isAfter(a.getAppointmentDate()) &&
+					
+					// And date ending is before existing end
+					// ...then the appointment will stay
+					date.plusMinutes(length).isBefore(
+							a.getAppointmentDate().plusMinutes((long) a.getLength())))
+			
+			// If no appointments stayed, then the date doesn't end in existing one
+			.count() != 0;
+		
+		// Check if the date contains inside already existing appointment
+		boolean overlapsExisting = appointments.parallelStream()
+			// Boolean expression is (date < existing) && (existing < dateEnd)
+				
+			// If date starts before the appointment starts...
+			.filter(a -> date.isBefore(a.getAppointmentDate()) &&
+					
+					// And date ending is after the appointment starts
+					// ...then the appointment will stay
+					date.plusMinutes(length).isAfter(
+							a.getAppointmentDate()))
+			
+			// If no appointments stayed, then the date doesn't contain the start of existing one
+			.count() != 0;
+		
+		// If they don't overlap, make new appointment
+		if (!startsInExisting && !endsInExisting && !overlapsExisting) {
+			currentAppointment = new Appointment(date, length, description);
+			retVal = true;
 		}
 		
 		return retVal;
