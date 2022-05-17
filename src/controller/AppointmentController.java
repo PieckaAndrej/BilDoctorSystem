@@ -39,54 +39,46 @@ public class AppointmentController {
 	 */
 	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException, LengthUnderrunException{
 		boolean retVal = false;
-		boolean correctAppointment;
+		boolean correctAppointment = true;
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		appointments = appointmentdb.getAllAppointments(date);
-		
-		if(appointments.size() != 0)
+	
+		if(length > 0)
 		{
-			if(length > 0)
+			for(int i = 0; i < appointments.size(); i++)
 			{
-				for(int i = 0; i < appointments.size(); i++)
+				if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
 				{
-					if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
-					{
-						if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
-						{
-							correctAppointment = false;
-							break;
-						}
-					}
-					else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
-					{
-						if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
-						{
-							correctAppointment = false;
-							break;
-						}
-					}
-					else
+					if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
 					{
 						correctAppointment = false;
 						break;
 					}
 				}
-				
-				if(correctAppointment = true)
+				else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
 				{
-					currentAppointment = new Appointment(date, length, description);
-					retVal = true;
+					if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
+					{
+						correctAppointment = false;
+						break;
+					}
+				}
+				else
+				{
+					correctAppointment = false;
+					break;
 				}
 			}
-			else
+				
+			if(correctAppointment == true)
 			{
-				throw new LengthUnderrunException(length);
+				currentAppointment = new Appointment(date, length, description);
+				retVal = true;
 			}
 		}
 		else
 		{
-			currentAppointment = new Appointment(date, length, description);
-			retVal = true;
+			throw new LengthUnderrunException(length);
 		}
 		
 		return retVal;
@@ -110,7 +102,7 @@ public class AppointmentController {
 	 * @param employee
 	 * @return boolean true if Employee added
 	 */
-	public boolean addEmployee(Employee employee) {
+	public boolean addEmployee(Employee employee) throws DatabaseAccessException {
 		boolean retVal = false;
 		if(currentAppointment != null) {
 			currentAppointment.addEmployee(employee);
@@ -126,17 +118,24 @@ public class AppointmentController {
 	 */
 	public boolean finishAppointment() throws DatabaseAccessException {
 		boolean retVal = false;
-		if(currentAppointment.isFilled()) {
-			try {
-				appointmentdb.insertAppointment(currentAppointment);
-				currentAppointment = null;
-				retVal = true;
+		if(currentAppointment != null) {
+			if(currentAppointment.isFilled()) {
+				try {
+					appointmentdb.insertAppointment(currentAppointment);
+					currentAppointment = null;
+					retVal = true;
+				}
+				catch(DatabaseAccessException e) {
+					e.printStackTrace();
+					throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
+				}	
 			}
-			catch(DatabaseAccessException e) {
-				e.printStackTrace();
-				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
-			}	
 		}
 		return retVal; 
+	}
+	
+	public void cancelAppointment()
+	{
+		currentAppointment = null;
 	}
 }
