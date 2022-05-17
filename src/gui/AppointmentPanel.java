@@ -6,6 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -19,6 +24,9 @@ import javax.swing.border.EmptyBorder;
 import org.jdatepicker.JDatePanel;
 
 import controller.AppointmentController;
+import dal.AppointmentDB;
+import exceptions.DatabaseAccessException;
+import model.Appointment;
 
 public class AppointmentPanel extends JPanel {
 
@@ -31,6 +39,8 @@ public class AppointmentPanel extends JPanel {
 	private JDatePanel calendar;
 	private JList<Double> list;
     private DefaultListModel<Double> listModel;
+    private AppointmentDB appointmentDB;
+    private LocalDateTime time;
 
 	private AppointmentController appointmentController;
 
@@ -89,19 +99,16 @@ public class AppointmentPanel extends JPanel {
 		saleButtonsPanel.add(btnCreateSale, gbc_btnCreateSale);
 	}
 
-	public void createAppointment() {
-//		StringBuilder a = new StringBuilder();
-//		a.append(calendar.getModel().getYear() + ".");
-//		a.append(calendar.getModel().getMonth() + ".");
-//		a.append(calendar.getModel().getDay());
-//		System.out.println(a);
+	public void createAppointment() {		
+		calendar.getModel().getValue();
+		time = ((GregorianCalendar)calendar.getModel().getValue()).toZonedDateTime().toLocalDateTime();
 		removeAll();
 		
 		JButton confirmButton = new JButton("Confirm");
 		confirmButton.setAlignmentX(0.5f);
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				confirm();
+				confirm(time);
 			}
 		});
 		
@@ -134,27 +141,17 @@ public class AppointmentPanel extends JPanel {
 		 * Creates the ScrollPane and adds it into the tabbed pane
 		 */
 		JScrollPane scrollPane = new JScrollPane();
-	    listModel = new DefaultListModel<Double>();
-	  
-	     //Generate list
-	     
-		for(double i = 0.00; i < 24; i++) {
-			listModel.addElement(i);
-		}
+		
+	    
 
 	    //Create the list and put it in a scroll pane.
-	    list = new JList<Double>(listModel);
+	    list = new JList<Double>();
 	    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    list.setSelectedIndex(0);
 	    list.setVisibleRowCount(2);
-	    scrollPane.setViewportView(list);
 	    
-	    JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				confirm();
-			}
-		});
+	    scrollPane.setViewportView(list);
+
 	
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
@@ -179,18 +176,41 @@ public class AppointmentPanel extends JPanel {
 		gridPanel.add(tabbedPane, gbc_tabbedPanel);
 		add(gridPanel, BorderLayout.CENTER);
 
+		ArrayList<Appointment> a;
+		try {
+			a = getAppointments(time);
+		    fillList(list,a);
+		} catch (DatabaseAccessException e1) {
+			e1.printStackTrace();
+		}
+		
 		revalidate();
 
 	}
 	
-	public void confirm() {
-
-			System.out.println(list.getSelectedIndex());
+	public void confirm(LocalDateTime time) {	
+		System.out.println(list.getSelectedValue());
+		AppointmentDataDialog newDialog = new AppointmentDataDialog();
+		newDialog.setVisible(true);
 	}
 	
 	public void cancelAppointment() {		
 		this.removeAll();
 		initGui();
 	}
+	
+	public void fillList(JList<Double> list, ArrayList<Appointment> a){
+		list.setCellRenderer(new HourListCellRenderer(time,a));
+		DefaultListModel<Double> dlm = new DefaultListModel<>();
+		for(double i = 0.00; i < 24; i++) {
+					dlm.addElement(i);
+			}
+		list.setModel(dlm);
+	}
 		
+	
+	public ArrayList<Appointment> getAppointments(LocalDateTime time) throws DatabaseAccessException{
+		appointmentDB = new AppointmentDB();
+		return appointmentDB.getAllAppointments(time);
+	}	
 }

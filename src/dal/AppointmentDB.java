@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,7 +17,7 @@ public class AppointmentDB implements AppointmentDBIF {
 	
 	private static final String CREATE_STATEMENT = "INSERT INTO Appointment(creationDate, length, date, description, employeePhoneNo) VALUES(?, ?, ?, ? ,?)";
 	private PreparedStatement createStatement;
-	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM Appointment WHERE date LIKE ?";
+	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM Appointment WHERE convert(date, [date], 102) = convert(date, ?, 102)";
 	private PreparedStatement getAppointmentsStatement;
 		
 	public AppointmentDB() {
@@ -75,16 +77,15 @@ public class AppointmentDB implements AppointmentDBIF {
 
 
 	@Override
-	public ArrayList<Appointment> getAllAppointments() throws DatabaseAccessException {
+	public ArrayList<Appointment> getAllAppointments(LocalDateTime date) throws DatabaseAccessException {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		
 		Appointment currentAppointment = null;
-		
+	
 		try {
 			getAppointmentsStatement = DbConnection.getInstance().getConnection().prepareStatement(GET_APPOINTMENTS_STATEMENT);
 			
-			// To do
-			getAppointmentsStatement.setString(1, null);
+			getAppointmentsStatement.setTimestamp(1, Timestamp.valueOf(date));
 			
 			ResultSet rs = getAppointmentsStatement.executeQuery();
 			
