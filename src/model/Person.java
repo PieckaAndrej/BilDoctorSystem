@@ -2,12 +2,13 @@ package model;
 
 public class Person {
 	private String name;
+	private String surname;
 	private String address;
 	private String city;
 	private String zipcode;
 	private String phoneNumber;
 	
-	public Person(String name, String address, String city, String zipcode, String phoneNumber) {
+	public Person(String name, String surname, String address, String city, String zipcode, String phoneNumber) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -104,5 +105,23 @@ public class Person {
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 	    this.phoneNumber = phoneNumber;
+	}
+	
+	/**
+	 * Get surname.
+	 *
+	 * @return surname as String.
+	 */
+	public String getSurname() {
+	    return surname;
+	}
+
+	/**
+	 * Set surname.
+	 *
+	 * @param surname the value to set.
+	 */
+	public void setSurname(String surname) {
+	    this.surname = surname;
 	}
 }

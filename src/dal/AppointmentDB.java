@@ -105,4 +105,12 @@ public class AppointmentDB implements AppointmentDBIF {
 		return new Appointment(rs.getTimestamp("date").toLocalDateTime(), rs.getInt("length"), rs.getString("description"));
 	}
 
+
+	/**
+	 * @return the createStatement
+	 */
+	public static String getCreateStatement() {
+		return CREATE_STATEMENT;
+	}
+
 }

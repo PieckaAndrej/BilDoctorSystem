@@ -1,16 +1,18 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class Employee extends Person{
 	
-	private double salary;
+	private BigDecimal salary;
 
-	public Employee(String name, String address, String city, String zipcode, String phoneNumber) {
-		super(name, address, city, zipcode, phoneNumber);
+	public Employee(String name, String surname, String address, String city, String zipcode, String phoneNumber) {
+		super(name, surname, address, city, zipcode, phoneNumber);
 		
 	}
 	
-	public Employee(String name, String address, String city, String zipcode, String phoneNumber, double salary) {
-		super(name, address, city, zipcode, phoneNumber);
+	public Employee(String name, String surname, String address, String city, String zipcode, String phoneNumber, BigDecimal salary) {
+		super(name, surname, address, city, zipcode, phoneNumber);
 		this.salary = salary;
 	}
 
@@ -19,7 +21,7 @@ public class Employee extends Person{
 	 * 
 	 * @return salary as double
 	 */
-	public double getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 
@@ -28,7 +30,7 @@ public class Employee extends Person{
 	 * 
 	 * @param salary as double
 	 */
-	public void setSalary(double salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 

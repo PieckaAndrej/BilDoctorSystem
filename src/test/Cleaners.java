@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import dal.AppointmentDB;
 import dal.OrderLineDB;
+import dal.PersonDB;
 import dal.ProductDB;
 import dal.SaleDB;
 import dal.ServiceDB;
@@ -90,6 +92,58 @@ public class Cleaners {
 					stmt.setInt(2, vehicle.getInt("year"));
 					stmt.setString(3, vehicle.getString("brand"));
 					stmt.setString(4, vehicle.getString("customerPhone"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	public static CleanDatabase getAppointmentCleaner() {
+		return new CleanDatabase("Appointment", AppointmentDB.getCreateStatement()) {
+			
+			@Override
+			public void insertPreparedStatement(PreparedStatement stmt, ResultSet appointment) {
+				try {
+					stmt.setTimestamp(1, appointment.getTimestamp("creationDate"));
+					stmt.setDouble(2, appointment.getDouble("length"));
+					stmt.setTimestamp(3, appointment.getTimestamp("date"));
+					stmt.setString(4, appointment.getString("description"));
+					stmt.setString(5, appointment.getString("employeePhoneNo"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	public static CleanDatabase getEmployeeCleaner() {
+		return new CleanDatabase("Employee", PersonDB.getInsertEmployee()) {
+			
+			@Override
+			public void insertPreparedStatement(PreparedStatement stmt, ResultSet employee) {
+				try {
+					stmt.setBigDecimal(1, employee.getBigDecimal("salary"));
+					stmt.setString(2, employee.getString("phoneNo"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	public static CleanDatabase getPersonCleaner() {
+		return new CleanDatabase("Person", PersonDB.getInsertPerson()) {
+			
+			@Override
+			public void insertPreparedStatement(PreparedStatement stmt, ResultSet person) {
+				try {
+					stmt.setString(1, person.getString("name"));
+					stmt.setString(2, person.getString("surname"));
+					stmt.setString(3, person.getString("zipcode"));
+					stmt.setString(4, person.getString("address"));
+					stmt.setString(5, person.getString("association"));
+					stmt.setString(6, person.getString("phoneNumber"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
