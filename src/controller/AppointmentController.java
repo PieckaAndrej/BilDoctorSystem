@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import dal.AppointmentDB;
 import exceptions.DatabaseAccessException;
+import exceptions.LengthUnderrunException;
+import exceptions.QuantityUnderrunException;
 import model.Appointment;
 import model.Employee;
 
@@ -35,17 +37,21 @@ public class AppointmentController {
 	 * @param description
 	 * @throws DatabaseAccessException 
 	 */
-	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException {
+	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException, LengthUnderrunException{
 		boolean retVal = false;
 		boolean correctAppointment;
 		ArrayList<Appointment> appointments = new ArrayList<>();
-		appointments = appointmentdb.getAllAppointments();
+		appointments = appointmentdb.getAllAppointments(date);
 		
 		if(length > 0)
 		{
 			for(int i = 0; i < appointments.size(); i++)
 			{
-				// to do
+				/*if()
+				{
+					correctAppointment = false;
+					break;
+				}*/
 			}
 			
 			if(correctAppointment = true)
@@ -53,6 +59,10 @@ public class AppointmentController {
 				currentAppointment = new Appointment(date, length, description);
 				retVal = true;
 			}
+		}
+		else
+		{
+			throw new LengthUnderrunException(length);
 		}
 		return retVal;
 	}

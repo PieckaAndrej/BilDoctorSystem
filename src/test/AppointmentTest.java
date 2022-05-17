@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import controller.AppointmentController;
 import dal.PersonDB;
 import exceptions.DatabaseAccessException;
+import exceptions.LengthUnderrunException;
 
 public class AppointmentTest {
 	
@@ -22,7 +23,7 @@ public class AppointmentTest {
 	}
 	
 	@Test
-	void scheduleAppointment() {
+	void scheduleAppointment() throws DatabaseAccessException, LengthUnderrunException {
 		String phoneNumber = "97845625";
 		
 		assertEquals(appointmentController.createAppointment(null, 1, "Oil change"), true);
