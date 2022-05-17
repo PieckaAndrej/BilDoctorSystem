@@ -43,44 +43,52 @@ public class AppointmentController {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		appointments = appointmentdb.getAllAppointments(date);
 		
-		if(length > 0)
+		if(appointments.size() != 0)
 		{
-			for(int i = 0; i < appointments.size(); i++)
+			if(length > 0)
 			{
-				if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
+				for(int i = 0; i < appointments.size(); i++)
 				{
-					if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
+					if(appointments.get(i).getAppointmentDate().compareTo(date) == -1)
+					{
+						if(appointments.get(i).getAppointmentDate().plusMinutes(Double.valueOf(appointments.get(i).getLength()).longValue()).compareTo(date) == 1)
+						{
+							correctAppointment = false;
+							break;
+						}
+					}
+					else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
+					{
+						if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
+						{
+							correctAppointment = false;
+							break;
+						}
+					}
+					else
 					{
 						correctAppointment = false;
 						break;
 					}
-				}
-				else if(appointments.get(i).getAppointmentDate().compareTo(date) == 1)
-				{
-					if(date.plusMinutes(length).compareTo(appointments.get(i).getAppointmentDate()) == 1)
-					{
-						correctAppointment = false;
-						break;
-					}
-				}
-				else
-				{
-					correctAppointment = false;
-					break;
 				}
 				
+				if(correctAppointment = true)
+				{
+					currentAppointment = new Appointment(date, length, description);
+					retVal = true;
+				}
 			}
-			
-			if(correctAppointment = true)
+			else
 			{
-				currentAppointment = new Appointment(date, length, description);
-				retVal = true;
+				throw new LengthUnderrunException(length);
 			}
 		}
 		else
 		{
-			throw new LengthUnderrunException(length);
+			currentAppointment = new Appointment(date, length, description);
+			retVal = true;
 		}
+		
 		return retVal;
 	}
 	

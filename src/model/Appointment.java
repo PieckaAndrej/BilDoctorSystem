@@ -32,11 +32,7 @@ public class Appointment {
 	 * Check if the appointment has been filled
 	 */
 	public boolean isFilled(){
-		boolean retVal = false;
-		if(customerName != null && customerPhoneNo!= null && employee!= null) {
-			retVal = true;
-		}
-		return retVal;
+		return customerName != null && customerPhoneNo!= null && employee!= null;
 	}
 	
 	/**

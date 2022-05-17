@@ -43,9 +43,11 @@ public class PersonDB implements PersonDBIF {
 			insertPerson.setString(5, "E");
 			insertPerson.setString(6, employee.getPhoneNumber());
 			
-			insertEmployee(employee);
+			
 			
 			insertPerson.executeUpdate();
+			
+			insertEmployee(employee);
 			
 			DbConnection.getInstance().commitTransaction();
 			retVal = true;

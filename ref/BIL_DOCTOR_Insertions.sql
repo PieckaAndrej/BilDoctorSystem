@@ -4,7 +4,7 @@ insert into City values ('9000', 'Aalborg');
 insert into City values ('9870', 'Sindal');
 
 insert into Person values ('Joe', 'Banana', '9000', 'Bananavej 42', 'C', '1');
-insert into Person values ('Mihal', 'Mihut', '9870', 'Gutenbergvej 2D', 'E', '97845625');
+insert into Person values ('Mihai', 'Mihut', '9870', 'Gutenbergvej 2D', 'E', '97845625');
 
 insert into Customer values ('0', '1');
 
