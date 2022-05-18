@@ -231,10 +231,11 @@ public class AppointmentDataDialog extends JDialog {
 				secondOkButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(textPhoneNumber.getText().matches(pattern)) {
-							if(textName.equals("")) {
+							if(!textName.getText().equals("")) {
 								if(comboBox.getEditor().getItem() instanceof Employee) {
 									addCustomerInfo();
 									addEmployee();
+									System.out.println("works");
 								} else {
 									errorLabel.setVisible(true);
 									errorLabel.setText("The employee is incorrect");
