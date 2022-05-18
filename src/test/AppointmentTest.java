@@ -2,7 +2,9 @@ package test;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,14 +16,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.AppointmentController;
-import dal.PersonDB;
+import dal.AppointmentDB;
 import dal.DbConnection;
+import dal.PersonDB;
 import exceptions.DatabaseAccessException;
 import exceptions.LengthUnderrunException;
-import exceptions.OutOfStockException;
-import exceptions.QuantityUnderrunException;
+import model.Appointment;
 import model.Employee;
-import model.Person;
 
 public class AppointmentTest {
 	
@@ -87,24 +88,322 @@ public class AppointmentTest {
 	}
 	
 	@Test
-	void incorrectLengthValue() {
+	void testLength0ShouldThrowException() {
 		LocalDateTime date = LocalDateTime.now();
+		int length = 0;
 		
 		assertThrows(LengthUnderrunException.class,
-				() -> appointmentController.createAppointment(date, -60, "Oil change"));
+				() -> appointmentController.createAppointment(date, length, ""));
 	}
 	
 	@Test
-	void overlappingAppointments() throws DatabaseAccessException, LengthUnderrunException {
+	void testLengthMinus1ShouldThrowException() {
+		LocalDateTime date = LocalDateTime.now();
+		int length = -1;
+		
+		assertThrows(LengthUnderrunException.class,
+				() -> appointmentController.createAppointment(date, length, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length59ShouldBeTrue()
+			throws DatabaseAccessException, LengthUnderrunException {
 		String customerPhoneNumber = "12345678";
 		String customerName = "Joe";
+		int length = 60;
+		int newLength = 59;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
 		LocalDateTime date = LocalDateTime.now();
 		
-		assertEquals(appointmentController.createAppointment(date, 60, "Oil change"), true);
-		assertEquals(appointmentController.addCustomerInfo(customerName, customerPhoneNumber), true);
-		assertEquals(appointmentController.addEmployee(testEmployee), true);	
-		assertEquals(appointmentController.finishAppointment(), true);
-		assertEquals(appointmentController.createAppointment(date, 120, "Oil change"), false);
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertTrue(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length60ShouldBeTrue() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 60;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertTrue(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length61ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 61;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length119ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 119;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length120ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 120;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart12Length121ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 121;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 12, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart13Length59ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 59;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart13Length60ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 60;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart13Length61ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 61;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart13and59Length1ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 1;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 13, 59);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart13and59Length2ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 2;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 13, 59);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertFalse(appointmentController.createAppointment(newAppointment, newLength, ""));
+	}
+	
+	@Test
+	void testCreateAppointmentStart14Length1ShouldBeFalse() throws DatabaseAccessException, LengthUnderrunException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		int length = 60;
+		int newLength = 1;
+		
+		LocalDateTime existingAppointment = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime newAppointment = LocalDateTime.of(2000, 1, 1, 14, 0);
+		LocalDateTime date = LocalDateTime.now();
+		
+		Appointment a = new Appointment(existingAppointment, length, "");
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		
+		assertTrue(appointmentController.createAppointment(newAppointment, newLength, ""));
 	}
 	
 	@Test
