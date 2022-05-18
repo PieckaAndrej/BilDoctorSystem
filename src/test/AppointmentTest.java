@@ -523,7 +523,7 @@ public class AppointmentTest {
 		appointmentDb.insertAppointment(a);
 		appointmentDb.insertAppointment(a);
 		
-		List<Appointment> returnList = appointmentDb.getAllAppointments(appointmentDate);
+		List<Appointment> returnList = appointmentDb.getAppointmentsOnDate(appointmentDate);
 		
 		assertEquals(2, returnList.size());
 
