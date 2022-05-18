@@ -1,28 +1,50 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.time.LocalDateTime;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.AppointmentController;
+import exceptions.DatabaseAccessException;
+import exceptions.LengthUnderrunException;
+
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JSpinner;
+import java.awt.Component;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AppointmentDataDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextArea textArea;
+	private JSpinner spinner;
+	private AppointmentController appointmentController;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JTextField textPhoneNumber;
+	private JTextField textName;
+	private JPanel descriptionPanel;
+	private JPanel customerPanel;
+	private JButton secondOkButton;
+	private JButton okButton;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			AppointmentDataDialog dialog = new AppointmentDataDialog();
+			AppointmentDataDialog dialog = new AppointmentDataDialog(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -33,7 +55,8 @@ public class AppointmentDataDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AppointmentDataDialog() {
+	public AppointmentDataDialog(LocalDateTime time) {
+		appointmentController = new AppointmentController();
 		setTitle("Appointment menu");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -41,39 +64,77 @@ public class AppointmentDataDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel, BorderLayout.CENTER);
+			descriptionPanel = new JPanel();
+			contentPanel.add(descriptionPanel);
+			descriptionPanel.setLayout(new BorderLayout(0, 0));
 			{
 				Box verticalBox = Box.createVerticalBox();
-				panel.add(verticalBox);
+				descriptionPanel.add(verticalBox);
 				{
-					JLabel lblNewLabel_2 = new JLabel("Date");
+					JLabel lblNewLabel_2 = new JLabel(time+"");
+					lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 					verticalBox.add(lblNewLabel_2);
 				}
 				{
 					Box horizontalBox = Box.createHorizontalBox();
+					horizontalBox.setAlignmentY(Component.CENTER_ALIGNMENT);
 					verticalBox.add(horizontalBox);
 					{
-						JLabel lblNewLabel = new JLabel("Length");
+						lblNewLabel = new JLabel("Length");
 						horizontalBox.add(lblNewLabel);
 					}
 					{
-						textField = new JTextField();
-						horizontalBox.add(textField);
-						textField.setColumns(10);
+						spinner = new JSpinner();
+						horizontalBox.add(spinner);
 					}
 				}
 				{
 					Box horizontalBox = Box.createHorizontalBox();
 					verticalBox.add(horizontalBox);
 					{
-						JLabel lblNewLabel_1 = new JLabel("Description");
+						lblNewLabel_1 = new JLabel("Description");
 						horizontalBox.add(lblNewLabel_1);
 					}
+				}
+				{
+					textArea = new JTextArea();
+					textArea.setLineWrap(true);
+					verticalBox.add(textArea);
+					textArea.setPreferredSize(new Dimension(100,100));
+				}
+			}
+		}
+		{
+			customerPanel = new JPanel();
+			contentPanel.add(customerPanel, BorderLayout.NORTH);
+			customerPanel.setVisible(false);
+			{
+				Box verticalBox = Box.createVerticalBox();
+				customerPanel.add(verticalBox);
+				{
+					Box horizontalBox = Box.createHorizontalBox();
+					verticalBox.add(horizontalBox);
 					{
-						textField_1 = new JTextField();
-						horizontalBox.add(textField_1);
-						textField_1.setColumns(10);
+						JLabel lblNewLabel_3 = new JLabel("Phone Number:");
+						horizontalBox.add(lblNewLabel_3);
+					}
+					{
+						textPhoneNumber = new JTextField();
+						horizontalBox.add(textPhoneNumber);
+						textPhoneNumber.setColumns(10);
+					}
+				}
+				{
+					Box horizontalBox = Box.createHorizontalBox();
+					verticalBox.add(horizontalBox);
+					{
+						JLabel lblNewLabel_4 = new JLabel("Name:");
+						horizontalBox.add(lblNewLabel_4);
+					}
+					{
+						textName = new JTextField();
+						horizontalBox.add(textName);
+						textName.setColumns(10);
 					}
 				}
 			}
@@ -83,17 +144,53 @@ public class AppointmentDataDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						createAppointment(time);
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
+				
+				secondOkButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						addCustomerInfo();
+					}
+				});
+				okButton.setActionCommand("OK");
+				buttonPane.add(secondOkButton);
+				
+				secondOkButton.setVisible(false);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	private void createAppointment(LocalDateTime time) {
+		try {
+			appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText());
+		} catch (DatabaseAccessException | LengthUnderrunException e) {
+			e.printStackTrace();
+		}
+		descriptionPanel.setVisible(false);
+		okButton.setVisible(false);
+		customerPanel.setVisible(true);
+		secondOkButton.setVisible(true);
+		getRootPane().setDefaultButton(secondOkButton);
+	}
+	
+	private void addCustomerInfo() {
+		System.out.println("yomama");
 	}
 
 }
