@@ -100,7 +100,7 @@ public class Cleaners {
 	}
 	
 	public static CleanDatabase getAppointmentCleaner() {
-		return new CleanDatabase("Appointment", AppointmentDB.getCreateStatement()) {
+		return new CleanDatabase("Appointment", AppointmentDB.getCreateStatement(), true) {
 			
 			@Override
 			public void insertPreparedStatement(PreparedStatement stmt, ResultSet appointment) {

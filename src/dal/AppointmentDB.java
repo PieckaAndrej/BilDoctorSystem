@@ -101,7 +101,13 @@ public class AppointmentDB implements AppointmentDBIF {
 	}
 	
 	private Appointment buildObject(ResultSet rs) throws SQLException {
-		return new Appointment(rs.getTimestamp("date").toLocalDateTime(), rs.getInt("length"), rs.getString("description"));
+		Appointment a = new Appointment(rs.getTimestamp("date").toLocalDateTime(), rs.getInt("length"), rs.getString("description"));
+		a.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
+		PersonDB personDb = new PersonDB();
+		
+		// TODO set employee
+		
+		return a;
 	}
 
 

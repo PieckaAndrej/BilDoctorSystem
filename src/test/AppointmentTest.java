@@ -8,8 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,17 +31,14 @@ public class AppointmentTest {
 	private AppointmentController appointmentController;
 	private PersonDB personDB;
 	private Employee testEmployee;
-	private DbConnection dbConnection;
 	
 	private CleanDatabase appointmentCleaner;
 	private CleanDatabase personCleaner;
 	private CleanDatabase employeeCleaner;
 	
 	void initCleaners() {
-		appointmentCleaner = Cleaners.getAppointmentCleaner();
-		
+		appointmentCleaner = Cleaners.getAppointmentCleaner();	
 		personCleaner = Cleaners.getPersonCleaner();
-		
 		employeeCleaner = Cleaners.getEmployeeCleaner();
 	}
 	
@@ -418,7 +417,7 @@ public class AppointmentTest {
 			e.printStackTrace();
 		}
 		assertEquals(appointmentController.addCustomerInfo(customerName, customerPhoneNumber), true);
-		Connection conn = dbConnection.getInstance().getConnection();
+		Connection conn = DbConnection.getInstance().getConnection();
 		/*try {
 			conn.close();
 		} catch (SQLException e) {
@@ -453,5 +452,92 @@ public class AppointmentTest {
 		appointmentController.cancelAppointment();
 		assertEquals(appointmentController.finishAppointment(), false);
 	}
+	
+	@Test
+	void testInsertAppointment() throws DatabaseAccessException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		String description = "jo mama";
+		int length = 60;
+		
+		LocalDateTime appointmentDate = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime date = LocalDateTime.of(2022, 1, 1, 11, 1);
+		
+		String retrievedEmployee = "";
+		String retrievedDescription = "";
+		int retrievedLength = 0;
+		
+		LocalDateTime retrievedAppointmentDate = null;
+		LocalDateTime retrievedDate = null;
+		
+		Appointment a = new Appointment(appointmentDate, length, description);
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		
+		try {
+			ResultSet rs =  DbConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Appointment")
+				.executeQuery();
+			
+			if (rs.next()) {
+				retrievedDate = rs.getTimestamp("creationDate").toLocalDateTime();
+				retrievedLength = (int) rs.getDouble("length");
+				retrievedAppointmentDate = rs.getTimestamp("date").toLocalDateTime();
+				retrievedDescription = rs.getString("description");
+				retrievedEmployee = rs.getString("employeePhoneNo");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(appointmentDate, retrievedAppointmentDate);
+		assertEquals(length, retrievedLength);
+		assertEquals(date, retrievedDate);
+		assertEquals(testEmployee.getPhoneNumber(), retrievedEmployee);
+		assertEquals(description, retrievedDescription);
+	}
 
+	@Test
+	void testGetAllAppointments() throws DatabaseAccessException {
+		String customerPhoneNumber = "12345678";
+		String customerName = "Joe";
+		String description = "jo mama";
+		int length = 60;
+		
+		LocalDateTime appointmentDate = LocalDateTime.of(2000, 1, 1, 13, 0);
+		LocalDateTime date = LocalDateTime.of(2022, 1, 1, 11, 1);
+		
+		Appointment a = new Appointment(appointmentDate, length, description);
+		a.setCreationDate(date);
+		a.setCustomerName(customerName);
+		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.setEmployee(testEmployee);
+		
+		AppointmentDB appointmentDb = new AppointmentDB();
+		
+		appointmentDb.insertAppointment(a);
+		appointmentDb.insertAppointment(a);
+		
+		List<Appointment> returnList = appointmentDb.getAllAppointments(appointmentDate);
+		
+		assertEquals(2, returnList.size());
+
+		assertEquals(a.getAppointmentDate(), returnList.get(0).getAppointmentDate());
+		assertEquals(a.getLength(), returnList.get(0).getLength(), 0);
+		assertEquals(a.getCreationDate(), returnList.get(0).getCreationDate());
+		assertEquals(a.getDescription(), returnList.get(0).getDescription());
+		assertEquals(a.getEmployee().getPhoneNumber(), returnList.get(0).getEmployee().getPhoneNumber());
+		
+		assertEquals(a.getAppointmentDate(), returnList.get(1).getAppointmentDate());
+		assertEquals(a.getLength(), returnList.get(1).getLength(), 0);
+		assertEquals(a.getCreationDate(), returnList.get(1).getCreationDate());
+		assertEquals(a.getDescription(), returnList.get(1).getDescription());
+		assertEquals(a.getEmployee().getPhoneNumber(), returnList.get(1).getEmployee().getPhoneNumber());
+		
+	}
 }
