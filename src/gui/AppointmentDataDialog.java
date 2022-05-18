@@ -1,30 +1,40 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controller.AppointmentController;
 import exceptions.DatabaseAccessException;
 import exceptions.LengthUnderrunException;
-
-import javax.swing.Box;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JTextArea;
-import javax.swing.JSpinner;
-import java.awt.Component;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import model.Employee;
+import model.Product;
 
 public class AppointmentDataDialog extends JDialog {
 
@@ -41,6 +51,8 @@ public class AppointmentDataDialog extends JDialog {
 	private JButton secondOkButton;
 	private JButton okButton;
 	private JLabel errorLabel;
+	private JComboBox<Employee> comboBox;
+	private String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
 
 	/**
 	 * Launch the application.
@@ -127,6 +139,11 @@ public class AppointmentDataDialog extends JDialog {
 						horizontalBox.add(textPhoneNumber);
 						textPhoneNumber.setColumns(10);
 					}
+					
+				}
+				{
+					Component verticalStrut = Box.createVerticalStrut(10);
+					verticalBox.add(verticalStrut);
 				}
 				{
 					Box horizontalBox = Box.createHorizontalBox();
@@ -141,6 +158,68 @@ public class AppointmentDataDialog extends JDialog {
 						textName.setColumns(10);
 					}
 				}
+				{
+					Component verticalStrut = Box.createVerticalStrut(10);
+					verticalBox.add(verticalStrut);
+				}
+				{
+					Box horizontalBox = Box.createHorizontalBox();
+					verticalBox.add(horizontalBox);
+					{
+						JLabel lblNewLabel_5 = new JLabel("Employee");
+						horizontalBox.add(lblNewLabel_5);
+					}
+					{
+						comboBox = new JComboBox<>();
+						horizontalBox.add(comboBox);
+						comboBox.setEditable(true);
+						fillProductList(comboBox);
+						comboBox.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
+
+							   @Override
+							   public void focusGained(FocusEvent e) {
+							      comboBox.showPopup();
+							   }
+							});
+						
+						comboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+							
+							@Override
+							public void keyReleased(KeyEvent e) {
+								try {
+									if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
+										e.getKeyCode() == KeyEvent.VK_DOWN ||
+										e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
+										Object o = comboBox.getEditor().getItem();
+											((DefaultComboBoxModel<Employee>) comboBox.getModel())
+											.removeAllElements();
+											comboBox.setSelectedItem(o);
+										if(o != null) {
+											((DefaultComboBoxModel<Employee>) comboBox.getModel()).addAll(
+													appointmentController.getAllEmployees().stream()
+													.filter(p -> p.getName().toLowerCase().contains(o.toString()
+													.toLowerCase())).toList());
+										
+											}
+										}	
+									} catch (DatabaseAccessException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+							}
+								
+						});
+
+						comboBox.getEditor().getEditorComponent().addMouseListener(new MouseAdapter() {
+							
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								if(e.getButton() == MouseEvent.BUTTON1)
+								comboBox.showPopup();
+							}
+						});
+					}
+				}
 			}
 		}
 		{
@@ -151,7 +230,23 @@ public class AppointmentDataDialog extends JDialog {
 				secondOkButton = new JButton("Confirm");
 				secondOkButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						addCustomerInfo();
+						if(textPhoneNumber.getText().matches(pattern)) {
+							if(textName.equals("")) {
+								if(comboBox.getEditor().getItem() instanceof Employee) {
+									addCustomerInfo();
+									addEmployee();
+								} else {
+									errorLabel.setVisible(true);
+									errorLabel.setText("The employee is incorrect");
+								}
+							} else {
+								errorLabel.setVisible(true);
+								errorLabel.setText("Input name");
+							}
+						} else {
+							errorLabel.setVisible(true);
+							errorLabel.setText("The phone number is incorrect");
+						}						
 					}
 				});
 				{
@@ -190,14 +285,13 @@ public class AppointmentDataDialog extends JDialog {
 	}
 	private void createAppointment(LocalDateTime time) {
 		try {
-			System.out.println(time);
 			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText())) {
 				openCustomerInfoPanel();
 				}
 				else {
 					errorLabel.setVisible(true);
 					errorLabel.setText("The date is incorrect");
-				};			
+				}			
 		} catch (DatabaseAccessException | LengthUnderrunException e) {
 			e.printStackTrace();
 		}
@@ -205,7 +299,15 @@ public class AppointmentDataDialog extends JDialog {
 	
 	private void addCustomerInfo() {
 		appointmentController.addCustomerInfo(textName.getText(), textPhoneNumber.getText());
-		System.out.println("works");
+	}
+	
+	private void addEmployee() {
+			try {
+				appointmentController.addEmployee((Employee) comboBox.getEditor().getItem());
+			} catch (DatabaseAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	private void openCustomerInfoPanel() {
@@ -215,5 +317,20 @@ public class AppointmentDataDialog extends JDialog {
 		secondOkButton.setVisible(true);
 		secondOkButton.setEnabled(true);
 		getRootPane().setDefaultButton(secondOkButton);
+	}
+	
+	private void fillProductList(JComboBox<Employee> comboBox) {
+		List<Employee> ps = null;
+		try {
+			ps = appointmentController.getAllEmployees();
+		} catch (DatabaseAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
+		dfm.addAll(ps);
+		
+		comboBox.setModel(dfm);
+		comboBox.setRenderer(new EmployeeListCellRenderer());
 	}
 }

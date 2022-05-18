@@ -25,7 +25,7 @@ public class AppointmentController {
 	 * @return ArrayList of all employees
 	 * @throws DatabaseAccessException
 	 */
-	public ArrayList<Employee> getAllEmployees() throws DatabaseAccessException{
+	public List<Employee> getAllEmployees() throws DatabaseAccessException{
 		return personCtrl.getAllEmployees();
 	}
 	

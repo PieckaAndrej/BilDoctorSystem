@@ -4,13 +4,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import exceptions.DatabaseAccessException;
 import model.Employee;
 
 public class PersonDB implements PersonDBIF {
 
-	private static final String SELECT_EMPLOYEES = "SELECT * FROM Employee";
+	private static final String SELECT_EMPLOYEES = "SELECT * FROM Person "
+			+ "	join City on Person.Zipcode = City.Zipcode "
+			+ "	join Employee on Person.phoneNumber = Employee.phoneNo and Person.countryCode = Employee.countryCode;";
+	private static final String SELECT_PERSON = "SELECT * FROM Person join City on Person.Zipcode = City.Zipcode WHERE phoneNumber = ?";
 	private static final String INSERT_PERSON = "INSERT INTO Person(name, surname, zipcode, address, association, phoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String INSERT_EMPLOYEE = "INSERT INTO Employee(salary, phoneNo) VALUES (?, ?)";
 	private PreparedStatement selectAllEmployees;
@@ -90,18 +94,17 @@ public class PersonDB implements PersonDBIF {
 	 * @return List of all employees
 	 */
 	@Override
-	public ArrayList<Employee> getAllEmployees() throws DatabaseAccessException {
-		ArrayList<Employee> employees = new ArrayList<>();
+	public List<Employee> getAllEmployees() throws DatabaseAccessException {
+		List<Employee> employees = new ArrayList<>();
 		
 		try {
 			selectAllEmployees = DbConnection.getInstance().getConnection()
 					.prepareStatement(SELECT_EMPLOYEES);
 			ResultSet rs = selectAllEmployees.executeQuery();
 			
-			while(rs.next()) {
-				
-				employees.add(buildObject(rs));
-			}
+			
+			employees = buildObjects(rs);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,7 +121,6 @@ public class PersonDB implements PersonDBIF {
 	 */
 	private ResultSet findPerson(String phone) throws SQLException {
 		ResultSet result = null;
-		String SELECT_PERSON = "SELECT * FROM Person WHERE phoneNumber = ?";
 		try {
 			selectPersonWithPhoneNo = DbConnection.getInstance().getConnection()
 					.prepareStatement(SELECT_PERSON);
@@ -137,9 +139,16 @@ public class PersonDB implements PersonDBIF {
 	 * @throws SQLException
 	 */
 	private Employee buildObject(ResultSet rs) throws SQLException {
-		ResultSet resultSet = findPerson(rs.getString("phoneNumber"));
-		return new Employee(resultSet.getString("name"), resultSet.getString("surname"), resultSet.getString("address"), resultSet.getString("city"),
-				resultSet.getString("zipcode"), resultSet.getString("phoneNumber"), rs.getBigDecimal("salary"));
+		return new Employee(rs.getString("name"), rs.getString("surname"), rs.getString("address"), rs.getString("city"),
+				rs.getString("zipcode"), rs.getString("phoneNumber"), rs.getBigDecimal("salary"));
+	}
+	
+	private List<Employee> buildObjects(ResultSet rs) throws SQLException {
+		List<Employee> list = new ArrayList<>();
+		while(rs.next()) {
+			list.add(buildObject(rs));
+		}
+		return list;
 	}
 
 	/**

@@ -10,8 +10,7 @@ public class Person {
 	
 	public Person(String name, String surname, String address, String city, String zipcode, String phoneNumber) {
 		super();
-		this.name = name;
-		this.surname = surname;
+		this.name = name + " " + surname;
 		this.address = address;
 		this.city = city;
 		this.zipcode = zipcode;
@@ -124,5 +123,10 @@ public class Person {
 	 */
 	public void setSurname(String surname) {
 	    this.surname = surname;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 }

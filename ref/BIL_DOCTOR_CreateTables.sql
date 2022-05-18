@@ -166,7 +166,6 @@ GO
 CREATE TABLE dbo.Appointment (
 	id int PRIMARY KEY IDENTITY(1,1), 
 	creationDate datetime NOT NULL,
-	saleDate datetime NOT NULL,
 	[length] int NOT NULL,
 	[date] datetime NOT NULL,
 	[description] VARCHAR(128) NOT NULL,

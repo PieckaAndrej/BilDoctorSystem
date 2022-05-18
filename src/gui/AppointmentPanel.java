@@ -220,5 +220,5 @@ public class AppointmentPanel extends JPanel {
 			e.printStackTrace();
 		}
 		return appointments;
-	}	
+	}
 }

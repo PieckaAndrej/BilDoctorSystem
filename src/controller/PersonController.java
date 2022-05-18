@@ -1,5 +1,5 @@
 package controller;
-import java.util.ArrayList;
+import java.util.List;
 
 import dal.PersonDB;
 import dal.PersonDBIF;
@@ -18,7 +18,7 @@ public class PersonController {
 	 * @return ArrayList of all employees
 	 * @throws DatabaseAccessException
 	 */
-	public ArrayList<Employee> getAllEmployees() throws DatabaseAccessException {
+	public List<Employee> getAllEmployees() throws DatabaseAccessException {
 		return personDB.getAllEmployees();
 	}
 	
