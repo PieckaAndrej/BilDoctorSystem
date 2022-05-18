@@ -5,10 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import exceptions.DatabaseAccessException;
 import model.Appointment;
@@ -77,7 +76,7 @@ public class AppointmentDB implements AppointmentDBIF {
 
 
 	@Override
-	public ArrayList<Appointment> getAllAppointments(LocalDateTime date) throws DatabaseAccessException {
+	public List<Appointment> getAppointmentsOnDate(LocalDateTime date) throws DatabaseAccessException {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		
 		Appointment currentAppointment = null;
@@ -95,8 +94,7 @@ public class AppointmentDB implements AppointmentDBIF {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
 		}
 		
 		return appointments;

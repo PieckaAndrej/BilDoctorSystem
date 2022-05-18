@@ -1,9 +1,8 @@
 package controller;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import dal.AppointmentDB;
 import exceptions.DatabaseAccessException;
@@ -46,8 +45,8 @@ public class AppointmentController {
 		}
 		
 		// Get all appointments on the date from the database
-		ArrayList<Appointment> appointments = new ArrayList<>();
-		appointments = appointmentdb.getAllAppointments(date);
+		List<Appointment> appointments = new ArrayList<>();
+		appointments = appointmentdb.getAppointmentsOnDate(date);
 		
 		boolean overlaps = appointments.parallelStream()
 			
@@ -155,5 +154,9 @@ public class AppointmentController {
 	public void cancelAppointment()
 	{
 		currentAppointment = null;
+	}
+	
+	public List<Appointment> getAppointmentsOnDay(LocalDateTime date) throws DatabaseAccessException {
+		return appointmentdb.getAppointmentsOnDate(date);
 	}
 }

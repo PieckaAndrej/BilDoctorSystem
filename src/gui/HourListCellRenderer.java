@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
@@ -13,11 +14,9 @@ import model.Appointment;
 
 public class HourListCellRenderer implements ListCellRenderer<Double> {
 	
-	private LocalDateTime date;
-	private ArrayList<Appointment> a;
+	private List<Appointment> a;
 
-	public HourListCellRenderer(LocalDateTime date, ArrayList<Appointment> a) {
-		this.date = date;
+	public HourListCellRenderer(List<Appointment> a) {
 		this.a = a;
 	}
 	

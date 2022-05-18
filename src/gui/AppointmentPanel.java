@@ -7,10 +7,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -24,7 +23,6 @@ import javax.swing.border.EmptyBorder;
 import org.jdatepicker.JDatePanel;
 
 import controller.AppointmentController;
-import dal.AppointmentDB;
 import exceptions.DatabaseAccessException;
 import model.Appointment;
 
@@ -39,7 +37,6 @@ public class AppointmentPanel extends JPanel {
 	private JDatePanel calendar;
 	private JList<Double> list;
     private DefaultListModel<Double> listModel;
-    private AppointmentDB appointmentDB;
     private LocalDateTime time;
 
 	private AppointmentController appointmentController;
@@ -104,7 +101,7 @@ public class AppointmentPanel extends JPanel {
 	/**
 	 * Appointment ui constructor
 	 */
-	public void createAppointment() {		
+	public void createAppointment() {
 		time = ((GregorianCalendar)calendar.getModel().getValue()).toZonedDateTime().toLocalDateTime();
 		
 		removeAll();
@@ -181,13 +178,9 @@ public class AppointmentPanel extends JPanel {
 		gridPanel.add(tabbedPane, gbc_tabbedPanel);
 		add(gridPanel, BorderLayout.CENTER);
 
-		ArrayList<Appointment> a;
-		try {
-			a = getAppointments(time);
-		    fillList(list,a);
-		} catch (DatabaseAccessException e1) {
-			e1.printStackTrace();
-		}
+		List<Appointment> a;
+		a = getAppointments(time);
+		fillList(a);
 		
 		revalidate();
 
@@ -208,8 +201,8 @@ public class AppointmentPanel extends JPanel {
 		initGui();
 	}
 	
-	public void fillList(JList<Double> list, ArrayList<Appointment> a){
-		list.setCellRenderer(new HourListCellRenderer(time,a));
+	public void fillList(List<Appointment> a){
+		list.setCellRenderer(new HourListCellRenderer(a));
 		DefaultListModel<Double> dlm = new DefaultListModel<>();
 		for(double i = 0.00; i < 24; i++) {
 					dlm.addElement(i);
@@ -218,8 +211,14 @@ public class AppointmentPanel extends JPanel {
 	}
 		
 	
-	public ArrayList<Appointment> getAppointments(LocalDateTime time) throws DatabaseAccessException{
-		appointmentDB = new AppointmentDB();
-		return appointmentDB.getAllAppointments(time);
+	public List<Appointment> getAppointments(LocalDateTime time) {
+		List<Appointment> appointments = null;
+		try {
+			appointments = appointmentController.getAppointmentsOnDay(time);
+		} catch (DatabaseAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return appointments;
 	}	
 }
