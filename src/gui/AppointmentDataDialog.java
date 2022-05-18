@@ -17,6 +17,8 @@ import exceptions.LengthUnderrunException;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import java.awt.Component;
@@ -84,7 +86,8 @@ public class AppointmentDataDialog extends JDialog {
 						horizontalBox.add(lblNewLabel);
 					}
 					{
-						spinner = new JSpinner();
+						SpinnerModel sm = new SpinnerNumberModel(1, 1, null, 1);
+						spinner = new JSpinner(sm);
 						horizontalBox.add(spinner);
 					}
 				}
@@ -144,6 +147,18 @@ public class AppointmentDataDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
+				secondOkButton = new JButton("Confirm");
+				secondOkButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						addCustomerInfo();
+					}
+				});
+				secondOkButton.setActionCommand("Confirm");
+				buttonPane.add(secondOkButton);
+				secondOkButton.setEnabled(false);
+				secondOkButton.setVisible(false);
+			}
+			{
 				okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -153,17 +168,6 @@ public class AppointmentDataDialog extends JDialog {
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
-				
-				secondOkButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						addCustomerInfo();
-					}
-				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(secondOkButton);
-				
-				secondOkButton.setVisible(false);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -174,23 +178,32 @@ public class AppointmentDataDialog extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+
 		}
 	}
 	private void createAppointment(LocalDateTime time) {
 		try {
 			appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText());
+			openCustomerInfoPanel();
 		} catch (DatabaseAccessException | LengthUnderrunException e) {
+			
 			e.printStackTrace();
 		}
+		
+		
+	}
+	
+	private void addCustomerInfo() {
+		appointmentController.addCustomerInfo(textName.getText(), textPhoneNumber.getText());
+		System.out.println("works");
+	}
+	
+	private void openCustomerInfoPanel() {
 		descriptionPanel.setVisible(false);
 		okButton.setVisible(false);
 		customerPanel.setVisible(true);
 		secondOkButton.setVisible(true);
+		secondOkButton.setEnabled(true);
 		getRootPane().setDefaultButton(secondOkButton);
 	}
-	
-	private void addCustomerInfo() {
-		System.out.println("yomama");
-	}
-
 }
