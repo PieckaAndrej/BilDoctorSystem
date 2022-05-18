@@ -74,7 +74,9 @@ public class AppointmentPanel extends JPanel {
 		btnCreateSale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Thread createAppointment = new Thread(() -> {
+					if(calendar.getModel().getValue() != null){
 					createAppointment();
+					}
 				});
 				createAppointment.start();
 			}
@@ -99,9 +101,12 @@ public class AppointmentPanel extends JPanel {
 		saleButtonsPanel.add(btnCreateSale, gbc_btnCreateSale);
 	}
 
+	/**
+	 * Appointment ui constructor
+	 */
 	public void createAppointment() {		
-		calendar.getModel().getValue();
 		time = ((GregorianCalendar)calendar.getModel().getValue()).toZonedDateTime().toLocalDateTime();
+		
 		removeAll();
 		
 		JButton confirmButton = new JButton("Confirm");
@@ -188,10 +193,14 @@ public class AppointmentPanel extends JPanel {
 
 	}
 	
-	public void confirm(LocalDateTime time) {	
-		System.out.println(list.getSelectedValue());
-		AppointmentDataDialog newDialog = new AppointmentDataDialog();
-		newDialog.setVisible(true);
+	public void confirm(LocalDateTime time) {
+		if(list.getSelectedIndex() != -1) {
+			time = time.withMinute(0);
+			time = time.withSecond(0);
+			time = time.withNano(0);
+			AppointmentDataDialog newDialog = new AppointmentDataDialog(time.withHour(list.getSelectedIndex()));
+			newDialog.setVisible(true);
+		}
 	}
 	
 	public void cancelAppointment() {		
