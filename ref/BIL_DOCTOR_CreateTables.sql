@@ -6,7 +6,7 @@ DROP CONSTRAINT if exists PersonCityFK;
 ALTER TABLE dbo.Employee
 DROP CONSTRAINT if exists EmployeePersonFK;
 ALTER TABLE dbo.Customer
-DROP CONSTRAINT if exists CustomerPersonFK;
+DROP CONSTRAINT if exists CustomerPersonFK, CustomerDiscountFK;
 ALTER TABLE dbo.Vehicle
 DROP CONSTRAINT if exists VehicleCustomerFK;
 ALTER TABLE dbo.Sale
@@ -24,6 +24,7 @@ drop table if exists dbo.City;
 drop table if exists dbo.Person;
 drop table if exists dbo.Employee;
 drop table if exists dbo.Customer;
+drop table if exists dbo.Discount;
 drop table if exists dbo.Vehicle;
 drop table if exists dbo.Sale;
 drop table if exists dbo.[Service];
@@ -34,8 +35,10 @@ drop table if exists dbo.Appointment;
 
 
 CREATE TABLE dbo.City (
-	zipcode VARCHAR(5) PRIMARY KEY NOT NULL,
+	zipcode VARCHAR(5) NOT NULL,
+	countryCode VARCHAR(5) NOT NULL,
 	city VARCHAR(25) NOT NULL,
+	PRIMARY KEY(zipcode, countryCode),
 	)  
 GO
 
@@ -46,30 +49,48 @@ CREATE TABLE dbo.Person (
 	zipcode VARCHAR(5),
 	[address] VARCHAR(50) NOT NULL,
 	association VARCHAR(1) NOT NULL,
-	phoneNumber VARCHAR(20) PRIMARY KEY,
+	phoneNumber VARCHAR(20) NOT NULL,
+	countryCode VARCHAR(5) NOT NULL,
+	PRIMARY KEY(phoneNumber, countryCode),
 	CONSTRAINT PersonCityFK
-		FOREIGN KEY (zipcode) REFERENCES City(zipcode)
-		ON DELETE SET NULL,
+		FOREIGN KEY (zipcode, countryCode) REFERENCES City(zipcode, countryCode)
+		ON DELETE CASCADE,
 	)  
 
 GO
 
 
 CREATE TABLE dbo.Employee (
+   cpr VARCHAR(10)  PRIMARY KEY,
    salary MONEY NOT NULL,
-   phoneNo VARCHAR(20) PRIMARY KEY,
+   phoneNo VARCHAR(20) NOT NULL,
+   countryCode VARCHAR(5) NOT NULL,
+   position VARCHAR(20) NOT NULL,
    CONSTRAINT EmployeePersonFK
-		FOREIGN KEY (phoneNo) REFERENCES Person(phoneNumber)
+		FOREIGN KEY (phoneNo, countryCode) REFERENCES Person(phoneNumber, countryCode)
 		ON DELETE CASCADE,
 	)  
 
 GO
 
+CREATE TABLE dbo.Discount (
+   category VARCHAR(20) PRIMARY KEY,
+   [value] int NOT NULL,
+   [date] datetime NOT NULL,
+	)  
+
+GO
+
 CREATE TABLE dbo.Customer (
-   discount decimal(5,5) NOT NULL,
-   phoneNo VARCHAR(20) PRIMARY KEY,
+   discountCategory VARCHAR(20) NOT NULL,
+   phoneNo VARCHAR(20) NOT NULL,
+   countryCode VARCHAR(5) NOT NULL,
+   PRIMARY KEY(phoneNo, countryCode),
    CONSTRAINT CustomerPersonFK
-		FOREIGN KEY (phoneNo) REFERENCES Person(phoneNumber)
+		FOREIGN KEY (phoneNo, countryCode) REFERENCES Person(phoneNumber, countryCode)
+		ON DELETE CASCADE,
+   CONSTRAINT CustomerDiscountFK
+		FOREIGN KEY (discountCategory) REFERENCES Discount(category)
 		ON DELETE CASCADE,
 	)  
 
@@ -80,9 +101,10 @@ CREATE TABLE dbo.Vehicle (
 	[year] int NOT NULL,
 	brand VARCHAR(20) NOT NULL,
 	customerPhone VARCHAR(20),
+	countryCode VARCHAR(5) NOT NULL,
 	CONSTRAINT VehicleCustomerFK
-		FOREIGN KEY (customerPhone) REFERENCES Customer(phoneNo)
-		ON DELETE SET NULL,
+		FOREIGN KEY (customerPhone, countryCode) REFERENCES Customer(phoneNo, countryCode)
+		ON DELETE CASCADE,
 	)  
 
 GO
@@ -144,12 +166,13 @@ GO
 CREATE TABLE dbo.Appointment (
 	id int PRIMARY KEY IDENTITY(1,1), 
 	creationDate datetime NOT NULL,
-	[length] decimal(5,2) NOT NULL,
+	saleDate datetime NOT NULL,
+	[length] int NOT NULL,
 	[date] datetime NOT NULL,
 	[description] VARCHAR(128) NOT NULL,
-	employeePhoneNo VARCHAR(20),
+	employeeCpr VARCHAR(10) NOT NULL,
 	CONSTRAINT AppointmentEmployeeFK
-		FOREIGN KEY (employeePhoneNo) REFERENCES Employee(phoneNo)
+		FOREIGN KEY (employeeCpr) REFERENCES Employee(cpr)
 		ON DELETE CASCADE,
 	)
 
