@@ -40,6 +40,7 @@ public class AppointmentDataDialog extends JDialog {
 	private JPanel customerPanel;
 	private JButton secondOkButton;
 	private JButton okButton;
+	private JLabel errorLabel;
 
 	/**
 	 * Launch the application.
@@ -153,6 +154,11 @@ public class AppointmentDataDialog extends JDialog {
 						addCustomerInfo();
 					}
 				});
+				{
+					errorLabel = new JLabel("New label");
+					buttonPane.add(errorLabel);
+					errorLabel.setVisible(false);
+				}
 				secondOkButton.setActionCommand("Confirm");
 				buttonPane.add(secondOkButton);
 				secondOkButton.setEnabled(false);
@@ -184,9 +190,14 @@ public class AppointmentDataDialog extends JDialog {
 	}
 	private void createAppointment(LocalDateTime time) {
 		try {
-			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText()) != false) {
+			System.out.println(time);
+			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText())) {
 				openCustomerInfoPanel();
-			};
+				}
+				else {
+					errorLabel.setVisible(true);
+					errorLabel.setText("The date is incorrect");
+				};			
 		} catch (DatabaseAccessException | LengthUnderrunException e) {
 			e.printStackTrace();
 		}
