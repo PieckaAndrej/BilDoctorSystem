@@ -173,6 +173,7 @@ public class AppointmentDataDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
@@ -183,14 +184,12 @@ public class AppointmentDataDialog extends JDialog {
 	}
 	private void createAppointment(LocalDateTime time) {
 		try {
-			appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText());
-			openCustomerInfoPanel();
+			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText()) != false) {
+				openCustomerInfoPanel();
+			};
 		} catch (DatabaseAccessException | LengthUnderrunException e) {
-			
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	private void addCustomerInfo() {
