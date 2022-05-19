@@ -186,6 +186,10 @@ public class AppointmentPanel extends JPanel {
 
 	}
 	
+	/**
+	 * Open dialog with appointment details
+	 * @param time
+	 */
 	public void confirm(LocalDateTime time) {
 		if(list.getSelectedIndex() != -1) {
 			time = time.withMinute(0);
@@ -196,11 +200,18 @@ public class AppointmentPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Cancel appointment
+	 */
 	public void cancelAppointment() {		
 		this.removeAll();
 		initGui();
 	}
 	
+	/**
+	 * Fill list of available hours
+	 * @param List of appointment
+	 */
 	public void fillList(List<Appointment> a){
 		list.setCellRenderer(new HourListCellRenderer(a));
 		DefaultListModel<Double> dlm = new DefaultListModel<>();
@@ -211,6 +222,11 @@ public class AppointmentPanel extends JPanel {
 	}
 		
 	
+	/**
+	 * Get appointments for the day
+	 * @param Day of the expected appointment
+	 * @return List of Appointments
+	 */
 	public List<Appointment> getAppointments(LocalDateTime time) {
 		List<Appointment> appointments = null;
 		try {

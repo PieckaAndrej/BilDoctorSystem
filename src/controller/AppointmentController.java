@@ -50,9 +50,7 @@ public class AppointmentController {
 		List<Appointment> appointments = new ArrayList<>();
 		appointments = appointmentdb.getAppointmentsOnDate(date);
 		
-		boolean overlaps = appointments.parallelStream()
-			
-			
+		boolean overlaps = appointments.parallelStream()			
 			.filter(a -> (
 					(
 						// Check if the date is starting in the already existing appointment
@@ -91,7 +89,7 @@ public class AppointmentController {
 						date.plusMinutes(length).isAfter(
 							a.getAppointmentDate()))
 			)
-			// If no appointments stayed, then it overlaps with the date
+			// If no appointments stayed, then it doesn't overlaps with the date
 			.count() != 0;
 		
 		// If doesn't overlap, make new appointment
@@ -141,6 +139,7 @@ public class AppointmentController {
 			if(currentAppointment.isFilled()) {
 				try {
 					appointmentdb.insertAppointment(currentAppointment);
+					notifyCustomerOfAppointment();
 					currentAppointment = null;
 					retVal = true;
 				}
@@ -164,5 +163,10 @@ public class AppointmentController {
 	
 	public ArrayList<Vehicle> getAllVehicles() {
 		return vehicleController.getAllVehicles();
+	}
+	
+	public void notifyCustomerOfAppointment() {
+		//TODO notify customer about the appointment with SMS message sent to his phone
+		//currentAppointment.getCustomerPhoneNo();
 	}
 }

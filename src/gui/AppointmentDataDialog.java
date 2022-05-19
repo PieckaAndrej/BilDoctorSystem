@@ -173,7 +173,7 @@ public class AppointmentDataDialog extends JDialog {
 						comboBox = new JComboBox<>();
 						horizontalBox.add(comboBox);
 						comboBox.setEditable(true);
-						fillProductList(comboBox);
+						fillEmployeeList(comboBox);
 						comboBox.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
 							   @Override
@@ -235,6 +235,7 @@ public class AppointmentDataDialog extends JDialog {
 								if(comboBox.getEditor().getItem() instanceof Employee) {
 									addCustomerInfo();
 									addEmployee();
+									insertIntoDB();
 									System.out.println("works");
 								} else {
 									errorLabel.setVisible(true);
@@ -284,6 +285,11 @@ public class AppointmentDataDialog extends JDialog {
 
 		}
 	}
+	/**
+	 * Create current Appointment with time, length and description
+	 * Open customer info panel
+	 * @param time
+	 */
 	private void createAppointment(LocalDateTime time) {
 		try {
 			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText())) {
@@ -298,6 +304,10 @@ public class AppointmentDataDialog extends JDialog {
 		}
 	}
 	
+	
+	/**
+	 * Add info about customer intormation the current appointment
+	 */
 	private void addCustomerInfo() {
 		appointmentController.addCustomerInfo(textName.getText(), textPhoneNumber.getText());
 	}
@@ -311,6 +321,9 @@ public class AppointmentDataDialog extends JDialog {
 			}
 	}
 	
+	/**
+	 * Open panel where employee insert info about appointment
+	 */
 	private void openCustomerInfoPanel() {
 		descriptionPanel.setVisible(false);
 		okButton.setVisible(false);
@@ -320,12 +333,15 @@ public class AppointmentDataDialog extends JDialog {
 		getRootPane().setDefaultButton(secondOkButton);
 	}
 	
-	private void fillProductList(JComboBox<Employee> comboBox) {
+	/**
+	 * Fill employee drop down list
+	 * @param comboBox
+	 */
+	private void fillEmployeeList(JComboBox<Employee> comboBox) {
 		List<Employee> ps = null;
 		try {
 			ps = appointmentController.getAllEmployees();
 		} catch (DatabaseAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
@@ -333,5 +349,23 @@ public class AppointmentDataDialog extends JDialog {
 		
 		comboBox.setModel(dfm);
 		comboBox.setRenderer(new EmployeeListCellRenderer());
+	}
+	
+	/**
+	 * Finish appointment and insert into databse
+	 */
+	private void insertIntoDB(){
+		try {
+			appointmentController.finishAppointment();
+		} catch (DatabaseAccessException e) {
+			e.printStackTrace();
+		}
+		errorLabel.setText("Finishing the appointment...");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		dispose();
 	}
 }
