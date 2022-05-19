@@ -155,4 +155,20 @@ public class Cleaners {
 			}
 		};
 	}
+	
+	public static CleanDatabase getCustomerCleaner() {
+		return new CleanDatabase("Customer", PersonDB.getInsertCustomer()) {
+			
+			@Override
+			public void insertPreparedStatement(PreparedStatement stmt, ResultSet customer) {
+				try {
+					stmt.setString(1, customer.getString("discountCategory"));
+					stmt.setString(2, customer.getString("phoneNo"));
+					stmt.setString(3, customer.getString("countryCode"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}
 }

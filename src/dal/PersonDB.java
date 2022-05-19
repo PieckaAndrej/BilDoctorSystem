@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.DatabaseAccessException;
+import model.Customer;
 import model.Employee;
 
 public class PersonDB implements PersonDBIF {
@@ -32,6 +33,9 @@ public class PersonDB implements PersonDBIF {
 	private static final String INSERT_EMPLOYEE = "INSERT INTO "
 			+ "Employee(cpr, salary, phoneNo, countryCode, position) VALUES (?, ?, ?, ?, ?)";
 	
+	private static final String INSERT_CUSTOMER = "INSERT INTO "
+			+ "Customer(discountCategory, phoneNo, countryCode) VALUES (?, ?, ?)";
+	
 	private PreparedStatement selectAllEmployees;
 	private PreparedStatement selectPersonWithPhoneNo;
 	private PreparedStatement insertPerson;
@@ -39,6 +43,69 @@ public class PersonDB implements PersonDBIF {
 	
 	
 	public PersonDB() {
+	}
+	
+	public boolean insertPerson(Customer customer) throws DatabaseAccessException {
+		boolean retVal = false;
+		
+		DbConnection.getInstance().startTransaction();
+		
+		try {
+			try {
+				insertPerson = DbConnection.getInstance().getConnection()
+						.prepareStatement(INSERT_PERSON);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
+			}
+
+			insertPerson.setString(1, customer.getName());
+			insertPerson.setString(2, customer.getSurname());
+			insertPerson.setString(3, customer.getZipcode());
+			insertPerson.setString(4, customer.getAddress());
+			insertPerson.setString(5, "E");
+			insertPerson.setString(6, customer.getPhoneNumber());
+			insertPerson.setString(7, customer.getCountryCode());
+
+			insertPerson.executeUpdate();
+			
+			insertCustomer(customer);
+			
+			DbConnection.getInstance().commitTransaction();
+			retVal = true;
+			
+		} catch(SQLException e) {
+			DbConnection.getInstance().rollbackTransaction();
+			throw new DatabaseAccessException(e.getMessage());
+		}
+		
+		return retVal;
+	}
+	
+	public boolean insertCustomer(Customer customer) throws DatabaseAccessException {
+		boolean retVal = false;
+		
+		try {
+			try {
+				insertEmployee = DbConnection.getInstance().getConnection()
+						.prepareStatement(INSERT_CUSTOMER);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
+			}
+
+			insertEmployee.setString(1, customer.getDiscountCategory());
+			insertEmployee.setString(2, customer.getPhoneNumber());
+			insertEmployee.setString(3, customer.getCountryCode());
+			
+			insertEmployee.executeUpdate();
+			retVal = true;
+			
+		} catch(SQLException e) {
+			throw new DatabaseAccessException(e.getMessage());
+		}
+		
+		return retVal;
 	}
 	
 	public boolean insertPerson(Employee employee) throws DatabaseAccessException {
@@ -203,5 +270,12 @@ public class PersonDB implements PersonDBIF {
 	 */
 	public static String getInsertEmployee() {
 		return INSERT_EMPLOYEE;
+	}
+
+	/**
+	 * @return the insertCustomer
+	 */
+	public static String getInsertCustomer() {
+		return INSERT_CUSTOMER;
 	}
 }

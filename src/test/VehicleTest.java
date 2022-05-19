@@ -8,8 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import dal.PersonDB;
 import dal.VehicleDB;
 import exceptions.DatabaseAccessException;
+import model.Customer;
 import model.Person;
 import model.Vehicle;
 
@@ -17,22 +19,36 @@ class VehicleTest {
 	
 	private VehicleDB vehicleDB;
 	private CleanDatabase vehicleCleaner;
+	private CleanDatabase customerCleaner;
+	private CleanDatabase personCleaner;
 	private Vehicle testVehicle;
 	
 	@BeforeEach
 	void setUp() {
 		vehicleDB = new VehicleDB();
 		vehicleCleaner = Cleaners.getVehicleCleaner();
+		customerCleaner = Cleaners.getCustomerCleaner();
+		personCleaner = Cleaners.getPersonCleaner();
 		
 		try {
 			vehicleCleaner.setUp();
+			customerCleaner.setUp();
+			personCleaner.setUp();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		testVehicle = new Vehicle("plate", 2000, "brand");
-		Person testCustomer = new Person("Banana", "Joe", "Gutenbergvej 2D", "Sindal",
-				"9870", "97845625", "+45");
+		Customer testCustomer = new Customer("Banana", "Joe", "Gutenbergvej 2D", "Sindal",
+				"9870", "97845625", "+45", "VIP");
+		
+		PersonDB personDb = new PersonDB();
+		
+		try {
+			personDb.insertPerson(testCustomer);
+		} catch (DatabaseAccessException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			vehicleDB.insertVehicle(testVehicle, testCustomer);
@@ -44,6 +60,8 @@ class VehicleTest {
 	@AfterEach
 	void cleanUp() {
 		try {
+			personCleaner.retrieveDatabase();
+			customerCleaner.retrieveDatabase();
 			vehicleCleaner.retrieveDatabase();
 		} catch (SQLException e) {
 			e.printStackTrace();
