@@ -16,8 +16,6 @@ public class Appointment {
 	private int length;
 	private LocalDateTime appointmentDate;
 	private String description;
-	private String customerPhoneNo;
-	private String customerName;
 	private Employee employee;
 	 
 	public Appointment(LocalDateTime appointmentDate, int length, String description) {
@@ -32,7 +30,7 @@ public class Appointment {
 	 * Check if the appointment has been filled
 	 */
 	public boolean isFilled(){
-		return customerName != null && customerPhoneNo!= null && employee!= null;
+		return employee != null && description != null;
 	}
 	
 	/**
@@ -41,8 +39,7 @@ public class Appointment {
 	 * Sets customer info to the appointment
 	 */
 	public void addCustomerInfo(String name, String phoneNo) {
-		setCustomerName(name);
-		setCustomerPhoneNo(phoneNo);
+		description = phoneNo + "\n" + name + "\n" + description;
 	}
 	
 	/**
@@ -141,42 +138,6 @@ public class Appointment {
 	 */
 	public void setDescription(String description) {
 	    this.description = description;
-	}
-
-	/**
-	 * Get customerPhoneNo.
-	 *
-	 * @return customerPhoneNo as String.
-	 */
-	public String getCustomerPhoneNo() {
-	    return customerPhoneNo;
-	}
-
-	/**
-	 * Set customerPhoneNo.
-	 *
-	 * @param customerPhoneNo the value to set.
-	 */
-	public void setCustomerPhoneNo(String customerPhoneNo) {
-	    this.customerPhoneNo = customerPhoneNo;
-	}
-
-	/**
-	 * Get customerName.
-	 *
-	 * @return customerName as String.
-	 */
-	public String getCustomerName() {
-	    return customerName;
-	}
-
-	/**
-	 * Set customerName.
-	 *
-	 * @param customerName the value to set.
-	 */
-	public void setCustomerName(String customerName) {
-	    this.customerName = customerName;
 	}
 
 	/**

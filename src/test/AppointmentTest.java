@@ -119,8 +119,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -144,8 +143,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -169,8 +167,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -194,8 +191,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -219,8 +215,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -244,8 +239,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -269,8 +263,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -294,8 +287,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -319,8 +311,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -344,8 +335,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -369,8 +359,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -394,8 +383,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(existingAppointment, length, "");
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -438,8 +426,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(appointmentDate, length, description);
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();
@@ -480,8 +467,7 @@ public class AppointmentTest {
 		
 		Appointment a = new Appointment(appointmentDate, length, description);
 		a.setCreationDate(date);
-		a.setCustomerName(customerName);
-		a.setCustomerPhoneNo(customerPhoneNumber);
+		a.addCustomerInfo(customerName, customerPhoneNumber);
 		a.setEmployee(testEmployee);
 		
 		AppointmentDB appointmentDb = new AppointmentDB();

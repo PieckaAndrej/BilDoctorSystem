@@ -197,6 +197,7 @@ public class AppointmentPanel extends JPanel {
 			time = time.withNano(0);
 			AppointmentDataDialog newDialog = new AppointmentDataDialog(time.withHour(list.getSelectedIndex()));
 			newDialog.setVisible(true);
+			revalidate();
 		}
 	}
 	

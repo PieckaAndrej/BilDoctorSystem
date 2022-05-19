@@ -403,7 +403,7 @@ public class AppointmentDataDialog extends JDialog {
 		}
 		errorLabel.setText("Finishing the appointment...");
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
