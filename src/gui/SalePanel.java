@@ -140,45 +140,90 @@ public class SalePanel extends JPanel {
 			inputPanel.setValues(new String[] {"", "", "1"});
 			
 			JComboBox<Product> box = new JComboBox<>();
+			
+			// Creates the list using the ProductListCellRenderer and fill the list
+			
 			fillProductList(box);
+			
+			// Adds a focus listener so when the combo box receives focus the list opens
+			
 			box.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
 				   @Override
 				   public void focusGained(FocusEvent e) {
+					   
+					   // Opens the list
+					   
 				      box.showPopup();
 				   }
 				});
 			
+			// Adds a key listener, so after a key is pressed it can update the list
 			
 			box.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 				
 				@Override
 				public void keyReleased(KeyEvent e) {
+					
+					// Check if the pressed key was an arrow key and in that case it does not refresh the box, so
+					// we can navigate freely in the written word and list
+					
 					if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
 							e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
+						
+						// Retrieve the string written in the text field
+						
 						Object o = box.getEditor().getItem();
-							((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
-							box.setSelectedItem(o);
+						
+						// Remove every item from the list
+						
+						((DefaultComboBoxModel<Product>) box.getModel()).removeAllElements();
+
+						// Sets the selected item to the written text so it will not be removed
+						
+						box.setSelectedItem(o);
+
+						// Check if object is null, because in that case we cannot call the toString() on it
+						
 						if(o != null) {
-						((DefaultComboBoxModel<Product>) box.getModel()).addAll(saleCtrl.getAllProducts()
-								.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
-										.toLowerCase())).toList());
+								
+							// Refills the list with the items which contains the written text	
+								
+							((DefaultComboBoxModel<Product>) box.getModel()).addAll(saleCtrl.getAllProducts()
+									.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
+									.toLowerCase())).toList());
 						}
+						
+						// Checks if you press enter, if you do than it selects item from list
+						
 						if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+							
+							// Checks if there is a product in the list, so it can select item from there
+							
 							if(saleCtrl.getAllProducts()
 									.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
 									.toLowerCase())).toList().size()>0 ) {
+								
+								// Checks if the item in the editor is Product, if not it selects the first one
+								// in the list which matches is the most
+								
 								if(!(box.getEditor().getItem() instanceof Product)) {
 									box.getEditor().setItem(saleCtrl.getAllProducts()
 											.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
 											.toLowerCase())).toList().get(0));
 								}	
 								
+								// Changes the id field automatically to the id of the selected product
+								
 								inputPanel.getFields()[0].setText(Integer.
 										toString(((Product)box.getEditor().getItem()).getId()));
 							}
 							
 						} else {
+							
+							// If we did not press enter it deletes the id if we had something there and then
+							// closes and opens the list so it resizes
+							
 							inputPanel.getFields()[0].setText("");
 							box.hidePopup();
 						    box.showPopup();
@@ -190,23 +235,44 @@ public class SalePanel extends JPanel {
 				}
 			});
 			
+			// Adds a item listener so if we choose an item with the mouse it can set the id
+			
 			box.addItemListener(e -> {
+				
+				// Check if it was a mouse event and if there is an element in the list
+				
 				if (MouseEvent.BUTTON1 == e.getStateChange() && box.getSelectedIndex() != -1) {
+					
+					// Changes the id field automatically to the id of the selected product
+					
 					inputPanel.getFields()[0].setText(Integer.
 							toString(((Product)box.getSelectedItem()).getId()));
 				}
 			});
+			
+			// Adds a mouse listener so if you click on the combo box it opens the list
 
 			box.getEditor().getEditorComponent().addMouseListener(new MouseAdapter() {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					
+					// Checks if it was a left mouse click
+					
 					if(e.getButton() == MouseEvent.BUTTON1)
-					box.showPopup();
+						
+						// Opens the list
+							
+						box.showPopup();
 				}
 			});
 
+			// Enables the  editing of the combo box so you can write in it
+			
 			box.setEditable(true);
+			
+			// Adds the box to the input panel replacing the 2nd j text field
+			
 			inputPanel.setComponent(1, box);
 			
 			productTable = new Table(productInputs, inputPanel);

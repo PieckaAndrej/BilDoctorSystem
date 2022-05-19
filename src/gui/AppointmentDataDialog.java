@@ -172,43 +172,84 @@ public class AppointmentDataDialog extends JDialog {
 					{
 						comboBox = new JComboBox<>();
 						horizontalBox.add(comboBox);
+
+						// Enables the  editing of the combo box so you can write in it
+						
 						comboBox.setEditable(true);
+
+						// Creates the list using the EmployeeListCellRenderer and fill the list
+						
 						fillEmployeeList(comboBox);
+
+						// Adds a focus listener so when the combo box receives focus the list opens
+						
 						comboBox.getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
 
 							   @Override
 							   public void focusGained(FocusEvent e) {
-							      comboBox.showPopup();
+
+								   // Opens the list
+								  
+								   comboBox.showPopup();
 							   }
 							});
+
+						// Adds a key listener, so after a key is pressed it can update the list
 						
 						comboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 							
 							@Override
 							public void keyReleased(KeyEvent e) {
 								try {
+
+									// Check if the pressed key was an arrow key and in that case it does not refresh the box, so
+									// we can navigate freely in the written word and list
+									
 									if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
 										e.getKeyCode() == KeyEvent.VK_DOWN ||
 										e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
+
+										// Retrieve the string written in the text field
+																			
 										Object o = comboBox.getEditor().getItem();
-											((DefaultComboBoxModel<Employee>) comboBox.getModel())
-											.removeAllElements();
-											comboBox.setSelectedItem(o);
+
+										// Remove every item from the list
+										
+										((DefaultComboBoxModel<Employee>) comboBox.getModel())
+										.removeAllElements();
+
+										// Sets the selected item to the written text so it will not be removed
+										
+										comboBox.setSelectedItem(o);
+
+										// Check if object is null, because in that case we cannot call the toString() on it
+										
 										if(o != null) {
+											
+											// Refills the list with the items which contains the written text	
+											
 											((DefaultComboBoxModel<Employee>) comboBox.getModel()).addAll(
 													appointmentController.getAllEmployees().stream()
 													.filter(p -> p.getName().toLowerCase().contains(o.toString()
 													.toLowerCase())).toList());
 										
-											}
-										}	
-									} catch (DatabaseAccessException e1) {
+										}
+										
+										// Closes and opens the list so it resizes
+										
+										comboBox.hidePopup();
+									    comboBox.showPopup();
+									}	
+								} catch (DatabaseAccessException e1) {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
-									}
+								}
 							}
 								
 						});
+
+
+						// Adds a mouse listener so if you click on the combo box it opens the list
 
 						comboBox.getEditor().getEditorComponent().addMouseListener(new MouseAdapter() {
 							
