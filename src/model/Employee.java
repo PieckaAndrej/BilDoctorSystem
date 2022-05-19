@@ -6,19 +6,22 @@ public class Employee extends Person{
 	
 	private BigDecimal salary;
 	private String cpr;
+	private String position;
 
 	public Employee(String name, String surname, String address, String city,
-			String zipcode, String phoneNumber) {
+			String zipcode, String phoneNumber, String countryCode) {
 		
-		super(name, surname, address, city, zipcode, phoneNumber);
+		super(name, surname, address, city, zipcode, phoneNumber, countryCode);
 	}
 	
 	public Employee(String name, String surname, String address, String city,
-			String zipcode, String phoneNumber, BigDecimal salary, String cpr) {
+			String zipcode, String phoneNumber, String countryCode, BigDecimal salary,
+			String cpr, String position) {
 		
-		super(name, surname, address, city, zipcode, phoneNumber);
+		super(name, surname, address, city, zipcode, phoneNumber, countryCode);
 		this.salary = salary;
 		this.cpr = cpr;
+		this.position = position;
 	}
 
 	/**
@@ -44,6 +47,20 @@ public class Employee extends Person{
 	 */
 	public String getCpr() {
 		return cpr;
+	}
+
+	/**
+	 * @return the position
+	 */
+	public String getPosition() {
+		return position;
+	}
+
+	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	/**

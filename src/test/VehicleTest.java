@@ -2,18 +2,15 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import dal.DbConnection;
-import dal.ProductDB;
 import dal.VehicleDB;
 import exceptions.DatabaseAccessException;
+import model.Person;
 import model.Vehicle;
 
 class VehicleTest {
@@ -34,9 +31,11 @@ class VehicleTest {
 		}
 		
 		testVehicle = new Vehicle("plate", 2000, "brand");
+		Person testCustomer = new Person("Banana", "Joe", "Gutenbergvej 2D", "Sindal",
+				"9870", "97845625", "+45");
 		
 		try {
-			vehicleDB.insertVehicle(testVehicle, null);
+			vehicleDB.insertVehicle(testVehicle, testCustomer);
 		} catch (DatabaseAccessException e) {
 			e.printStackTrace();
 		}

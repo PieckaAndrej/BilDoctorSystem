@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Appointment {
 	private int id;
 	private LocalDateTime creationDate;
-	private double length;
+	private int length;
 	private LocalDateTime appointmentDate;
 	private String description;
 	private String customerPhoneNo;
@@ -94,7 +94,7 @@ public class Appointment {
 	 *
 	 * @return length as double.
 	 */
-	public double getLength() {
+	public int getLength() {
 	    return length;
 	}
 
@@ -103,7 +103,7 @@ public class Appointment {
 	 *
 	 * @param length the value to set.
 	 */
-	public void setLength(double length) {
+	public void setLength(int length) {
 	    this.length = length;
 	}
 

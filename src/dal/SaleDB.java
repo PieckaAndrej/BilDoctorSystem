@@ -13,7 +13,8 @@ import model.Service;
 
 public class SaleDB implements SaleDBIF {
 	
-	private static final String CREATE_STATEMENT = "INSERT INTO Sale(plateNo, date, description) VALUES(?, ?, ?)";
+	private static final String CREATE_STATEMENT = "INSERT INTO "
+			+ "Sale(plateNo, date, description) VALUES(?, ?, ?)";
 	private PreparedStatement createStatement;
 	
 	public SaleDB() {

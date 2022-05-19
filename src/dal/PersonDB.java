@@ -13,10 +13,25 @@ public class PersonDB implements PersonDBIF {
 
 	private static final String SELECT_EMPLOYEES = "SELECT * FROM Person "
 			+ "	join City on Person.Zipcode = City.Zipcode "
-			+ "	join Employee on Person.phoneNumber = Employee.phoneNo and Person.countryCode = Employee.countryCode;";
-	private static final String SELECT_PERSON = "SELECT * FROM Person join City on Person.Zipcode = City.Zipcode WHERE phoneNumber = ?";
-	private static final String INSERT_PERSON = "INSERT INTO Person(name, surname, zipcode, address, association, phoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
-	private static final String INSERT_EMPLOYEE = "INSERT INTO Employee(salary, phoneNo) VALUES (?, ?)";
+			+ "	join Employee on Person.phoneNumber = Employee.phoneNo "
+			+ "and Person.countryCode = Employee.countryCode;";
+	
+	private static final String SELECT_EMPLOYEE = "SELECT * FROM Employee "
+			+ "join Person on Employee.phoneNo = Person.phoneNumber "
+			+ "and Employee.countryCode = Person.countryCode "
+			+ "join City on Person.Zipcode = City.Zipcode "
+			+ "where cpr = ?";
+	
+	private static final String SELECT_PERSON = "SELECT * FROM "
+			+ "Person join City on Person.Zipcode = City.Zipcode WHERE phoneNumber = ?";
+	
+	private static final String INSERT_PERSON = "INSERT INTO "
+			+ "Person(name, surname, zipcode, address, association, phoneNumber, countryCode) "
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String INSERT_EMPLOYEE = "INSERT INTO "
+			+ "Employee(cpr, salary, phoneNo, countryCode, position) VALUES (?, ?, ?, ?, ?)";
+	
 	private PreparedStatement selectAllEmployees;
 	private PreparedStatement selectPersonWithPhoneNo;
 	private PreparedStatement insertPerson;
@@ -46,9 +61,8 @@ public class PersonDB implements PersonDBIF {
 			insertPerson.setString(4, employee.getAddress());
 			insertPerson.setString(5, "E");
 			insertPerson.setString(6, employee.getPhoneNumber());
-			
-			
-			
+			insertPerson.setString(7, employee.getCountryCode());
+
 			insertPerson.executeUpdate();
 			
 			insertEmployee(employee);
@@ -76,8 +90,11 @@ public class PersonDB implements PersonDBIF {
 				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
 			}
 
-			insertEmployee.setBigDecimal(1, employee.getSalary());
-			insertEmployee.setString(2, employee.getPhoneNumber());
+			insertEmployee.setString(1, employee.getCpr());
+			insertEmployee.setBigDecimal(2, employee.getSalary());
+			insertEmployee.setString(3, employee.getPhoneNumber());
+			insertEmployee.setString(4, employee.getCountryCode());
+			insertEmployee.setString(5, employee.getPosition());
 			
 			insertEmployee.executeUpdate();
 			retVal = true;
@@ -112,6 +129,26 @@ public class PersonDB implements PersonDBIF {
 		
 		return employees;
 	}
+	
+	public Employee getEmployee(String cpr) {
+		Employee result = null;
+		try {
+			selectPersonWithPhoneNo = DbConnection.getInstance().getConnection()
+					.prepareStatement(SELECT_EMPLOYEE);
+			
+			selectPersonWithPhoneNo.setString(1, cpr);
+			
+			ResultSet rs = selectPersonWithPhoneNo.executeQuery();
+			
+			if (rs.next()) {
+				result = buildObject(rs);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	/**
 	 * Find person by phone
@@ -139,8 +176,11 @@ public class PersonDB implements PersonDBIF {
 	 * @throws SQLException
 	 */
 	private Employee buildObject(ResultSet rs) throws SQLException {
-		return new Employee(rs.getString("name"), rs.getString("surname"), rs.getString("address"), rs.getString("city"),
-				rs.getString("zipcode"), rs.getString("phoneNumber"), rs.getBigDecimal("salary"));
+		return new Employee(rs.getString("name"), rs.getString("surname"),
+				rs.getString("address"), rs.getString("city"),
+				rs.getString("zipcode"), rs.getString("phoneNumber"),
+				rs.getString("countryCode"), rs.getBigDecimal("salary"),
+				rs.getString("cpr"), rs.getString("position"));
 	}
 	
 	private List<Employee> buildObjects(ResultSet rs) throws SQLException {

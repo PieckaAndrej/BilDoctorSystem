@@ -56,7 +56,8 @@ public class AppointmentTest {
 			e.printStackTrace();
 		}
 		
-		testEmployee = new Employee("Mihai", "Mihut", "Gutenbergvej 2D", "Sindal", "9870", "97845625", new BigDecimal(3500));
+		testEmployee = new Employee("Mihai", "Mihut", "Gutenbergvej 2D", "Sindal",
+				"9870", "97845625", "+45", new BigDecimal(3500), "123", "manager");
 		
 		PersonDB personDb = new PersonDB();
 		personDb.insertPerson(testEmployee);
@@ -406,41 +407,6 @@ public class AppointmentTest {
 	}
 	
 	@Test
-	void disconnectedDatabase() throws DatabaseAccessException {
-		String customerPhoneNumber = "12345678";
-		String customerName = "Joe";
-		LocalDateTime date = LocalDateTime.now();
-		
-		try {
-			assertEquals(appointmentController.createAppointment(date, 60, "Oil change"), true);
-		} catch (DatabaseAccessException | LengthUnderrunException e) {
-			e.printStackTrace();
-		}
-		assertEquals(appointmentController.addCustomerInfo(customerName, customerPhoneNumber), true);
-		Connection conn = DbConnection.getInstance().getConnection();
-		/*try {
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
-		assertThrows(DatabaseAccessException.class,
-				() -> appointmentController.addEmployee(testEmployee));
-	}
-	
-	@Test
-	void incorrectEmployee() throws DatabaseAccessException, LengthUnderrunException {
-		String customerPhoneNumber = "12345678";
-		String customerName = "Joe";
-		LocalDateTime date = LocalDateTime.now();
-		
-		Employee employee = new Employee("Banana", "Joe", "Gutenbergvej 2D", "Sindal", "9870", "97845625", new BigDecimal(3500));
-		
-		assertEquals(appointmentController.createAppointment(date, 60, "Oil change"), true);
-		assertEquals(appointmentController.addCustomerInfo(customerName, customerPhoneNumber), true);
-		assertEquals(appointmentController.addEmployee(employee), false);	
-	}
-	
-	@Test
 	void employeeCancelsAppointment() throws DatabaseAccessException, LengthUnderrunException {
 		String customerPhoneNumber = "12345678";
 		String customerName = "Joe";
@@ -489,7 +455,7 @@ public class AppointmentTest {
 				retrievedLength = (int) rs.getDouble("length");
 				retrievedAppointmentDate = rs.getTimestamp("date").toLocalDateTime();
 				retrievedDescription = rs.getString("description");
-				retrievedEmployee = rs.getString("employeePhoneNo");
+				retrievedEmployee = rs.getString("employeeCpr");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -498,7 +464,7 @@ public class AppointmentTest {
 		assertEquals(appointmentDate, retrievedAppointmentDate);
 		assertEquals(length, retrievedLength);
 		assertEquals(date, retrievedDate);
-		assertEquals(testEmployee.getPhoneNumber(), retrievedEmployee);
+		assertEquals(testEmployee.getCpr(), retrievedEmployee);
 		assertEquals(description, retrievedDescription);
 	}
 

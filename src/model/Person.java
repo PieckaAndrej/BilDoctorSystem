@@ -7,14 +7,18 @@ public class Person {
 	private String city;
 	private String zipcode;
 	private String phoneNumber;
+	private String countryCode;
 	
-	public Person(String name, String surname, String address, String city, String zipcode, String phoneNumber) {
-		super();
-		this.name = name + " " + surname;
+	public Person(String name, String surname, String address, String city,
+			String zipcode, String phoneNumber, String countryCode) {
+
+		this.name = name;
+		this.surname = surname;
 		this.address = address;
 		this.city = city;
 		this.zipcode = zipcode;
 		this.phoneNumber = phoneNumber;
+		this.countryCode = countryCode;
 	}
 
 	/**
@@ -125,6 +129,20 @@ public class Person {
 	    this.surname = surname;
 	}
 	
+	/**
+	 * @return the countryCode
+	 */
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	/**
+	 * @param countryCode the countryCode to set
+	 */
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
 	@Override
 	public String toString() {
 		return name;

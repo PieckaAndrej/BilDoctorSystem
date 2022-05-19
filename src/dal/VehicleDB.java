@@ -11,10 +11,12 @@ import model.Vehicle;
 
 public class VehicleDB implements VehicleDBIF {
 	
-	private static final String SELECT_VEHICLE_STATEMENT = "SELECT * FROM Vehicle WHERE plateNumber = ?";
+	private static final String SELECT_VEHICLE_STATEMENT = "SELECT * FROM "
+			+ "Vehicle WHERE plateNumber = ?";
 	private PreparedStatement selectVehicleStatement;
 	
-	private static final String INSERT_VEHICLE_STATEMENT = "INSERT INTO Vehicle(plateNumber, year, brand, customerPhone) VALUES(?, ?, ?, ?)";
+	private static final String INSERT_VEHICLE_STATEMENT = "INSERT INTO "
+			+ "Vehicle(plateNumber, year, brand, customerPhone, countryCode) VALUES(?, ?, ?, ?, ?)";
 	private PreparedStatement insertVehicleStatement;
 	
 	private static final String GET_ALL_VEHICLES_STATEMENT = "SELECT * FROM Vehicle";
@@ -71,15 +73,19 @@ public class VehicleDB implements VehicleDBIF {
 			}
 			
 			String phoneNumber = null;
+			String countryCode = null;
 			
 			if (customer != null) {
 				phoneNumber = customer.getPhoneNumber();
+				countryCode = customer.getCountryCode();
+				
 			}
 			
 			insertVehicleStatement.setString(1, vehicle.getPlateNumber());
 			insertVehicleStatement.setInt(2, vehicle.getYear());
 			insertVehicleStatement.setString(3, vehicle.getBrand());
 			insertVehicleStatement.setString(4, phoneNumber);
+			insertVehicleStatement.setString(5, countryCode);
 			
 			insertVehicleStatement.executeUpdate();
 			retVal = true;

@@ -11,7 +11,8 @@ import model.Service;
 
 public class ServiceDB implements ServiceDBIF {
 	
-	private static final String CREATE_STATEMENT = "INSERT INTO Service(description, time, price, plateNr, date)"
+	private static final String CREATE_STATEMENT = "INSERT INTO "
+			+ "Service(description, time, price, plateNr, date)"
 				+ " VALUES(?, ?, ?, ?, ?)";
 	private PreparedStatement createStatement;
 	

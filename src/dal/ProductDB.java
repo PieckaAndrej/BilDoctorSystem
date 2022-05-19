@@ -14,12 +14,14 @@ public class ProductDB implements ProductDBIF {
 	private static final String SELECT_PRODUCT_STATEMENT = "SELECT * FROM Product WHERE id = ?";
 	private PreparedStatement selectProductStatement;
 	
-	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?, currentStock = ?, price = ? WHERE id = ?";
+	private static final String UPDATE_STATEMENT = "UPDATE Product SET name = ?,"
+			+ " currentStock = ?, price = ? WHERE id = ?";
 
 	private static final String SELECT_PRODUCT_BY_NAME_STATEMENT = "SELECT * FROM Product";
 	private PreparedStatement searchProductByNameStatement;
 	
-	private static final String INSERT_STATEMENT = "INSERT INTO Product(name, currentStock, price) VALUES(?, ?, ?)";
+	private static final String INSERT_STATEMENT = "INSERT INTO "
+			+ "Product(name, currentStock, price) VALUES(?, ?, ?)";
 	
 	
 

@@ -92,6 +92,7 @@ public class Cleaners {
 					stmt.setInt(2, vehicle.getInt("year"));
 					stmt.setString(3, vehicle.getString("brand"));
 					stmt.setString(4, vehicle.getString("customerPhone"));
+					stmt.setString(5, vehicle.getString("countryCode"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -106,10 +107,10 @@ public class Cleaners {
 			public void insertPreparedStatement(PreparedStatement stmt, ResultSet appointment) {
 				try {
 					stmt.setTimestamp(1, appointment.getTimestamp("creationDate"));
-					stmt.setDouble(2, appointment.getDouble("length"));
+					stmt.setInt(2, appointment.getInt("length"));
 					stmt.setTimestamp(3, appointment.getTimestamp("date"));
 					stmt.setString(4, appointment.getString("description"));
-					stmt.setString(5, appointment.getString("employeePhoneNo"));
+					stmt.setString(5, appointment.getString("employeeCpr"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -123,8 +124,11 @@ public class Cleaners {
 			@Override
 			public void insertPreparedStatement(PreparedStatement stmt, ResultSet employee) {
 				try {
-					stmt.setBigDecimal(1, employee.getBigDecimal("salary"));
-					stmt.setString(2, employee.getString("phoneNo"));
+					stmt.setString(1, employee.getString("cpr"));
+					stmt.setBigDecimal(2, employee.getBigDecimal("salary"));
+					stmt.setString(3, employee.getString("phoneNo"));
+					stmt.setString(4, employee.getString("countryCode"));
+					stmt.setString(5, employee.getString("position"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -144,6 +148,7 @@ public class Cleaners {
 					stmt.setString(4, person.getString("address"));
 					stmt.setString(5, person.getString("association"));
 					stmt.setString(6, person.getString("phoneNumber"));
+					stmt.setString(7, person.getString("countryCode"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

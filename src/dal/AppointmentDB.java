@@ -14,9 +14,11 @@ import model.Appointment;
 
 public class AppointmentDB implements AppointmentDBIF {
 	
-	private static final String CREATE_STATEMENT = "INSERT INTO Appointment(creationDate, length, date, description, employeeCpr) VALUES(?, ?, ?, ? ,?)";
+	private static final String CREATE_STATEMENT = "INSERT INTO Appointment"
+			+ "(creationDate, length, date, description, employeeCpr) VALUES(?, ?, ?, ? ,?)";
 	private PreparedStatement createStatement;
-	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM Appointment WHERE convert(date, [date], 102) = convert(date, ?, 102)";
+	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM "
+			+ "Appointment WHERE convert(date, [date], 102) = convert(date, ?, 102)";
 	private PreparedStatement getAppointmentsStatement;
 		
 	public AppointmentDB() {
@@ -105,9 +107,8 @@ public class AppointmentDB implements AppointmentDBIF {
 		a.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
 		
 		PersonDB personDb = new PersonDB();
-		//personDb.getEmployee(rs.getString("employeeCpr"));
-		// TODO set employee
-		
+		a.setEmployee(personDb.getEmployee(rs.getString("employeeCpr")));
+
 		return a;
 	}
 
