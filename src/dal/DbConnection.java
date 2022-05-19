@@ -49,7 +49,6 @@ public class DbConnection {
 		
 		if (getConnection() != null) {
 			retVal = conn.isValid(3);
-			conn.close();
 		}
 
 		
