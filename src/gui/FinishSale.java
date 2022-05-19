@@ -34,8 +34,6 @@ public class FinishSale extends JPanel {
 		add(scrollPane, BorderLayout.CENTER);
 		
 		textPane = new JTextPane();
-		textPane.setFocusable(false);
-		textPane.setEditable(false);
 		scrollPane.setViewportView(textPane);
 
 		showTableInfo();
@@ -74,6 +72,10 @@ public class FinishSale extends JPanel {
 		}
 		
 		textPane.setText(text.toString());
+	}
+	
+	public JTextPane getTextPane() {
+		return textPane;
 	}
 
 }

@@ -37,6 +37,7 @@ public class SalePanel extends JPanel {
 	private JLabel lblNewLabel;
 
 	private SaleController saleCtrl;
+	private FinishSale finishSale;
 	
 	private Table serviceTable;
 	private Table productTable;
@@ -256,7 +257,7 @@ public class SalePanel extends JPanel {
 			serviceTable.setName("Services");
 			productTable.setName("Products");
 			
-			FinishSale finishSale = new FinishSale(
+			finishSale = new FinishSale(
 					new Table[] {serviceTable, productTable});
 			
 			// Add action listener to the finish sale button
@@ -314,6 +315,8 @@ public class SalePanel extends JPanel {
 	 */
 	private void finishSale() {
 		Thread finishSaleThread = new Thread(() -> {
+			saleCtrl.getSale().setDescription(finishSale.getTextPane().getText());
+			
 			if (saleCtrl.finishSale()) {
 				removeAll();
 				initGui();
