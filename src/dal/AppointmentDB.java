@@ -14,7 +14,7 @@ import model.Appointment;
 
 public class AppointmentDB implements AppointmentDBIF {
 	
-	private static final String CREATE_STATEMENT = "INSERT INTO Appointment(creationDate, length, date, description, employeePhoneNo) VALUES(?, ?, ?, ? ,?)";
+	private static final String CREATE_STATEMENT = "INSERT INTO Appointment(creationDate, length, date, description, employeeCpr) VALUES(?, ?, ?, ? ,?)";
 	private PreparedStatement createStatement;
 	private static final String GET_APPOINTMENTS_STATEMENT = "SELECT * FROM Appointment WHERE convert(date, [date], 102) = convert(date, ?, 102)";
 	private PreparedStatement getAppointmentsStatement;
@@ -53,7 +53,7 @@ public class AppointmentDB implements AppointmentDBIF {
 			createStatement.setDouble(2, a.getLength());
 			createStatement.setTimestamp(3, Timestamp.valueOf(a.getAppointmentDate()));
 			createStatement.setString(4, a.getDescription());
-			createStatement.setString(5, a.getEmployee().getPhoneNumber());
+			createStatement.setString(5, a.getEmployee().getCpr());
 			a.setId(DbConnection.getInstance().executeSqlInsertWithIdentity(createStatement));
 			
 		
@@ -103,8 +103,9 @@ public class AppointmentDB implements AppointmentDBIF {
 	private Appointment buildObject(ResultSet rs) throws SQLException {
 		Appointment a = new Appointment(rs.getTimestamp("date").toLocalDateTime(), rs.getInt("length"), rs.getString("description"));
 		a.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
-		PersonDB personDb = new PersonDB();
 		
+		PersonDB personDb = new PersonDB();
+		//personDb.getEmployee(rs.getString("employeeCpr"));
 		// TODO set employee
 		
 		return a;
