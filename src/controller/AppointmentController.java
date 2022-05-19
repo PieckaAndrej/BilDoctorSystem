@@ -9,11 +9,13 @@ import exceptions.DatabaseAccessException;
 import exceptions.LengthUnderrunException;
 import model.Appointment;
 import model.Employee;
+import model.Vehicle;
 
 public class AppointmentController {
 	private PersonController personCtrl;
 	private AppointmentDB appointmentdb;
 	private Appointment currentAppointment;
+	private VehicleController vehicleController;
 	
 	public AppointmentController() {
 		personCtrl = new PersonController();
@@ -158,5 +160,9 @@ public class AppointmentController {
 	
 	public List<Appointment> getAppointmentsOnDay(LocalDateTime date) throws DatabaseAccessException {
 		return appointmentdb.getAppointmentsOnDate(date);
+	}
+	
+	public ArrayList<Vehicle> getAllVehicles() {
+		return vehicleController.getAllVehicles();
 	}
 }

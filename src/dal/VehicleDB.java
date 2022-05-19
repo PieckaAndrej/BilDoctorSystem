@@ -3,6 +3,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import exceptions.DatabaseAccessException;
 import model.Person;
@@ -15,6 +16,9 @@ public class VehicleDB implements VehicleDBIF {
 	
 	private static final String INSERT_VEHICLE_STATEMENT = "INSERT INTO Vehicle(plateNumber, year, brand, customerPhone) VALUES(?, ?, ?, ?)";
 	private PreparedStatement insertVehicleStatement;
+	
+	private static final String GET_ALL_VEHICLES_STATEMENT = "SELECT * FROM Vehicle";
+	private PreparedStatement getAllVehiclesStatement;
 	
 	public VehicleDB() {
 	}
@@ -101,5 +105,25 @@ public class VehicleDB implements VehicleDBIF {
 	 */
 	public static String getInsertVehicleStatement() {
 		return INSERT_VEHICLE_STATEMENT;
+	}
+
+	public ArrayList<Vehicle> getAllVehicles() {
+		ArrayList<Vehicle> vehicles = new ArrayList<>();
+		
+		Vehicle currentVehicle = null;
+		
+		try {
+			getAllVehiclesStatement = DbConnection.getInstance().getConnection().prepareStatement(GET_ALL_VEHICLES_STATEMENT);
+			ResultSet rs = getAllVehiclesStatement.executeQuery();
+			while(rs.next())
+			{
+				currentVehicle = buildObject(rs);
+				vehicles.add(currentVehicle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return vehicles;
 	}
 }

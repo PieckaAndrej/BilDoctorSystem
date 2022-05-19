@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import dal.VehicleDB;
 import dal.VehicleDBIF;
 import model.Vehicle;
@@ -19,5 +21,9 @@ public class VehicleController {
 	 */
 	public Vehicle searchVehicle(String plateNumber) {
 		return vehicleDB.searchVehicle(plateNumber);
+	}
+	
+	public ArrayList<Vehicle> getAllVehicles() {
+		return vehicleDB.getAllVehicles();
 	}
 }
