@@ -32,7 +32,7 @@ public class AppointmentPanel extends JPanel {
 
 	private static final long serialVersionUID = -81954108504757498L;
 	
-	private JPanel saleButtonsPanel;
+	private JPanel availableHoursPanel;
 	private JButton btnCreateSale;
 	private JDatePanel calendar;
 	private JList<Double> list;
@@ -61,11 +61,11 @@ public class AppointmentPanel extends JPanel {
 		setBorder(new EmptyBorder(new Insets(0, 3, 0, 0)));
 		setLayout(new BorderLayout(0, 0));
 		
-		saleButtonsPanel = new JPanel();
-		saleButtonsPanel.setBackground(ColorScheme.BACKGROUND);
-		add(saleButtonsPanel);
+		availableHoursPanel = new JPanel();
+		availableHoursPanel.setBackground(ColorScheme.BACKGROUND);
+		add(availableHoursPanel);
 		GridBagLayout gbl_saleButtonsPanel = new GridBagLayout();
-		saleButtonsPanel.setLayout(gbl_saleButtonsPanel);
+		availableHoursPanel.setLayout(gbl_saleButtonsPanel);
 		
 		btnCreateSale = new JButton("Create appointment");
 		btnCreateSale.addActionListener(new ActionListener() {
@@ -88,14 +88,14 @@ public class AppointmentPanel extends JPanel {
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
-		saleButtonsPanel.add(calendar, gbc_lblNewLabel);
+		availableHoursPanel.add(calendar, gbc_lblNewLabel);
 		
 		
 		GridBagConstraints gbc_btnCreateSale = new GridBagConstraints();
 		gbc_btnCreateSale.gridheight = 0;
 		gbc_btnCreateSale.gridx = 0;
 		gbc_btnCreateSale.gridy = 1;
-		saleButtonsPanel.add(btnCreateSale, gbc_btnCreateSale);
+		availableHoursPanel.add(btnCreateSale, gbc_btnCreateSale);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class AppointmentPanel extends JPanel {
 		gbc_cancelButton.insets = new Insets(5, 5, 5, 5);
 		gridPanel.add(cancelButton, gbc_cancelButton);
 		
-		saleButtonsPanel.add(gridPanel);
+		availableHoursPanel.add(gridPanel);
 		buttonPanel.add(confirmButton);
 		panel.add(buttonPanel, BorderLayout.EAST);
 		panel.add(scrollPane, BorderLayout.CENTER);
@@ -198,8 +198,10 @@ public class AppointmentPanel extends JPanel {
 			AppointmentDataDialog newDialog = new AppointmentDataDialog(time.withHour(list.getSelectedIndex()));
 			newDialog.setVisible(true);
 			
-			revalidate();
-			revalidate();
+			List<Appointment> a;
+			a = getAppointments(time);
+			fillList(a);
+			availableHoursPanel.revalidate();
 		}
 	}
 	

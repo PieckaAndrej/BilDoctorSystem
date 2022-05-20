@@ -71,6 +71,7 @@ public class AppointmentDataDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public AppointmentDataDialog(LocalDateTime time) {
+		setModal(true);
 		appointmentController = new AppointmentController();
 		setTitle("Appointment menu");
 		setBounds(100, 100, 450, 300);
