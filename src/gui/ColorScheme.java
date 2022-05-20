@@ -12,4 +12,9 @@ public class ColorScheme {
 	 * Error color
 	 */
 	public static final Color ERROR = Color.decode("#ffcccb");
+	
+	/**
+	 * Focus color
+	 */
+	public static final Color FOCUS = Color.decode("#43a047");
 }

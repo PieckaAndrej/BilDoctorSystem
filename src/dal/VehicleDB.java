@@ -1,11 +1,14 @@
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import exceptions.DatabaseAccessException;
+import model.Customer;
 import model.Person;
 import model.Vehicle;
 
@@ -16,13 +19,40 @@ public class VehicleDB implements VehicleDBIF {
 	private PreparedStatement selectVehicleStatement;
 	
 	private static final String INSERT_VEHICLE_STATEMENT = "INSERT INTO "
-			+ "Vehicle(plateNumber, year, brand, customerPhone, countryCode) VALUES(?, ?, ?, ?, ?)";
+			+ "Vehicle(plateNumber, year, brand, customerPhone, countryCode, checkUpDate) VALUES(?, ?, ?, ?, ?, ?)";
 	private PreparedStatement insertVehicleStatement;
 	
-	private static final String GET_ALL_VEHICLES_STATEMENT = "SELECT * FROM Vehicle";
+	private static final String GET_ALL_VEHICLES_STATEMENT = "SELECT * "
+			+ "FROM dbo.Vehicle "
+			+ "WHERE Vehicle.checkUpDate <= ?";
 	private PreparedStatement getAllVehiclesStatement;
 	
+	private static final String UPDATE_CHECKUP_STATEMENT = "UPDATE Vehicle "
+			+ "SET checkUpDate = ? "
+			+ "WHERE plateNumber = ?";
+	private PreparedStatement updateCheckUpStatement;
+	
+	
 	public VehicleDB() {
+	}
+	
+	public void changeCheckUpTime(String plateNumber, LocalDate newCheckUpDate) {
+		try {
+			try {
+				updateCheckUpStatement = DbConnection.getInstance().getConnection()
+						.prepareStatement(UPDATE_CHECKUP_STATEMENT);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			updateCheckUpStatement.setDate(1, Date.valueOf(newCheckUpDate));
+			updateCheckUpStatement.setString(2, plateNumber);
+			
+			updateCheckUpStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -86,6 +116,7 @@ public class VehicleDB implements VehicleDBIF {
 			insertVehicleStatement.setString(3, vehicle.getBrand());
 			insertVehicleStatement.setString(4, phoneNumber);
 			insertVehicleStatement.setString(5, countryCode);
+			insertVehicleStatement.setDate(6, Date.valueOf(vehicle.getCheckUpDate()));
 			
 			insertVehicleStatement.executeUpdate();
 			retVal = true;
@@ -103,7 +134,12 @@ public class VehicleDB implements VehicleDBIF {
 	 * @throws SQLException
 	 */
 	private Vehicle buildObject(ResultSet rs) throws SQLException {
-		return new Vehicle(rs.getString("plateNumber"), rs.getInt("year"), rs.getString("brand"));
+		PersonDB personDb = new PersonDB();
+		Customer owner = personDb.getCustomer(
+				rs.getString("customerPhone"), rs.getString("countryCode"));
+		
+		return new Vehicle(rs.getString("plateNumber"), rs.getInt("year"),
+				rs.getString("brand"), rs.getDate("checkUpDate").toLocalDate(), owner);
 	}
 
 	/**
@@ -113,13 +149,16 @@ public class VehicleDB implements VehicleDBIF {
 		return INSERT_VEHICLE_STATEMENT;
 	}
 
-	public ArrayList<Vehicle> getAllVehicles() {
+	public ArrayList<Vehicle> getAllVehiclesWithCheckUpDate(LocalDate date) {
 		ArrayList<Vehicle> vehicles = new ArrayList<>();
 		
 		Vehicle currentVehicle = null;
 		
 		try {
 			getAllVehiclesStatement = DbConnection.getInstance().getConnection().prepareStatement(GET_ALL_VEHICLES_STATEMENT);
+			
+			getAllVehiclesStatement.setDate(1, Date.valueOf(date));
+			
 			ResultSet rs = getAllVehiclesStatement.executeQuery();
 			while(rs.next())
 			{

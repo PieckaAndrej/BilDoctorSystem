@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class AppointmentController {
 	
 	public AppointmentController() {
 		personCtrl = new PersonController();
+		vehicleController = new VehicleController();
 		appointmentdb = new AppointmentDB();
 	}
 	
@@ -165,8 +167,18 @@ public class AppointmentController {
 		return vehicleController.getAllVehicles();
 	}
 	
+	public Appointment getCurrentAppointment() {
+		return currentAppointment;
+	}
+	
 	public void notifyCustomerOfAppointment() {
 		//TODO notify customer about the appointment with SMS message sent to his phone
 		//currentAppointment.getCustomerPhoneNo();
+	}
+	
+	public void makeVehicleCheckUp(String plateNumber, LocalDate newCheckUpDate) {
+		VehicleController v = new VehicleController();
+		
+		v.updateCheckUpDate(plateNumber, newCheckUpDate);
 	}
 }

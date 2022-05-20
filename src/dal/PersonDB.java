@@ -23,6 +23,12 @@ public class PersonDB implements PersonDBIF {
 			+ "join City on Person.Zipcode = City.Zipcode "
 			+ "where cpr = ?";
 	
+	private static final String SELECT_CUSTOMER = "SELECT * FROM Customer "
+			+ "join Person on Customer.phoneNo = Person.phoneNumber "
+			+ "and Customer.countryCode = Person.countryCode "
+			+ "join City on Person.Zipcode = City.Zipcode "
+			+ "where Customer.phoneNo = ? and Customer.countryCode = ?";
+	
 	private static final String SELECT_PERSON = "SELECT * FROM "
 			+ "Person join City on Person.Zipcode = City.Zipcode WHERE phoneNumber = ?";
 	
@@ -38,6 +44,7 @@ public class PersonDB implements PersonDBIF {
 	
 	private PreparedStatement selectAllEmployees;
 	private PreparedStatement selectPersonWithPhoneNo;
+	private PreparedStatement selectCustomer;
 	private PreparedStatement insertPerson;
 	private PreparedStatement insertEmployee;
 	
@@ -208,7 +215,28 @@ public class PersonDB implements PersonDBIF {
 			ResultSet rs = selectPersonWithPhoneNo.executeQuery();
 			
 			if (rs.next()) {
-				result = buildObject(rs);
+				result = buildEmployee(rs);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public Customer getCustomer(String phoneNo, String countryCode) {
+		Customer result = null;
+		try {
+			selectCustomer = DbConnection.getInstance().getConnection()
+					.prepareStatement(SELECT_CUSTOMER);
+			
+			selectCustomer.setString(1, phoneNo);
+			selectCustomer.setString(2, countryCode);
+			
+			ResultSet rs = selectCustomer.executeQuery();
+			
+			if (rs.next()) {
+				result = buildCustomer(rs);
 			}
 			
 		} catch (SQLException e) {
@@ -242,7 +270,7 @@ public class PersonDB implements PersonDBIF {
 	 * @return Object employee built from the result set
 	 * @throws SQLException
 	 */
-	private Employee buildObject(ResultSet rs) throws SQLException {
+	private Employee buildEmployee(ResultSet rs) throws SQLException {
 		return new Employee(rs.getString("name"), rs.getString("surname"),
 				rs.getString("address"), rs.getString("city"),
 				rs.getString("zipcode"), rs.getString("phoneNumber"),
@@ -250,10 +278,23 @@ public class PersonDB implements PersonDBIF {
 				rs.getString("cpr"), rs.getString("position"));
 	}
 	
+	/**
+	 * Build object of customer
+	 * @param rs Result set from the database
+	 * @return Object customer built from the result set
+	 * @throws SQLException
+	 */
+	private Customer buildCustomer(ResultSet rs) throws SQLException {
+		return new Customer(rs.getString("name"), rs.getString("surname"),
+				rs.getString("address"), rs.getString("city"),
+				rs.getString("zipcode"), rs.getString("phoneNumber"),
+				rs.getString("countryCode"), rs.getString("discountCategory"));
+	}
+	
 	private List<Employee> buildObjects(ResultSet rs) throws SQLException {
 		List<Employee> list = new ArrayList<>();
 		while(rs.next()) {
-			list.add(buildObject(rs));
+			list.add(buildEmployee(rs));
 		}
 		return list;
 	}

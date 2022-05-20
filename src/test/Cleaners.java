@@ -93,6 +93,7 @@ public class Cleaners {
 					stmt.setString(3, vehicle.getString("brand"));
 					stmt.setString(4, vehicle.getString("customerPhone"));
 					stmt.setString(5, vehicle.getString("countryCode"));
+					stmt.setDate(6, vehicle.getDate("checkUpDate"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

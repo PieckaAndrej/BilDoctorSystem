@@ -21,6 +21,7 @@ public class App extends JFrame {
 	private JPanel contentPane;
 	private JPanel salePanel;
 	private JPanel appointmentPanel;
+	private CheckUpPanel checkUpPanel;
 	private JLabel lblConnection;
 
 	/**
@@ -91,6 +92,16 @@ public class App extends JFrame {
 		
 		appointmentPanel = new AppointmentPanel();
 		tabbedPane.addTab("Appointment", null, appointmentPanel, null);
+		
+		checkUpPanel = new CheckUpPanel();
+		
+		tabbedPane.addTab(String.format("%s Check Up",
+				checkUpPanel.getListLength()), null, checkUpPanel, null);
+		
+		checkUpPanel.addCheckUpListener(size -> {
+			tabbedPane.setTitleAt(2, String.format("%s Check Up", size));
+		});
+		
 	}
 
 	/**

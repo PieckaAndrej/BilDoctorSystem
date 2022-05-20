@@ -23,7 +23,9 @@ insert into Employee values ('3002965743','3500', '97845625', '+45', 'idk');
 
 go
 
-insert into Vehicle values ('AAA', 1, 'Tesla', '1', '+45');
+insert into Vehicle values ('AAA', 1, 'Tesla', '1', '+45', '2022-05-25');
+insert into Vehicle values ('CCC', 12, 'Nokia', '1', '+45', '2022-05-24');
+insert into Vehicle values ('BBB', 2, 'Mazda', '1', '+45', '2022-06-26');
 
 go
 

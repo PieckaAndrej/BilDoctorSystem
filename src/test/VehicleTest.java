@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import dal.PersonDB;
 import dal.VehicleDB;
 import exceptions.DatabaseAccessException;
 import model.Customer;
-import model.Person;
 import model.Vehicle;
 
 class VehicleTest {
@@ -38,9 +38,12 @@ class VehicleTest {
 			e.printStackTrace();
 		}
 		
-		testVehicle = new Vehicle("plate", 2000, "brand");
+		
 		Customer testCustomer = new Customer("Banana", "Joe", "Gutenbergvej 2D", "Sindal",
 				"9870", "97845625", "+45", "VIP");
+		
+		testVehicle = new Vehicle("plate", 2000, "brand",
+				LocalDate.of(2000, 1, 1), testCustomer);
 		
 		PersonDB personDb = new PersonDB();
 		
@@ -77,6 +80,9 @@ class VehicleTest {
 		assertEquals(testVehicle.getPlateNumber(), vehicle.getPlateNumber());
 		assertEquals(testVehicle.getYear(), vehicle.getYear());
 		assertEquals(testVehicle.getBrand(), vehicle.getBrand());
+		assertEquals(testVehicle.getCheckUpDate(), vehicle.getCheckUpDate());
+		assertEquals(testVehicle.getOwner().getPhoneNumber(),
+				vehicle.getOwner().getPhoneNumber());
 
 	}
 }

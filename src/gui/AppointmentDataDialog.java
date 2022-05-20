@@ -53,6 +53,13 @@ public class AppointmentDataDialog extends JDialog {
 	private JLabel errorLabel;
 	private JComboBox<Employee> comboBox;
 	private String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+	
+	private FinishAppointment listener;
+	
+	private String custSurname;
+	private String custName;
+	private String custPhone;
+	private String description;
 
 	/**
 	 * Launch the application.
@@ -66,11 +73,23 @@ public class AppointmentDataDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
+	
+	public AppointmentDataDialog(LocalDateTime time) {
+		this(time, "", "", "", "");
+		
+	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public AppointmentDataDialog(LocalDateTime time) {
+	public AppointmentDataDialog(LocalDateTime time,
+			String custName, String custSurname, String custPhone, String description) {
+		
+		this.custPhone = custPhone;
+		this.custName = custName;
+		this.custSurname = custSurname;
+		this.description = description;
+		
 		setModal(true);
 		appointmentController = new AppointmentController();
 		setTitle("Appointment menu");
@@ -116,6 +135,7 @@ public class AppointmentDataDialog extends JDialog {
 				{
 					textArea = new JTextArea();
 					textArea.setLineWrap(true);
+					textArea.setText(description);
 					verticalBox.add(textArea);
 					textArea.setPreferredSize(new Dimension(100,100));
 				}
@@ -136,7 +156,7 @@ public class AppointmentDataDialog extends JDialog {
 						horizontalBox.add(lblNewLabel_3);
 					}
 					{
-						textPhoneNumber = new JTextField();
+						textPhoneNumber = new JTextField(custPhone);
 						horizontalBox.add(textPhoneNumber);
 						textPhoneNumber.setColumns(10);
 					}
@@ -154,7 +174,8 @@ public class AppointmentDataDialog extends JDialog {
 						horizontalBox.add(lblNewLabel_4);
 					}
 					{
-						textName = new JTextField();
+						textName = new JTextField(custSurname.equals("") ?
+								custName : custName + " " + custSurname);
 						horizontalBox.add(textName);
 						textName.setColumns(10);
 					}
@@ -274,7 +295,8 @@ public class AppointmentDataDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						errorLabel.setVisible(false);
 						errorLabel.setText("");
-						if(textPhoneNumber.getText().matches(pattern)) {
+
+						//if(textPhoneNumber.getText().matches(pattern)) {
 							if(!textName.getText().equals("")) {
 								if(comboBox.getEditor().getItem() instanceof Employee) {
 									addCustomerInfo();
@@ -289,10 +311,10 @@ public class AppointmentDataDialog extends JDialog {
 								errorLabel.setVisible(true);
 								errorLabel.setText("Input name");
 							}
-						} else {
-							errorLabel.setVisible(true);
-							errorLabel.setText("The phone number is incorrect");
-						}						
+						//} else {
+						//	errorLabel.setVisible(true);
+						//	errorLabel.setText("The phone number is incorrect");
+						//}						
 					}
 				});
 				{
@@ -336,13 +358,13 @@ public class AppointmentDataDialog extends JDialog {
 	 */
 	private void createAppointment(LocalDateTime time) {
 		try {
-			if(appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText())) {
+			if (appointmentController.createAppointment(time, (Integer)spinner.getValue(), textArea.getText())) {
 				openCustomerInfoPanel();
-				}
-				else {
-					errorLabel.setVisible(true);
-					errorLabel.setText("The date is incorrect");
-				}			
+			}
+			else {
+				errorLabel.setVisible(true);
+				errorLabel.setText("The date is incorrect");
+			}			
 		} catch (DatabaseAccessException | LengthUnderrunException e) {
 			e.printStackTrace();
 		}
@@ -400,11 +422,23 @@ public class AppointmentDataDialog extends JDialog {
 	 */
 	private void insertIntoDB(){
 		try {
+			if (listener != null) {
+				listener.action(
+						appointmentController.getCurrentAppointment()
+						.getAppointmentDate());
+			}
+			
 			appointmentController.finishAppointment();
+			
+			
 		} catch (DatabaseAccessException e) {
 			e.printStackTrace();
 		}
 		errorLabel.setText("Finishing the appointment...");
 		dispose();
+	}
+	
+	public void addFinishListener(FinishAppointment f) {
+		listener = f;
 	}
 }

@@ -102,6 +102,7 @@ CREATE TABLE dbo.Vehicle (
 	brand VARCHAR(20) NOT NULL,
 	customerPhone VARCHAR(20),
 	countryCode VARCHAR(5) NOT NULL,
+	checkUpDate date,
 	CONSTRAINT VehicleCustomerFK
 		FOREIGN KEY (customerPhone, countryCode) REFERENCES Customer(phoneNo, countryCode)
 		ON DELETE CASCADE,

@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dal.VehicleDB;
@@ -24,6 +25,10 @@ public class VehicleController {
 	}
 	
 	public ArrayList<Vehicle> getAllVehicles() {
-		return vehicleDB.getAllVehicles();
+		return vehicleDB.getAllVehiclesWithCheckUpDate(LocalDate.now().plusDays(7));
+	}
+	
+	public void updateCheckUpDate(String plateNumber, LocalDate newCheckUpDate) {
+		vehicleDB.changeCheckUpTime(plateNumber, newCheckUpDate);
 	}
 }

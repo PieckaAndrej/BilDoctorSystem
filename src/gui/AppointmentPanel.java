@@ -40,18 +40,34 @@ public class AppointmentPanel extends JPanel {
     private LocalDateTime time;
 
 	private AppointmentController appointmentController;
+	private FinishAppointment listener;
+	
+	private String custSurname;
+	private String custName;
+	private String custPhone;
+	private String description;
 
 	
 	/**
 	 * Create the panel.
 	 */
-	public AppointmentPanel() {
+	public AppointmentPanel(String custName, String custSurname, String custPhone, String description) {
 		Thread controllerInit = new Thread(() -> {
 				appointmentController = new AppointmentController();
 		});
 		
 		controllerInit.start();
+		
+		this.custName = custName;
+		this.custPhone = custPhone;
+		this.custSurname = custSurname;
+		this.description = description;
+		
 		initGui();
+	}
+	
+	public AppointmentPanel() {
+		this("", "", "", "");
 	}
 	
 	/**
@@ -114,7 +130,7 @@ public class AppointmentPanel extends JPanel {
 			}
 		});
 		
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton("Back");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Thread cancelSale = new Thread(() -> {
@@ -191,17 +207,27 @@ public class AppointmentPanel extends JPanel {
 	 * @param time
 	 */
 	public void confirm(LocalDateTime time) {
-		if(list.getSelectedIndex() != -1) {
+		if (list.getSelectedIndex() != -1) {
 			time = time.withMinute(0);
 			time = time.withSecond(0);
 			time = time.withNano(0);
-			AppointmentDataDialog newDialog = new AppointmentDataDialog(time.withHour(list.getSelectedIndex()));
+			
+			AppointmentDataDialog newDialog = new AppointmentDataDialog(
+					time.withHour(list.getSelectedIndex()),
+					custName, custSurname, custPhone, description);
+			
+			newDialog.addFinishListener(listener);
+			
 			newDialog.setVisible(true);
 			
+
 			List<Appointment> a;
 			a = getAppointments(time);
 			fillList(a);
 			availableHoursPanel.revalidate();
+
+			revalidate();
+
 		}
 	}
 	
@@ -241,5 +267,9 @@ public class AppointmentPanel extends JPanel {
 			e.printStackTrace();
 		}
 		return appointments;
+	}
+	
+	public void addFinishListener(FinishAppointment f) {
+		listener = f;
 	}
 }
