@@ -271,6 +271,8 @@ public class AppointmentDataDialog extends JDialog {
 				secondOkButton = new JButton("Confirm");
 				secondOkButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						errorLabel.setVisible(false);
+						errorLabel.setText("");
 						if(textPhoneNumber.getText().matches(pattern)) {
 							if(!textName.getText().equals("")) {
 								if(comboBox.getEditor().getItem() instanceof Employee) {
@@ -402,11 +404,6 @@ public class AppointmentDataDialog extends JDialog {
 			e.printStackTrace();
 		}
 		errorLabel.setText("Finishing the appointment...");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		dispose();
 	}
 }
