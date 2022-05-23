@@ -46,10 +46,6 @@ public class AppointmentDB implements AppointmentDBIF {
 				throw new DatabaseAccessException(DatabaseAccessException.CONNECTION_MESSAGE);
 			}
 			
-			// Start transaction
-			DbConnection.getInstance().startTransaction();
-			
-			
 			// Insert appointment
 			createStatement.setTimestamp(1, Timestamp.valueOf(a.getCreationDate()));
 			createStatement.setDouble(2, a.getLength());
@@ -58,18 +54,9 @@ public class AppointmentDB implements AppointmentDBIF {
 			createStatement.setString(5, a.getEmployee().getCpr());
 			a.setId(DbConnection.getInstance().executeSqlInsertWithIdentity(createStatement));
 			
-		
-			// Commit
-			System.out.println("Commited");
-			DbConnection.getInstance().commitTransaction();
-			
 			retVal = true;
 			
 		} catch (SQLException e) {
-			// Roll back
-			System.out.println("Rolled back");
-			DbConnection.getInstance().rollbackTransaction();
-			
 			throw new DatabaseAccessException(e.getMessage());
 		}
 

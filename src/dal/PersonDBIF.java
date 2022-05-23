@@ -1,6 +1,5 @@
 package dal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.DatabaseAccessException;

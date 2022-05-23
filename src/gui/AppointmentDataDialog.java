@@ -55,11 +55,6 @@ public class AppointmentDataDialog extends JDialog {
 	private String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
 	
 	private FinishAppointment listener;
-	
-	private String custSurname;
-	private String custName;
-	private String custPhone;
-	private String description;
 
 	/**
 	 * Launch the application.
@@ -84,11 +79,6 @@ public class AppointmentDataDialog extends JDialog {
 	 */
 	public AppointmentDataDialog(LocalDateTime time,
 			String custName, String custSurname, String custPhone, String description) {
-		
-		this.custPhone = custPhone;
-		this.custName = custName;
-		this.custSurname = custSurname;
-		this.description = description;
 		
 		setModal(true);
 		appointmentController = new AppointmentController();
@@ -372,19 +362,19 @@ public class AppointmentDataDialog extends JDialog {
 	
 	
 	/**
-	 * Add info about customer intormation the current appointment
+	 * Add info about customer information the current appointment
 	 */
 	private void addCustomerInfo() {
 		appointmentController.addCustomerInfo(textName.getText(), textPhoneNumber.getText());
 	}
 	
 	private void addEmployee() {
-			try {
-				appointmentController.addEmployee((Employee) comboBox.getEditor().getItem());
-			} catch (DatabaseAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			appointmentController.addEmployee((Employee) comboBox.getEditor().getItem());
+		} catch (DatabaseAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -405,11 +395,13 @@ public class AppointmentDataDialog extends JDialog {
 	 */
 	private void fillEmployeeList(JComboBox<Employee> comboBox) {
 		List<Employee> ps = null;
+		
 		try {
 			ps = appointmentController.getAllEmployees();
 		} catch (DatabaseAccessException e) {
 			e.printStackTrace();
 		}
+		
 		DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
 		dfm.addAll(ps);
 		
@@ -438,6 +430,10 @@ public class AppointmentDataDialog extends JDialog {
 		dispose();
 	}
 	
+	/**
+	 * Add a listener that is called on finish appointment
+	 * @param f Interface finish appointment
+	 */
 	public void addFinishListener(FinishAppointment f) {
 		listener = f;
 	}

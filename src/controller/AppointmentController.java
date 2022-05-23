@@ -110,10 +110,12 @@ public class AppointmentController {
 	 */
 	public boolean addCustomerInfo(String name, String phoneNo) {
 		boolean retVal = false;
-		if(currentAppointment != null) {
+		
+		if (currentAppointment != null) {
 			currentAppointment.addCustomerInfo(name, phoneNo);
 			retVal = true;
 		}
+		
 		return retVal;
 	}
 	
@@ -123,10 +125,12 @@ public class AppointmentController {
 	 */
 	public boolean addEmployee(Employee employee) throws DatabaseAccessException {
 		boolean retVal = false;
-		if(currentAppointment != null) {
+		
+		if (currentAppointment != null) {
 			currentAppointment.addEmployee(employee);
 			retVal = true;
 		}
+		
 		return retVal;
 	}
 	
@@ -137,8 +141,9 @@ public class AppointmentController {
 	 */
 	public boolean finishAppointment() throws DatabaseAccessException {
 		boolean retVal = false;
-		if(currentAppointment != null) {
-			if(currentAppointment.isFilled()) {
+		
+		if (currentAppointment != null) {
+			if (currentAppointment.isFilled()) {
 				try {
 					appointmentdb.insertAppointment(currentAppointment);
 					notifyCustomerOfAppointment();
@@ -154,19 +159,35 @@ public class AppointmentController {
 		return retVal; 
 	}
 	
-	public void cancelAppointment()
-	{
+	/**
+	 * Cancel current appointment
+	 */
+	public void cancelAppointment() {
 		currentAppointment = null;
 	}
 	
+	/**
+	 * Get all appointments on a day
+	 * @param date The date that appointments are retrieved on
+	 * @return List of appointments with the same date
+	 * @throws DatabaseAccessException
+	 */
 	public List<Appointment> getAppointmentsOnDay(LocalDateTime date) throws DatabaseAccessException {
 		return appointmentdb.getAppointmentsOnDate(date);
 	}
 	
+	/**
+	 * Get all vehicles from the controller
+	 * @return ArrayList of all vehicles
+	 */
 	public ArrayList<Vehicle> getAllVehicles() {
 		return vehicleController.getAllVehicles();
 	}
 	
+	/**
+	 * Get current appointment
+	 * @return Current appointment as Appointment
+	 */
 	public Appointment getCurrentAppointment() {
 		return currentAppointment;
 	}
@@ -176,6 +197,11 @@ public class AppointmentController {
 		//currentAppointment.getCustomerPhoneNo();
 	}
 	
+	/**
+	 * Change vehicle check up date to a new one
+	 * @param plateNumber Plate number of the vehicle
+	 * @param newCheckUpDate New check up date
+	 */
 	public void makeVehicleCheckUp(String plateNumber, LocalDate newCheckUpDate) {
 		VehicleController v = new VehicleController();
 		

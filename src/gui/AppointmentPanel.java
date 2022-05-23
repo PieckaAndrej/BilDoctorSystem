@@ -28,8 +28,6 @@ import model.Appointment;
 
 public class AppointmentPanel extends JPanel {
 
-	
-
 	private static final long serialVersionUID = -81954108504757498L;
 	
 	private JPanel availableHoursPanel;
@@ -84,13 +82,15 @@ public class AppointmentPanel extends JPanel {
 		availableHoursPanel.setLayout(gbl_saleButtonsPanel);
 		
 		btnCreateSale = new JButton("Create appointment");
+		
 		btnCreateSale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Thread createAppointment = new Thread(() -> {
-					if(calendar.getModel().getValue() != null){
-					createAppointment();
+					if (calendar.getModel().getValue() != null) {
+						createAppointment();
 					}
 				});
+				
 				createAppointment.start();
 			}
 		});
@@ -118,7 +118,8 @@ public class AppointmentPanel extends JPanel {
 	 * Appointment ui constructor
 	 */
 	public void createAppointment() {
-		time = ((GregorianCalendar)calendar.getModel().getValue()).toZonedDateTime().toLocalDateTime();
+		time = ((GregorianCalendar)calendar.getModel().getValue())
+				.toZonedDateTime().toLocalDateTime();
 		
 		removeAll();
 		
@@ -245,10 +246,13 @@ public class AppointmentPanel extends JPanel {
 	 */
 	public void fillList(List<Appointment> a){
 		list.setCellRenderer(new HourListCellRenderer(a));
+		
 		DefaultListModel<Double> dlm = new DefaultListModel<>();
-		for(double i = 0.00; i < 24; i++) {
-					dlm.addElement(i);
-			}
+		
+		for (int i = 0; i < 24; i++) {
+			dlm.addElement((double)i);
+		}
+		
 		list.setModel(dlm);
 	}
 		
@@ -260,15 +264,20 @@ public class AppointmentPanel extends JPanel {
 	 */
 	public List<Appointment> getAppointments(LocalDateTime time) {
 		List<Appointment> appointments = null;
+		
 		try {
 			appointments = appointmentController.getAppointmentsOnDay(time);
 		} catch (DatabaseAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return appointments;
 	}
 	
+	/**
+	 * Add a listener that is called on finish appointment
+	 * @param f Interface finish appointment
+	 */
 	public void addFinishListener(FinishAppointment f) {
 		listener = f;
 	}

@@ -244,25 +244,6 @@ public class PersonDB implements PersonDBIF {
 		}
 		return result;
 	}
-
-	/**
-	 * Find person by phone
-	 * @param phone Phone of the person
-	 * @return ResultSet that the database returns
-	 * @throws SQLException
-	 */
-	private ResultSet findPerson(String phone) throws SQLException {
-		ResultSet result = null;
-		try {
-			selectPersonWithPhoneNo = DbConnection.getInstance().getConnection()
-					.prepareStatement(SELECT_PERSON);
-			selectPersonWithPhoneNo.setString(1, phone);
-			result = selectPersonWithPhoneNo.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
 	
 	/**
 	 * Build object of employee
