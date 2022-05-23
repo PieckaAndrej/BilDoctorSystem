@@ -34,6 +34,8 @@ class SaleTest {
 	private ProductDB productDB;
 	private SaleDB saleDB;
 	
+	private Product testProduct;
+	
 	private CleanDatabase productCleaner;
 	private CleanDatabase saleCleaner;
 	private CleanDatabase orderLineCleaner;
@@ -65,7 +67,7 @@ class SaleTest {
 			e.printStackTrace();
 		}
 		
-		Product testProduct = new Product(10, 10, 0, "test product");
+		testProduct = new Product(10, 10, 0, "test product");
 		
 		ProductDB productDb = new ProductDB();
 		productDb.insertProduct(testProduct);
@@ -94,6 +96,8 @@ class SaleTest {
 		String resultPlate = "";
 		int resultQuantity = 0;
 		String resultDescription = "";
+		int resultProductId = 0;
+		int resultProductQuantity = 0;
 		
 		
 		Product product = productDB.searchProduct(productId);
@@ -129,6 +133,13 @@ class SaleTest {
 			if (rs.next()) {
 				resultDescription = rs.getString("description");
 			}
+			
+			rs = DbConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Product").executeQuery();
+			
+			if (rs.next()) {
+				resultProductId = rs.getInt("id");
+				resultProductQuantity = rs.getInt("currentStock");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -136,6 +147,8 @@ class SaleTest {
 		assertEquals(plateNumber, resultPlate);
 		assertEquals(productQuantity, resultQuantity);
 		assertEquals(description, resultDescription);
+		assertEquals(testProduct.getId(), resultProductId);
+		assertEquals(testProduct.getCurrentStock() - productQuantity, resultProductQuantity);
 	}
 	
 	@Test

@@ -57,8 +57,8 @@ public class SaleDB implements SaleDBIF {
 				orderLineDb.insertOrderLine(orderLine, sale);
 				
 				Product p = orderLine.getProduct();
-				productDb.updateProduct(new Product(
-						(p.getCurrentStock() - orderLine.getQuantity()), p.getPrice(), p.getId(), p.getName()));
+				p.setCurrentStock(p.getCurrentStock() - orderLine.getQuantity());
+				productDb.updateProduct(p);
 			}
 			
 			// Insert services
