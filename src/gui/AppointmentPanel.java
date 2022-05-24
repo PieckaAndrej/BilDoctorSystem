@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -33,8 +34,8 @@ public class AppointmentPanel extends JPanel {
 	private JPanel availableHoursPanel;
 	private JButton btnCreateSale;
 	private JDatePanel calendar;
-	private JList<Double> list;
-    private DefaultListModel<Double> listModel;
+	private JList<Integer> list;
+    private DefaultListModel<Integer> listModel;
     private LocalDateTime time;
 
 	private AppointmentController appointmentController;
@@ -164,7 +165,7 @@ public class AppointmentPanel extends JPanel {
 	    
 
 	    //Create the list and put it in a scroll pane.
-	    list = new JList<Double>();
+	    list = new JList<Integer>();
 	    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    list.setSelectedIndex(0);
 	    list.setVisibleRowCount(2);
@@ -247,10 +248,10 @@ public class AppointmentPanel extends JPanel {
 	public void fillList(List<Appointment> a){
 		list.setCellRenderer(new HourListCellRenderer(a));
 		
-		DefaultListModel<Double> dlm = new DefaultListModel<>();
+		DefaultListModel<Integer> dlm = new DefaultListModel<>();
 		
 		for (int i = 0; i < 24; i++) {
-			dlm.addElement((double)i);
+			dlm.addElement(i);
 		}
 		
 		list.setModel(dlm);

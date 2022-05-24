@@ -127,7 +127,7 @@ public class AppointmentDataDialog extends JDialog {
 					textArea.setLineWrap(true);
 					textArea.setText(description);
 					verticalBox.add(textArea);
-					textArea.setPreferredSize(new Dimension(100,100));
+					textArea.setPreferredSize(new Dimension(100, 100));
 				}
 			}
 		}
@@ -217,9 +217,10 @@ public class AppointmentDataDialog extends JDialog {
 									// Check if the pressed key was an arrow key and in that case it does not refresh the box, so
 									// we can navigate freely in the written word and list
 									
-									if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
+									if (!(e.getKeyCode() == KeyEvent.VK_LEFT ||
+										e.getKeyCode() == KeyEvent.VK_UP ||
 										e.getKeyCode() == KeyEvent.VK_DOWN ||
-										e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
+										e.getKeyCode() == KeyEvent.VK_RIGHT)) {
 
 										// Retrieve the string written in the text field
 																			
@@ -228,7 +229,7 @@ public class AppointmentDataDialog extends JDialog {
 										// Remove every item from the list
 										
 										((DefaultComboBoxModel<Employee>) comboBox.getModel())
-										.removeAllElements();
+											.removeAllElements();
 
 										// Sets the selected item to the written text so it will not be removed
 										
@@ -401,7 +402,7 @@ public class AppointmentDataDialog extends JDialog {
 		} catch (DatabaseAccessException e) {
 			e.printStackTrace();
 		}
-		
+			
 		DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
 		dfm.addAll(ps);
 		

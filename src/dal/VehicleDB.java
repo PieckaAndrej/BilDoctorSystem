@@ -155,13 +155,13 @@ public class VehicleDB implements VehicleDBIF {
 		Vehicle currentVehicle = null;
 		
 		try {
-			getAllVehiclesStatement = DbConnection.getInstance().getConnection().prepareStatement(GET_ALL_VEHICLES_STATEMENT);
+			getAllVehiclesStatement = DbConnection.getInstance().getConnection()
+					.prepareStatement(GET_ALL_VEHICLES_STATEMENT);
 			
 			getAllVehiclesStatement.setDate(1, Date.valueOf(date));
 			
 			ResultSet rs = getAllVehiclesStatement.executeQuery();
-			while(rs.next())
-			{
+			while(rs.next()) {
 				currentVehicle = buildObject(rs);
 				vehicles.add(currentVehicle);
 			}

@@ -27,6 +27,12 @@ class VehicleTest {
 	private CleanDatabase vehicleCleaner;
 	private CleanDatabase customerCleaner;
 	private CleanDatabase personCleaner;
+	private CleanDatabase employeeCleaner;
+	private CleanDatabase orderLineCleaner;
+	private CleanDatabase saleCleaner;
+	private CleanDatabase serviceCleaner;
+	private CleanDatabase appointmentCleaner;
+	
 	private Vehicle testVehicle;
 	private Customer testCustomer;
 	
@@ -36,8 +42,18 @@ class VehicleTest {
 		vehicleCleaner = Cleaners.getVehicleCleaner();
 		customerCleaner = Cleaners.getCustomerCleaner();
 		personCleaner = Cleaners.getPersonCleaner();
+		employeeCleaner = Cleaners.getEmployeeCleaner();
+		orderLineCleaner = Cleaners.getOrderLineCleaner();
+		saleCleaner = Cleaners.getSaleCleaner();
+		serviceCleaner = Cleaners.getServiceCleaner();
+		appointmentCleaner = Cleaners.getAppointmentCleaner();
 		
 		try {
+			serviceCleaner.setUp();
+			orderLineCleaner.setUp();
+			saleCleaner.setUp();
+			appointmentCleaner.setUp();
+			employeeCleaner.setUp();
 			vehicleCleaner.setUp();
 			customerCleaner.setUp();
 			personCleaner.setUp();
@@ -71,8 +87,13 @@ class VehicleTest {
 	void cleanUp() {
 		try {
 			personCleaner.retrieveDatabase();
+			employeeCleaner.retrieveDatabase();
+			appointmentCleaner.retrieveDatabase();
 			customerCleaner.retrieveDatabase();
 			vehicleCleaner.retrieveDatabase();
+			saleCleaner.retrieveDatabase();
+			serviceCleaner.retrieveDatabase();
+			orderLineCleaner.retrieveDatabase();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

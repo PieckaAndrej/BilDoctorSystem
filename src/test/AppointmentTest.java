@@ -32,14 +32,24 @@ public class AppointmentTest {
 	private PersonDB personDB;
 	private Employee testEmployee;
 	
-	private CleanDatabase appointmentCleaner;
+	private CleanDatabase vehicleCleaner;
+	private CleanDatabase customerCleaner;
 	private CleanDatabase personCleaner;
 	private CleanDatabase employeeCleaner;
+	private CleanDatabase orderLineCleaner;
+	private CleanDatabase saleCleaner;
+	private CleanDatabase serviceCleaner;
+	private CleanDatabase appointmentCleaner;
 	
 	void initCleaners() {
-		appointmentCleaner = Cleaners.getAppointmentCleaner();	
+		vehicleCleaner = Cleaners.getVehicleCleaner();
+		customerCleaner = Cleaners.getCustomerCleaner();
 		personCleaner = Cleaners.getPersonCleaner();
 		employeeCleaner = Cleaners.getEmployeeCleaner();
+		orderLineCleaner = Cleaners.getOrderLineCleaner();
+		saleCleaner = Cleaners.getSaleCleaner();
+		serviceCleaner = Cleaners.getServiceCleaner();
+		appointmentCleaner = Cleaners.getAppointmentCleaner();
 	}
 	
 	@BeforeEach
@@ -49,8 +59,13 @@ public class AppointmentTest {
 		personDB = new PersonDB();
 		
 		try {
+			serviceCleaner.setUp();
+			orderLineCleaner.setUp();
+			saleCleaner.setUp();
 			appointmentCleaner.setUp();
 			employeeCleaner.setUp();
+			vehicleCleaner.setUp();
+			customerCleaner.setUp();
 			personCleaner.setUp();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -69,6 +84,11 @@ public class AppointmentTest {
 			personCleaner.retrieveDatabase();
 			employeeCleaner.retrieveDatabase();
 			appointmentCleaner.retrieveDatabase();
+			customerCleaner.retrieveDatabase();
+			vehicleCleaner.retrieveDatabase();
+			saleCleaner.retrieveDatabase();
+			serviceCleaner.retrieveDatabase();
+			orderLineCleaner.retrieveDatabase();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -452,7 +472,7 @@ public class AppointmentTest {
 		assertEquals(length, retrievedLength);
 		assertEquals(date, retrievedDate);
 		assertEquals(testEmployee.getCpr(), retrievedEmployee);
-		assertEquals(description, retrievedDescription);
+		assertEquals(a.getDescription(), retrievedDescription);
 	}
 
 	@Test

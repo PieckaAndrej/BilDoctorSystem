@@ -18,14 +18,17 @@ class ProductTest {
 
 	private ProductDB productDB;
 	private CleanDatabase productCleaner;
+	private CleanDatabase orderLineCleaner;
 	private Product testProduct;
 	
 	@BeforeEach
 	void setUp() {
 		productDB = new ProductDB();
 		productCleaner = Cleaners.getProductCleaner();
+		orderLineCleaner = Cleaners.getOrderLineCleaner();
 		
 		try {
+			orderLineCleaner.setUp();
 			productCleaner.setUp();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -41,6 +44,7 @@ class ProductTest {
 	void cleanUp() {
 		try {
 			productCleaner.retrieveDatabase();
+			orderLineCleaner.retrieveDatabase();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

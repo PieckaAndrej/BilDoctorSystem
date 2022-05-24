@@ -168,7 +168,7 @@ public class SalePanel extends JPanel {
 					// Check if the pressed key was an arrow key and in that case it does not refresh the box, so
 					// we can navigate freely in the written word and list
 					
-					if(!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
+					if (!(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP ||
 							e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_RIGHT) ) {
 						
 						// Retrieve the string written in the text field
@@ -185,7 +185,7 @@ public class SalePanel extends JPanel {
 
 						// Check if object is null, because in that case we cannot call the toString() on it
 						
-						if(o != null) {
+						if (o != null) {
 								
 							// Refills the list with the items which contains the written text	
 								
@@ -196,18 +196,18 @@ public class SalePanel extends JPanel {
 						
 						// Checks if you press enter, if you do than it selects item from list
 						
-						if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 							
 							// Checks if there is a product in the list, so it can select item from there
 							
-							if(saleCtrl.getAllProducts()
+							if (saleCtrl.getAllProducts()
 									.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
-									.toLowerCase())).toList().size()>0 ) {
+									.toLowerCase())).count() > 0 ) {
 								
 								// Checks if the item in the editor is Product, if not it selects the first one
 								// in the list which matches is the most
 								
-								if(!(box.getEditor().getItem() instanceof Product)) {
+								if (!(box.getEditor().getItem() instanceof Product)) {
 									box.getEditor().setItem(saleCtrl.getAllProducts()
 											.stream().filter(p -> p.getName().toLowerCase().contains(o.toString()
 											.toLowerCase())).toList().get(0));

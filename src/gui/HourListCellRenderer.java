@@ -12,7 +12,7 @@ import javax.swing.ListCellRenderer;
 
 import model.Appointment;
 
-public class HourListCellRenderer implements ListCellRenderer<Double> {
+public class HourListCellRenderer implements ListCellRenderer<Integer> {
 	
 	private List<Appointment> a;
 
@@ -21,12 +21,12 @@ public class HourListCellRenderer implements ListCellRenderer<Double> {
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Double> list, Double value, int index,
+	public Component getListCellRendererComponent(JList<? extends Integer> list, Integer value, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer();
 		dlcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		for(Appointment element: a) {
-			if(Double.compare(element.getAppointmentDate().getHour(), value) == 0) {
+		for (Appointment element: a) {
+			if (Integer.compare(element.getAppointmentDate().getHour(), value) == 0) {
 				dlcr.setBackground(Color.RED);
 			}
 		}
