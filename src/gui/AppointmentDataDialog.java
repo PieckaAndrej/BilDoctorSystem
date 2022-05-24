@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -52,7 +53,7 @@ public class AppointmentDataDialog extends JDialog {
 	private JButton okButton;
 	private JLabel errorLabel;
 	private JComboBox<Employee> comboBox;
-	private String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+	private String pattern = "\\+?\\d+";
 	
 	private FinishAppointment listener;
 
@@ -191,7 +192,24 @@ public class AppointmentDataDialog extends JDialog {
 
 						// Creates the list using the EmployeeListCellRenderer and fill the list
 						
-						fillEmployeeList(comboBox);
+						List<Employee> ps = null;
+						
+						try {
+							ps = appointmentController.getAllEmployees();
+						} catch (DatabaseAccessException e) {
+							e.printStackTrace();
+						}
+						
+						DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
+						dfm.addAll(ps);
+						
+						comboBox.setModel(dfm);
+						comboBox.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+//							  String name = (value == null) ? "" : value.getName();
+							return new DefaultListCellRenderer().getListCellRendererComponent(list, value.getName(),
+									index, isSelected, cellHasFocus);
+						
+						});
 
 						// Adds a focus listener so when the combo box receives focus the list opens
 						
@@ -287,13 +305,12 @@ public class AppointmentDataDialog extends JDialog {
 						errorLabel.setVisible(false);
 						errorLabel.setText("");
 
-						//if(textPhoneNumber.getText().matches(pattern)) {
+						if(textPhoneNumber.getText().matches(pattern)) {
 							if(!textName.getText().equals("")) {
 								if(comboBox.getEditor().getItem() instanceof Employee) {
 									addCustomerInfo();
 									addEmployee();
 									insertIntoDB();
-									System.out.println("works");
 								} else {
 									errorLabel.setVisible(true);
 									errorLabel.setText("The employee is incorrect");
@@ -302,10 +319,11 @@ public class AppointmentDataDialog extends JDialog {
 								errorLabel.setVisible(true);
 								errorLabel.setText("Input name");
 							}
-						//} else {
-						//	errorLabel.setVisible(true);
-						//	errorLabel.setText("The phone number is incorrect");
-						//}						
+						} else {
+							errorLabel.setVisible(true);
+							errorLabel.setText("The phone number format is incorrect, do not put "
+									+ "spaces between the numbers");
+						}						
 					}
 				});
 				{
@@ -391,27 +409,7 @@ public class AppointmentDataDialog extends JDialog {
 	}
 	
 	/**
-	 * Fill employee drop down list
-	 * @param comboBox
-	 */
-	private void fillEmployeeList(JComboBox<Employee> comboBox) {
-		List<Employee> ps = null;
-		
-		try {
-			ps = appointmentController.getAllEmployees();
-		} catch (DatabaseAccessException e) {
-			e.printStackTrace();
-		}
-			
-		DefaultComboBoxModel<Employee> dfm = new DefaultComboBoxModel<>();
-		dfm.addAll(ps);
-		
-		comboBox.setModel(dfm);
-		comboBox.setRenderer(new EmployeeListCellRenderer());
-	}
-	
-	/**
-	 * Finish appointment and insert into databse
+	 * Finish appointment and insert into database
 	 */
 	private void insertIntoDB(){
 		try {

@@ -15,9 +15,11 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -143,7 +145,16 @@ public class SalePanel extends JPanel {
 			
 			// Creates the list using the ProductListCellRenderer and fill the list
 			
-			fillProductList(box);
+			box.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+				return new DefaultListCellRenderer().getListCellRendererComponent(list, value.getName(),
+						index, isSelected, cellHasFocus);
+			});
+			
+			List<Product> ps = saleCtrl.getAllProducts();
+			DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
+			dfm.addAll(ps);
+			
+			box.setModel(dfm);
 			
 			// Adds a focus listener so when the combo box receives focus the list opens
 			
@@ -498,19 +509,5 @@ public class SalePanel extends JPanel {
 		
 		this.removeAll();
 		initGui();
-	}
-	
-	/**
-	 * Fill product ComboBox with products
-	 * @param comboBox ComboBox that is being filled with products
-	 */
-	private void fillProductList(JComboBox<Product> comboBox) {
-		comboBox.setRenderer(new ProductListCellRenderer());
-		
-		List<Product> ps = saleCtrl.getAllProducts();
-		DefaultComboBoxModel<Product> dfm = new DefaultComboBoxModel<>();
-		dfm.addAll(ps);
-		
-		comboBox.setModel(dfm);
 	}
 }

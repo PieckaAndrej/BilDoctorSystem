@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -246,7 +248,17 @@ public class AppointmentPanel extends JPanel {
 	 * @param List of appointment
 	 */
 	public void fillList(List<Appointment> a){
-		list.setCellRenderer(new HourListCellRenderer(a));
+		list.setCellRenderer((list, value, index, isSelected, cellHasFocus) ->{
+			DefaultListCellRenderer dlcr = new DefaultListCellRenderer();
+			dlcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			for (Appointment element: a) {
+				if (Integer.compare(element.getAppointmentDate().getHour(), value) == 0) {
+					dlcr.setBackground(Color.RED);
+				}
+			}
+			
+			return dlcr;
+		});
 		
 		DefaultListModel<Integer> dlm = new DefaultListModel<>();
 		
