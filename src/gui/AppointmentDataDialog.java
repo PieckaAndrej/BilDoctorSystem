@@ -321,8 +321,7 @@ public class AppointmentDataDialog extends JDialog {
 							}
 						} else {
 							errorLabel.setVisible(true);
-							errorLabel.setText("The phone number format is incorrect, do not put "
-									+ "spaces between the numbers");
+							errorLabel.setText("The phone number format is incorrect");
 						}						
 					}
 				});
