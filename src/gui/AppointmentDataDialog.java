@@ -53,7 +53,7 @@ public class AppointmentDataDialog extends JDialog {
 	private JButton okButton;
 	private JLabel errorLabel;
 	private JComboBox<Employee> comboBox;
-	private String pattern = "\\+?\\d+";
+	private String pattern = "\\+?(\\d|\\s)+";
 	
 	private FinishAppointment listener;
 
