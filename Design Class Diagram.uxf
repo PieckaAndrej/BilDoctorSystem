@@ -1,0 +1,1924 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>2</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>222</x>
+      <y>450</y>
+      <w>72</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>Person
+--
+- name: String
+- surname: String
+- address: String
+- city: String
+- zipcode: String
+- phoneNumber: String 
+- countryCode: String
+--
++ &lt;&lt;create&gt;&gt; Person(name: String,
+    surname: String, address: String,
+    city: String, zipcode: String,
+    phoneNumber: String, countryCode: String)
++ getName(): String
++ setName(name: String): void
++ getAddress(): String
++ setAddress(address: String): void
++ getCity(): String
++ setCity(city: String): void
++ getZipcode(): String
++ setZipcode(zipcode: String): void
++ getPhoneNumber(): String
++ setPhoneNumber(phoneNumber: String): void
++ getSurname(): String
++ setSurname(surname: String): void
++ getCountryCode(): String
++ setCountyCode(countryCode: String): void
++ toString(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>184</x>
+      <y>564</y>
+      <w>62</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Employee
+--
+- salary: BigDecimal
+- cpr: String
+- position: String
+--
++ &lt;&lt;create&gt;&gt; Employee(
+    name: String, surname: String,
+    address: String, city: String,
+    zipcode: String, phoneNumber: String,
+    countryCode: double): Employee
++ &lt;&lt;create&gt;&gt; Employee(
+    name: String, surname: String,
+    address: String, city: String,
+    zipcode: String, phoneNumber: String,
+    countryCode: String, salary: BigDecimal,
+    cpr: String, position: String) 
++ getSalary(): BigDecimal
++ setSalary(salary: BigDecimal): void
++ getCpr(): String
++ getPosition(): String
++ setPosition(position: String): void
++ setCpr(cpr: String): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>262</x>
+      <y>564</y>
+      <w>76</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>Customer
+--
+- discountCategory: String
+--
++ &lt;&lt;create&gt;&gt; Customer(
+    name: String, surname: String,
+    address: String, city: String,
+    zipcode: String, phoneNumber: String,
+    countryCode: String)
++ &lt;&lt;create&gt;&gt; Customer(
+    name: String, surname: String,
+    address: String, city: String,
+    zipcode: String, phoneNumber: String,
+    countryCode: String, discount: String)
++ getDiscountCategory(): String
++ setDiscountCategory(discountCategory: String): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>540</y>
+      <w>28</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>212</x>
+      <y>540</y>
+      <w>28</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>344</y>
+      <w>82</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>PersonDB
+--
+_- SELECT_EMPLOYEES: String_
+_- SELECT_EMPLOYEE: String_
+_- SELECT_CUSTOMER: String_
+_- SELECT_PERSON: String_
+_- INSERT_PERSON: String_
+_- INSERT_EMPLOYEE: String_
+_- INSERT_CUSTOMER: String_
+- selectAllEmployees: PreparedStatement
+- selectPersonWithPhoneNo: PreparedStatement
+- selectCustomer: PreparedStatement
+- insertPerson: PreparedStatement
+- insertEmployee: PreparedStatement
+--
++ &lt;&lt;create&gt;&gt; PersonDB()
++ insertPerson(customer: Customer): boolean
++ insertCustomer(customer: Customer): boolean
++ insertPerson(employee: Employee): boolean
++ insertEmployee(employee: Employee): boolean
++ getAllEmployees(): ArrayList&lt;Employee&gt;
++ getEmployee(crp: String): Employee
++ getCustomer(phoneNo: String, countryCode: String): Customer
+- findPerson(phone: String): ResultSet
+- buildEmployee(rs: ResultSet): Employee
+- buildCustomer(rs: ResultSet): Customer
+- buildObject(rs: ResultSet): List&lt;Employee&gt;
+_+ getInsertPerson(): String_
+_+ getInsertEmployee(): String_
+_+ getInsertCustomer(): String_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>238</x>
+      <y>296</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+PersonDBIF
+--
+
+--
++ getAllEmployees(): ArrayList&lt;Employee&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>254</x>
+      <y>326</y>
+      <w>6</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>238</x>
+      <y>244</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>PersonController
+--
+- personDB: PersonDBIF
+--
++ &lt;&lt;create&gt;&gt; PersonController()
++ getAllEmployees(): List&lt;Employee&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>254</x>
+      <y>274</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>348</x>
+      <y>452</y>
+      <w>80</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Appointment
+--
+- id: int
+- creationDate: LocalDateTime
+- length: double
+- appointmentDate: LocalDateTime
+- description: String
+- customerPhoneNo: String
+- customerName: String
+- employee: Employee
+--
++ &lt;&lt;create&gt;&gt; Appointment(
+    appointmentDate: LocalDateTime,
+    lenght: double, creationDate: LocalDateTime,
+    description: String): boolean
++ isFilled(): boolean
++ addCustomerInfo(phoneNo: String, name: String): void
++ addEmployee(employee: Employee): void
++ getId(): int
++ setId(id: int): void
++ getCreationDate(): LocalDateTime
++ setCreationDate(creationDate: LocalDateTime): void
++ getLength(): double
++ setLength(length: double): void
++ getAppointmnetDate(): LocalDateTime
++ setAppointmentDate(appointmentDate: LocalDateTime): void
++ getDescription(): String
++ setDescription(description: String): void
++ getCustomerPhoneNo(): String
++ setCustomerPhoneNo(customerPhoneNo: String): void
++ getCustomerName(): String
++ setCustomerName(customerName: String): void
++ getEmployee(): Employee
++ setEmployee(employee: Employee): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>354</x>
+      <y>344</y>
+      <w>64</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>AppointmentDB
+--
+_- CREATE_STATEMENT: String_
+- createStatement: PreparedStatement
+_- GET_APPOINTMENTS_STATEMENT: String_
+- getAppointmentsStatement: PreparedStatement
+--
++ &lt;&lt;create&gt;&gt; AppointmentDB()
++ insertAppointment(a: Appointment): boolean
++ getAllAppointments(): List&lt;Appointment&gt;
+- buildObject(rs ResultSet): Appointment
+_+ getCreateStatement(): String_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>356</x>
+      <y>296</y>
+      <w>60</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+AppointmentDBIF
+--
+
+--
++ insertAppointment(a: Appointment): boolean
++ getAppointmentsOnDate(
+    date: LocalDateTime): List&lt;Appointment&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>484</x>
+      <y>326</y>
+      <w>6</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>452</x>
+      <y>454</y>
+      <w>68</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Vehicle
+--
+- plateNumber: String
+- brand: String
+- checkUpDate: LocalDate
+- year: int
+- owner: Customer
+--
++ &lt;&lt;create&gt;&gt; Vehicle(
+    plateNumber: String, year: int,
+    brand: String, checkUpDate: LocalDate) 
++ getPlateNumber() : String
++ setPlateNumber(plateNumber: String) : void
++ getYear(): int
++ setYear(year: int) : void
++ getBrand(): String
++ setBrand(brand: String) : void
++ getOwner(): Customer
++ setOwner(owner: Customer): void
++ getCheckUpDate(): LocalDate
++ setCheckUpDate(checkUpDate: LocalDate): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>448</x>
+      <y>336</y>
+      <w>78</w>
+      <h>58</h>
+    </coordinates>
+    <panel_attributes>VehicleDB
+--
+_- SELECT_VEHICLE_STATEMENT: String_
+- selectVehicleStatement: PreparedStatement
+_- INSERT_VEHICLE_STATEMENT: String_
+- insertVehicleStatement: preparedStatement
+_- GET_ALL_VEHICLES_STATEMENT: String_
+- getAllVehiclesStatement: preparedStatement
+_- UPDATE_CHECKUP_STATEMENT: String_
+- updateCheckUpStatement: PreparedStatement
+--
++ &lt;&lt;create&gt;&gt; VehicleDB()
++ changeCheckUpTime(plateNumber: String,
+     newCheckUpDate: LocalDate): void
++ searchVehicle(plateNumber: String): Vehicle
++ insertVehicle(vehicle: Vehicle, customer: Person): boolean
+- buildObject(rs: ResultSet): Vehicle
+_+ getInsertVehicleStatement(): String_
++ getAllVehicles(): ArrayList&lt;Vehicle&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>484</x>
+      <y>392</y>
+      <w>6</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;310.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>296</y>
+      <w>60</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+VehicleDBIF
+--
+
+--
++ searchVehicle(plateNumber: String): Vehicle
++ getAllVehicles(): ArrayList&lt;Vehicle&gt;
++ changeCheckUpTime(
+    plateNumber: String,
+    newCheckUpDate: LocalDate): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>242</y>
+      <w>60</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>VehicleController
+--
+- vehicleDB VehicleDBIF
+--
++ &lt;&lt;create&gt;&gt; VehicleController()
++ searchVehicle(plateNumber: String): Vehicle
++ getAllVehicles(): ArrayList&lt;Vehicle&gt;
++ updateCheckUpDate(plateNumber: String,
+    newCheckUpDate: LocalDate): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>484</x>
+      <y>272</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>382</x>
+      <y>276</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>382</x>
+      <y>326</y>
+      <w>6</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>380</y>
+      <w>6</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;360.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>328</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>634</x>
+      <y>398</y>
+      <w>64</w>
+      <h>82</h>
+    </coordinates>
+    <panel_attributes>Sale
+--
+- description: String 
+- date: LocalDateTime
+- id: int
+- orderLines: ArrayList&lt;OrderLine&gt;
+- services: ArrayList&lt;Service&gt;
+- vehicle: Vehicle
+--
++ &lt;&lt;create&gt;&gt; Sale(vehicle: Vehicle): boolean
++ addService(service: Service): boolean
++ isVehiclePresent(vehicle: Vehicle): boolean
++ removeService(array: int[]): void
++ removeProduct(array: int[]): void
++ addOrderLine(orderLine: OrderLine): boolean
++ getDescription() : String
++ setDescription(description: String) : void
++ getDate() : LocalDateTime
++ setDate(date: LocalDateTime) : void
++ getVehicle() : vehicle
++ SetVehicle(vehicle Vehicle) : void
++ getId() : id
++ setId(id: int) : void
++ getServices(): ArrayList&lt;Service&gt;
++ setServices(services: ArrayList&lt;Service&gt;): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>348</y>
+      <w>52</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>SaleDB
+--
+_- CREATE_STATEMENT: String_
+- createStatement: PreparedStatement
+--
++ &lt;&lt;create&gt;&gt; SaleDB()
++ insertSale(sale Sale): Sale
+_+ getCreateStatement(): String_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>378</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>646</x>
+      <y>298</y>
+      <w>40</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+SaleDBIF
+--
+
+--
++ insertSale(sale: Sale): Sale
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>622</x>
+      <y>228</y>
+      <w>88</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>SaleController
+--
+- productController ProductController
+- serviceController ServiceController
+- vehicleController VehicleController
+- saleDb SaleDBIF
+- sale Sale
+--
++ &lt;&lt;create&gt;&gt; SaleController()
++ createSale(plateNumber: String): boolean
++ addService(cost: double, time: double, description: String): boolean
++ addProduct(productId: int, name: String, quantity: int): boolean
++ removeService(array: int[]): void
++ removeProduct(array: int[]): void
++ finishSale(): boolean
++ getProducts(searchFor: String): List&lt;Product&gt;
++ getCurrentProducts(): List&lt;Product&gt;
++ getProducts(): List&lt;Product&gt;
++ cancelSale(): void
++ getSale(): Sale</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>290</y>
+      <w>6</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>548</x>
+      <y>348</y>
+      <w>76</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>DbConnection
+--
+_- instance DbConnection_
+- conn Connection
+--
+- &lt;&lt;create&gt;&gt; DbConnetion()
+- initConnection(): void
++ checkConnection(): boolean
+_+ getInstance(): DbConnection_
++ getConnection(): Connection
++ printSessionInfo(conn Connection): void
++ executeSqlInsertWithIdentity(ps: PreparedStatement): int
++ startTransaction(): void
++ commitTransaction(): void
++ rollbackTransaction(): void
++ setTransactionIsolation(level: int): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>622</x>
+      <y>362</y>
+      <w>22</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>524</x>
+      <y>350</y>
+      <w>28</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>416</x>
+      <y>358</y>
+      <w>136</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>660.0;50.0;580.0;50.0;580.0;200.0;90.0;200.0;90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>296</x>
+      <y>388</y>
+      <w>256</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1260.0;10.0;1230.0;10.0;1230.0;130.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>766</x>
+      <y>328</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>736</x>
+      <y>426</y>
+      <w>68</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>OrderLine
+--
+- quantity: int
+- id: id
+- product: Product
+- plateNumber: String
+--
++ &lt;&lt;create&gt;&gt; OrderLine(quantity: int, product Product)
++ getQuantity(): int
++ setQuantity(quantity: int): void
++ getId(): int
++ setId(id: int): void
++ getProduct(): Product
++ setProduct(product: Product): void
++ getPlateNumber(): String
++ setPlateNumber(plateNumber: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>348</y>
+      <w>78</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>OrderLineDB
+--
+_- CREATE_STATEMENT: String_
+--
++ &lt;&lt;create&gt;&gt; SaleOrderLineDB()
++  insertOrderLine(orderLine: OrderLine, sale: Sale): boolean
+_+ getCreateStatement(): String_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>766</x>
+      <y>378</y>
+      <w>6</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>298</y>
+      <w>76</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+OrderLineDBIF
+--
+
+--
++ insertOrderLine(orderLine: OrderLine, sale: Sale): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>458</y>
+      <w>44</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>964</x>
+      <y>408</y>
+      <w>6</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>964</x>
+      <y>330</y>
+      <w>6</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>936</x>
+      <y>436</y>
+      <w>60</w>
+      <h>62</h>
+    </coordinates>
+    <panel_attributes>Product	
+--
+- currentStock: int
+- price: BigDecimal
+- id: int
+- name: String
+--
++ &lt;&lt;create&gt;&gt; Product(currentStock: int,
+    price: BigDecimal, Id: int,
+    name: String): Product
++ getCurrentStock(): int
++ setCurrentStock(currentStock: int) : void
++ getPrice(): BigDecimal
++ setPrice(price: double) : void
++ setPrice(price: BigDecimal) : void
++ getId(): int
++ setId(id: int): void
++ getName(): String
++ setName(name: String): void
++ toString(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>924</x>
+      <y>358</y>
+      <w>86</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>ProductDB
+--
+_- SELECT_PRODUCT_STATEMENT: String_
+- selectProductStatement: PreparedStatement
+_- SELECT_UPDATE_STATEMENT: String_
+- searchProductByNameStatement: PreparedStatement
+_- SELECT_SELECT_PRODUCT_BY_NAME_STATEMENT: String_
+--
++ &lt;&lt;create&gt;&gt; ProductDB()
++ searchProduct(productId: int): Product
++ updateProduct(product: Product): boolean
++ insertProduct(product: Product): Product
+- buildObject(rs: ResultSet): Product
+- buildObjects(rs: ResultSet): List&lt;Product&gt;
++ getProducts(searchFor: String): List&lt;Product&gt;
++ getAllProducts(): List&lt;Product&gt;
+_+ getInsertStatement(): String_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>936</x>
+      <y>300</y>
+      <w>58</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ProductDBIF
+--
+
+--
++ searchPerson(productId: int): Product
++ updateProduct(product: Product): boolean
++ getAllProducts(): List&lt;Product&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>938</x>
+      <y>250</y>
+      <w>54</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>ProductController
+--
+- productDB ProductDBIF
+- currentProducts: List&lt;Product&gt;
+--
++ &lt;&lt;create&gt;&gt; ProductController()
++ searchProduct(productId: int): Product
++ getAllProducts(): List&lt;Product&gt;
++ getCurrentProducts(): List&lt;Product&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>858</x>
+      <y>328</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>830</x>
+      <y>422</y>
+      <w>60</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Service
+--
+- description: String 
+- time: double
+- price: double
+--
++ &lt;&lt;create&gt;&gt; Service(cost: BigDecimal,
+    time: double, dsc: String): Service
++ getPrice() : BigDecimal
++ setPrice(price: double) : void
++ getTime() : double
++ setTime(time: double) : void
++ getDescription() : String
++ setDescription(description: String) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>856</x>
+      <y>378</y>
+      <w>6</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>298</y>
+      <w>68</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ServiceDBIF
+--
+
+--
++ insertService(service: Service, sale: Sale): boolean 	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>836</x>
+      <y>246</y>
+      <w>50</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>ServiceController
+--
+
+--
++ &lt;&lt;create&gt;&gt; ServiceController()
++ createService(cost: double,
+    time: double, dsc: String): Service</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>858</x>
+      <y>276</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>802</x>
+      <y>466</y>
+      <w>138</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>670.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>622</x>
+      <y>390</y>
+      <w>306</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;1510.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>622</x>
+      <y>362</y>
+      <w>112</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;480.0;110.0;480.0;10.0;540.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>622</x>
+      <y>362</y>
+      <w>208</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;130.0;990.0;130.0;990.0;10.0;1020.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>514</x>
+      <y>254</y>
+      <w>112</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>540.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>238</y>
+      <w>186</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>910.0;150.0;680.0;150.0;680.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>250</y>
+      <w>132</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;640.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>272</x>
+      <y>256</y>
+      <w>70</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>272</x>
+      <y>248</y>
+      <w>188</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>920.0;10.0;890.0;10.0;890.0;180.0;180.0;180.0;180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>238</y>
+      <w>234</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1150.0;120.0;1060.0;120.0;1060.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>262</y>
+      <w>30</w>
+      <h>174</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>100.0;850.0;10.0;850.0;10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>628</x>
+      <y>290</y>
+      <w>10</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>30.0;630.0;10.0;630.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>626</x>
+      <y>290</y>
+      <w>134</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>650.0;930.0;650.0;980.0;10.0;980.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>348</y>
+      <w>68</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>ServiceDB
+--
+_- CREATE_STATEMENT: String_
+- createStatement: PreparedStatement
+--
++ &lt;&lt;create&gt;&gt; ServiceDB()
++ insertService(service: Service, sale: Sale): boolean
+_+ getCreateStatement(): String_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>806</x>
+      <y>312</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;60.0;10.0;60.0;220.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>338</x>
+      <y>220</y>
+      <w>104</w>
+      <h>58</h>
+    </coordinates>
+    <panel_attributes>AppointmentController
+--
+- personCtrl: PersonController
+- appointmentdb: AppointmentDB
+- currentAppointment: Appointment
+- vehicleController: VehicleController
+--
++ createAppointment()
++ getAllEmployees(): List&lt;Employee&gt;
++ createAppointment(date: LocalDateTime, length: int, description: String): boolean
++ addCustomerInfo(phoneNo: String, name: String): boolean
++ addEmployee(employee: Employee): boolean
++ finishAppointment(): boolean
++ cancelAppontment(): void
++ getAppointmentsOnDay(date: LocalDateTime date): List&lt;Appointment&gt;
++ getAllVehicles(): ArrayList&lt;Vehicle&gt;
++ getCurrentAppointment(): Appointment
++ notifyCustomerOfAppointment(): void
++ makeVehicleCheckUp(plateNumber: String, newCheckUpDate: LocalDate): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>268</y>
+      <w>22</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>90.0;1000.0;10.0;1000.0;10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>396</y>
+      <w>58</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Discount
+--
+- plateNumber: String
+- year: int
+- brand: String
+- checkupPeriod: int
+--
++ &lt;&lt;create&gt;&gt; Vehicle(
+    plateNumber: String, year: int,
+    brand: String, checkupPeriod: int): Vehicle </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>342</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>DiscountDB
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>372</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>296</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+DiscountDBIF
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>326</y>
+      <w>6</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>244</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>DiscountController
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>274</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>174</x>
+      <y>336</y>
+      <w>378</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1870.0;200.0;1820.0;200.0;1820.0;360.0;730.0;360.0;730.0;10.0;100.0;10.0;100.0;160.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>870</x>
+      <y>140</y>
+      <w>72</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>CustomerInputPanel
+--
+- Type: enum
+- types: Types[]
+- spinners: JSpinner
+- boxes: JComboBox&lt;?&gt;[]
+--
++ &lt;&lt;create&gt;&gt; CustomerInputPanel(names: String[])
++ generatePanel(): void
++ getTexts(): String[]
++ setComponent(index: int, spinner: JSpinner): void
++ setComponent(index: int, box: JComboBox&lt;?&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>614</x>
+      <y>144</y>
+      <w>78</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Table
+--
+- table: JTable
+- panel: JPanel
+- addAction: ControllerActionIF
+- columns: String[]
+- verticalBox: Box
+- veticalStrut: Component
+- inputPanel: InputPanel
+--
++ &lt;&lt;create&gt;&gt; Table(columns: String[])
++ &lt;&lt;create&gt;&gt; Table(columns: String[], inputPanel: InputPanel)
++ setName(name: String): void
++ getName(): String
++ updateTable(): void
++ removeSelected(): void
++ askForInput(): void
++ addRow(inputPanel: InputPanel): void
++ getTabel(): JTable
++ setActionAdd(controllerAction: ControllerActionIF): void
++ setActionRemove(actionRemove: RemoveActionIF): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>86</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>ColorScheme
+--
+_+ BACKGROUND: Color_
+_+ ERROR: Color_
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>784</x>
+      <y>94</y>
+      <w>38</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ControllerActionIF
+--
+
+--
++ action(p: InputPanel): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>144</y>
+      <w>50</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>FinishSale
+--
+_- serialVersionUID: long_
+- tables: Table[]
+- textPane: JTextPane
+- btnFinishSale: JButton
+--
++ &lt;&lt;create&gt;&gt; FinishSale(tables: Table[])
++ addFinishSaleActionListener(
+    listener: ActionListener): void
++ showTableInfo(): void
++ getTextPane(): JTextPane</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>722</x>
+      <y>50</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+RemoveActionIF
+--
++ action(array: int[]): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>636</x>
+      <y>50</y>
+      <w>74</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>SalePanel
+--
+_- serialVersionUID: long_
+- saleButtonsPanel: JPanel
+- btnCreateSale: JButton
+- 	fieldVehicle: JTextField
+- lblNewLabel: JLabel
+- saleCtrl: saleController 
+- finishSale: FinishSale
+- serviceTable: Table
+- productTable: Table
+--
++ &lt;&lt;create&gt;&gt; SalePanel()
++ initGui(): void
++ createSale(): void
++ finishSale(): void
++ removeProduct(array: int[]): void
++ removeService(array: int[]): void
++ addProduct(input: InputPanel): void
++ addService(input: InputPanel): void
++ cancelSale(): void
++ fillProductList(comboBox: JComboBox&lt;Product&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>348</x>
+      <y>144</y>
+      <w>80</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>AppointmentPanel
+--
+_- serialVersionUID: long_
+- saleButtonsPanel: JPanel
+- btnCreateSale: JButton
+- calendar: JDatePanel
+- list JList&lt;Double&gt;
+- listModel: DefaultListModel&lt;Double&gt;
+- time: LocalDateTime
+- appointmentController: AppointmentController
+--
++ &lt;&lt;create&gt;&gt; AppointmentPanel()
+- initGui(): void
++ createAppointment(): void
++ confirm(time: LocalDateTime): void
++ cancelAppointment(): void
++ fillList(a List&lt;Appointment&gt;): void
++ getAppointments(time: LocalDateTime): List&lt;Appointment&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>454</x>
+      <y>144</y>
+      <w>84</w>
+      <h>82</h>
+    </coordinates>
+    <panel_attributes>AppointmentDataDialog
+--
+- contentPanel: JPanel
+- textArea: JTextArea
+- spinner: JSpinner
+- appointmentController: AppointmentController
+- lblNewLabel: JLabel
+- lblNewLabel_1: JLabel
+- textPhoneNumber: JTextField
+- textName: JTextField
+- descriptionPanel: JPanel
+- customerPanel: JPanel
+- secondOkButton: JButton
+- okButton: JButton
+- errorLabel: JLabel
+- comboBox: JComboBox&lt;Employee&gt;
+- pattern: String
+--
+_+ main(args: String[]): void_
++ &lt;&lt;create&gt;&gt; AppointmentDataDialog(time: LocalDateTime)
+- createAppointment(time: LocalDateTime): void
+- addCustomerInfo(): void
+- addEmployee(): void
+- openCustomerInfoPanel(): void
+- fillEmployeeList(comboBox: JComboBox&lt;Employee&gt;): void
+- insertIntoDB(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>612</x>
+      <y>6</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>BillDoctorTheme
+--
+_+ NAME: String_
+--
+_+ setUp(): boolean_
+_+ installLafInfo(): void_
++ getName(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>30</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>App
+--
+- contentPane: JPanel
+- salePanel: JPanel
+- appointmentPanel: JPanel
+- lblConnection: JPanel
+--
+_+ main(args: String[]): void_
++ &lt;&lt;create&gt;&gt; App()
+- initGui(): void
+- resetConnection(): void
+- checkConnection(): void
+_- showComponentError(c: JComponent): void_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>766</x>
+      <y>140</y>
+      <w>74</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>InputPanel
+--
+- names: String[]
+- values: String[]
+- verticalBoxText: Box
+- verticalBoxField: Box
+- horizontalBox: Box
+- panel_1: JPanel
+- btnCancel: JButton
+- btnConfirm: JButton
+- horizontalStrut: Component
+- action: ControllerActionIF
+- fields: JTextField[]
+- lblError: JLabel
+--
++ &lt;&lt;creater&gt;&gt; InputPanel(names: String[], values: String[])
++ &lt;&lt;creater&gt;&gt; InputPanel(names: String[])
++ createLabels(): void
++ generatePanel(): void
++ setNames(names: String[])
++ setValues(values: string[])
++ getNames(): String[]
++ getValues(): String[]
++ getFields(): JTextField[]
++ addField(int, JTextField): void
++ getTexts(): String[]
++ getErrorLabel(): JLabel
++ confirm(): void
++ resetFieldColor(): void
++ setAction(action: ControllerActionIF)
++ getVerticalBoxField(): Box</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>386</x>
+      <y>198</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>652</x>
+      <y>118</y>
+      <w>24</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;60.0;100.0;60.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>108</y>
+      <w>98</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>470.0;10.0;330.0;10.0;330.0;220.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>124</y>
+      <w>6</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>598</x>
+      <y>42</y>
+      <w>78</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>370.0;40.0;370.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>220</y>
+      <w>18</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>386</x>
+      <y>48</y>
+      <w>158</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;480.0;10.0;10.0;770.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>182</y>
+      <w>80</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>380.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>574</x>
+      <y>72</y>
+      <w>66</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;360.0;10.0;10.0;310.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>80</y>
+      <w>54</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>250.0;10.0;250.0;330.0;10.0;330.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>64</y>
+      <w>18</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>96</y>
+      <w>80</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>380.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>838</x>
+      <y>154</y>
+      <w>36</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>130</y>
+      <w>220</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>1080.0;50.0;1080.0;10.0;360.0;10.0;360.0;150.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>526</x>
+      <y>68</y>
+      <w>50</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;50.0;230.0;50.0;230.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>598</x>
+      <y>32</y>
+      <w>18</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>166</y>
+      <w>32</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>658</x>
+      <y>118</y>
+      <w>42</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;550.0;10.0;520.0;190.0;520.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>278</x>
+      <y>180</y>
+      <w>32</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+RegisterCheckUp
+--
++action(size: int): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>264</x>
+      <y>108</y>
+      <w>64</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>CheckUpPanel
+--
+- appointmentCtrl: AppointmentController
+- vehicleList: JList&lt;Vehicle&gt;
+- checkUpPanel: JPanel
+- panel: JPanel
+- btnRegister: JButton
+- btnCancel: JButton
+- buttonPanel: JPanel
+- vehicles: List&lt;Vehicle&gt;
+- listener: RegisterCheckUp
+--
++ CheckUpPanel(): ctor
+- initGui(): void
+- showVehicleList(): void
+- register(vehicle: Vehicle): void
+- cancel(): void
++ addCheckUpListener(l: RegisterCheckUp): void
++ getListLength(): int
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>42</y>
+      <w>250</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;330.0;10.0;10.0;1230.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>292</x>
+      <y>166</y>
+      <w>6</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>326</x>
+      <y>148</y>
+      <w>26</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>962</x>
+      <y>280</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>254</x>
+      <y>438</y>
+      <w>6</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>174</x>
+      <y>258</y>
+      <w>68</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>320.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>310</y>
+      <w>44</w>
+      <h>58</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>200.0;10.0;100.0;10.0;100.0;270.0;10.0;270.0</additional_attributes>
+  </element>
+</diagram>
