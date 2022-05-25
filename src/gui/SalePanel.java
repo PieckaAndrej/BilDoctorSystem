@@ -445,6 +445,9 @@ public class SalePanel extends JPanel {
 					productTable.addRow(input);
 					
 					input.dispose();
+				} catch (NumberFormatException e) {
+					App.showComponentError(input.getFields()[2]);
+					input.getErrorLabel().setText(e.getClass().getName());
 				} catch (Exception e) {
 					App.showComponentError(input.getFields()[2]);
 					input.getErrorLabel().setText(e.getMessage());
@@ -455,6 +458,9 @@ public class SalePanel extends JPanel {
 			}
 			
 			
+		} catch (NumberFormatException e) {
+			App.showComponentError(input.getFields()[0]);
+			input.getErrorLabel().setText("Enter valid ID");
 		} catch (Exception e) {
 			App.showComponentError(input.getFields()[0]);
 			input.getErrorLabel().setText(e.getMessage());
@@ -490,11 +496,17 @@ public class SalePanel extends JPanel {
 					input.getErrorLabel().setText(e.getMessage());
 				}
 				
+			} catch (NumberFormatException e) {
+				App.showComponentError(input.getFields()[1]);
+				input.getErrorLabel().setText("Enter valid cost");
 			} catch (Exception e) {
 				App.showComponentError(input.getFields()[1]);
 				input.getErrorLabel().setText(e.getMessage());
 			}
 
+		} catch (NumberFormatException e) {
+			App.showComponentError(input.getFields()[2]);
+			input.getErrorLabel().setText("Enter valid time");
 		} catch (Exception e) {
 			App.showComponentError(input.getFields()[2]);
 			input.getErrorLabel().setText(e.getMessage());
