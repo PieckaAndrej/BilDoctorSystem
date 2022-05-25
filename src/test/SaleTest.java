@@ -6,27 +6,21 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.SaleController;
 import dal.DbConnection;
-import dal.OrderLineDB;
 import dal.ProductDB;
 import dal.SaleDB;
-import dal.ServiceDB;
 import exceptions.DatabaseAccessException;
 import exceptions.OutOfStockException;
 import exceptions.QuantityUnderrunException;
 import model.Product;
-import model.Sale;
 
 class SaleTest {
 	

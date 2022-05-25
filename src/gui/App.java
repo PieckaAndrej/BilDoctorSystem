@@ -110,9 +110,8 @@ public class App extends JFrame {
 	 * Checks the connection again with incrementing delays
 	 */
 	private void resetConnection() {
-		System.out.println("Connection lost");
 		lblConnection = new JLabel("Lost connection - establishing connection...");
-		System.out.println("ADD");
+
 		getContentPane().add(lblConnection, BorderLayout.NORTH);
 		revalidate();
 

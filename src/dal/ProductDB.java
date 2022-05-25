@@ -76,8 +76,6 @@ public class ProductDB implements ProductDBIF {
 			
 			// Where id
 			updateProductStatement.setInt(4, product.getId());
-			
-			System.out.println("Update " + product.getCurrentStock() + " " + product.getId());
 	
 			updateProductStatement.executeUpdate();
 			

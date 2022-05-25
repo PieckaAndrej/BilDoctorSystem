@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -129,8 +128,6 @@ public class Table extends JPanel {
 		for (int i = 0; i < length; i++) {
 			reversed[i] = selected[length - (i + 1)];
 		}
-		
-		Arrays.stream(reversed).forEach(System.out::println);
 		
 		for (int i = 0; i < length; i++) {
 			((DefaultTableModel)table.getModel()).removeRow(reversed[i]);

@@ -35,7 +35,6 @@ import controller.AppointmentController;
 import exceptions.DatabaseAccessException;
 import exceptions.LengthUnderrunException;
 import model.Employee;
-import model.Product;
 
 public class AppointmentDataDialog extends JDialog {
 

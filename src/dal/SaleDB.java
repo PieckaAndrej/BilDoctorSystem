@@ -69,7 +69,6 @@ public class SaleDB implements SaleDBIF {
 			}
 			
 			// Commit
-			System.out.println("Commited");
 			DbConnection.getInstance().commitTransaction();
 			
 		} catch (SQLException e) {

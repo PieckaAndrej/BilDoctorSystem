@@ -51,23 +51,19 @@ public class CustomInputPanel extends InputPanel {
 
 			switch (types[i]) {
 			case SPINNER:
-				System.out.println("Spinner");
-				
 				panel.add(spinners[i]);
+				
 				break;
 			case TEXT_FIELD:
-				System.out.println("Text field");
-				
 				JTextField field = new JTextField(super.getValues()[i]);
 				super.addField(i, field);
 				
 				panel.add(field);
 				break;
 			case COMBO_BOX:
-				System.out.println("box");
-				
 				boxes[i].setSelectedIndex(-1);
 				panel.add(boxes[i]);
+				
 				break;
 			}
 			
