@@ -15,7 +15,7 @@ insert into Discount values('normal', 0, '2022-04-30');
 
 go
 
-insert into Customer values ('VIP', '1', '+45');
+insert into Customer values ('normal', '1', '+45');
 
 go
 
