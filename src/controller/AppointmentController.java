@@ -40,7 +40,8 @@ public class AppointmentController {
 	 * @param description
 	 * @throws DatabaseAccessException 
 	 */
-	public boolean createAppointment(LocalDateTime date, int length, String description) throws DatabaseAccessException, LengthUnderrunException{
+	public boolean createAppointment(LocalDateTime date, int length, String description)
+			throws DatabaseAccessException, LengthUnderrunException {
 		boolean retVal = false;
 		
 		// Length cannot be negative or zero
@@ -53,13 +54,13 @@ public class AppointmentController {
 		appointments = appointmentdb.getAppointmentsOnDate(date);
 		
 		boolean overlaps = appointments.parallelStream()			
-			.filter(a -> (
+			.filter(a -> 
 					(
 						// Check if the date is starting in the already existing appointment
 						// Boolean expression is ((existing < date) || (date == existing)) && (date < existingEnd)
 						
 						// If date is after the existing appointment...
-						date.isAfter(a.getAppointmentDate()) ||
+						(date.isAfter(a.getAppointmentDate()) ||
 						// Or is starting at the same time as existing appointment
 						date.isEqual(a.getAppointmentDate())) &&
 					
